@@ -618,11 +618,11 @@ paths:
             schema:
               $ref: '#/components/schemas/ReservationCreationRequest'
         description: Reservation to add
-  /user/{username}/reservations:
+  /users/reservations/{username}:
     get:
       tags:
         - Reservations
-      summary: Obtains the reservations the user has made
+      summary: Obtains the trips reserved by the user
       operationId: obtainReservations
       parameters:
         - in: path
@@ -1420,7 +1420,7 @@ components:
           example: '2017-07-21T17:32:28Z'
         status:
           type: string
-          enum: [pending, accepted, past, cancelled]    
+          enum: [pending, past, cancelled]    
     ReservationPaginatedResponse:
       type: object
       required:

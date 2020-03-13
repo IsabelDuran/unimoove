@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * ReservationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:12:55.470+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
 public class ReservationResponse   {
   @JsonProperty("reservationId")
   private Integer reservationId = null;
@@ -32,8 +32,6 @@ public class ReservationResponse   {
    */
   public enum StatusEnum {
     PENDING("pending"),
-    
-    ACCEPTED("accepted"),
     
     PAST("past"),
     

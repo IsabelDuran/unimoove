@@ -9,6 +9,7 @@ import unimoove.api.dto.CarBrandChangeRequest;
 import unimoove.api.dto.CarCreationRequest;
 import unimoove.api.dto.CarModelChangeRequest;
 import unimoove.api.dto.CarResponse;
+import unimoove.api.dto.ReservationPaginatedResponse;
 import unimoove.api.dto.TripPaginatedResponse;
 import unimoove.api.dto.UserBirthdateChangeRequest;
 import unimoove.api.dto.UserEmailChangeRequest;
@@ -38,7 +39,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:12:55.470+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
@@ -248,6 +249,21 @@ public interface UsersApi {
         method = RequestMethod.PUT)
     ResponseEntity<Void> modifyUserUsername(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's username"  )  @Valid @RequestBody UserUsernameChangeRequest body
+);
+
+
+    @ApiOperation(value = "Obtains the trips reserved by the user", nickname = "obtainReservations", notes = "", response = ReservationPaginatedResponse.class, authorizations = {
+        @Authorization(value = "ApiKeyAuth")    }, tags={ "Reservations", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "The search was successfull", response = ReservationPaginatedResponse.class),
+        @ApiResponse(code = 401, message = "The requested page needs a username and a password"),
+        @ApiResponse(code = 500, message = "Internal server error") })
+    @RequestMapping(value = "/users/reservations/{username}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<ReservationPaginatedResponse> obtainReservations(@ApiParam(value = "",required=true) @PathVariable("username") String username
+,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
+,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
 );
 
 
