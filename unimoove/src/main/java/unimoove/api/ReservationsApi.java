@@ -6,7 +6,11 @@
 package unimoove.api;
 
 import unimoove.api.dto.ReservationCreationRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +23,30 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+import java.util.Optional;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 @Api(value = "reservations", description = "the reservations API")
 public interface ReservationsApi {
+
+    Logger log = LoggerFactory.getLogger(ReservationsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Adds a reservation", nickname = "addReservation", notes = "Adds a new reservation to the system", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Reservations", })
@@ -36,8 +57,14 @@ public interface ReservationsApi {
     @RequestMapping(value = "/reservations",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addReservation(@ApiParam(value = "Reservation to add"  )  @Valid @RequestBody ReservationCreationRequest body
-);
+    default ResponseEntity<Void> addReservation(@ApiParam(value = "Reservation to add"  )  @Valid @RequestBody ReservationCreationRequest body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ReservationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Deletes a reservation", nickname = "deleteReservation", notes = "", authorizations = {
@@ -49,7 +76,13 @@ public interface ReservationsApi {
         @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
     @RequestMapping(value = "/reservations/{idReservation}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteReservation(@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.",required=true) @PathVariable("idReservation") String idReservation
-);
+    default ResponseEntity<Void> deleteReservation(@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.",required=true) @PathVariable("idReservation") String idReservation
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ReservationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

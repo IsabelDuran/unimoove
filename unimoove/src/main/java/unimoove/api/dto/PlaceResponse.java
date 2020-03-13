@@ -3,7 +3,6 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -14,43 +13,13 @@ import javax.validation.constraints.*;
  * PlaceResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class PlaceResponse   {
   @JsonProperty("name")
   private String name = null;
 
-  /**
-   * Gets or Sets category
-   */
-  public enum CategoryEnum {
-    TOWN("Town"),
-    
-    UNIVERSITY("University");
-
-    private String value;
-
-    CategoryEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static CategoryEnum fromValue(String text) {
-      for (CategoryEnum b : CategoryEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("category")
-  private CategoryEnum category = null;
+  private Integer category = null;
 
   public PlaceResponse name(String name) {
     this.name = name;
@@ -72,7 +41,7 @@ public class PlaceResponse   {
     this.name = name;
   }
 
-  public PlaceResponse category(CategoryEnum category) {
+  public PlaceResponse category(Integer category) {
     this.category = category;
     return this;
   }
@@ -81,14 +50,14 @@ public class PlaceResponse   {
    * Get category
    * @return category
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public CategoryEnum getCategory() {
+    public Integer getCategory() {
     return category;
   }
 
-  public void setCategory(CategoryEnum category) {
+  public void setCategory(Integer category) {
     this.category = category;
   }
 

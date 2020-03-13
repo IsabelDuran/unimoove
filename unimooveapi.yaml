@@ -618,7 +618,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ReservationCreationRequest'
         description: Reservation to add
-  /users/reservations/{username}:
+  /user/reservations/{username}:
     get:
       tags:
         - Reservations
@@ -1101,11 +1101,11 @@ components:
             type: string
             format: date
           gender:
-            type: string
-            enum: [male, female]
+            type: integer
+            example: 0
           role:
-            type: string
-            enum: [user, admin]          
+            type: integer
+            example: 0         
     UserResponse:
         type: object
         required:
@@ -1128,12 +1128,11 @@ components:
             type: string
             format: date
           gender:
-            type: string
-            enum: [male, female]
+            type: integer
+            example: 0
           role:
-            type: string
-            enum: [user, admin]
-            description: Role will be omited if the user requesting is not an admin
+            type: integer
+            example: 0  
     UserPaginatedResponse:
       type: object
       required:
@@ -1200,16 +1199,16 @@ components:
           - newGender
         properties:
           newGender:
-            type: string
-            enum: [male, female]
+            type: integer
+            example: 0
     UserRoleChangeRequest:
         type: object
         required:
           - newRole
         properties:
           newRole:
-            type: string
-            enum: [user, admin]            
+            type: integer
+            example: 0            
     CarCreationRequest:
       type: object
       required:
@@ -1314,8 +1313,8 @@ components:
           type: integer
           example: 2
         state:
-          type: string
-          enum: [Avalible, Full, Cancelled, Past] 
+          type: integer
+          example: 0
         price:
           type: number
           example: 1.0    
@@ -1343,8 +1342,8 @@ components:
           format: date-time
           example: '2017-07-21T17:32:28Z'    
         state:
-          type: string
-          enum: [Avalible, Full, Cancelled, Past] 
+          type: integer
+          example: 0
         price:
           type: number
           example: 1.0     
@@ -1419,8 +1418,8 @@ components:
           format: date-time
           example: '2017-07-21T17:32:28Z'
         status:
-          type: string
-          enum: [pending, past, cancelled]    
+          type: integer
+          example: 0   
     ReservationPaginatedResponse:
       type: object
       required:
@@ -1447,8 +1446,8 @@ components:
           type: string
           example: 'Puerto Real'
         category:
-          type: string
-          enum: ['Town','University']
+          type: integer
+          example: 0
     PlaceResponse:
       type: object
       required:
@@ -1459,8 +1458,8 @@ components:
           type: string
           example: 'Puerto Real'
         category:
-          type: string
-          enum: ['Town','University']          
+          type: integer
+          example: 0        
     PlaceNameChangeRequest:      
         type: object
         required:
@@ -1474,9 +1473,9 @@ components:
         required:
           - newCategory
         properties:
-          newGender:
-            type: string
-            enum: [town, faculty]
+          newCategory:
+            type: integer
+            example: 0
     PlaceIdChangeRequest:
       type: object
       required:

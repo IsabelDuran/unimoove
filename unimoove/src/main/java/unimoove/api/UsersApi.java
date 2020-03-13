@@ -9,7 +9,6 @@ import unimoove.api.dto.CarBrandChangeRequest;
 import unimoove.api.dto.CarCreationRequest;
 import unimoove.api.dto.CarModelChangeRequest;
 import unimoove.api.dto.CarResponse;
-import unimoove.api.dto.ReservationPaginatedResponse;
 import unimoove.api.dto.TripPaginatedResponse;
 import unimoove.api.dto.UserBirthdateChangeRequest;
 import unimoove.api.dto.UserEmailChangeRequest;
@@ -22,7 +21,11 @@ import unimoove.api.dto.UserRegistrationRequest;
 import unimoove.api.dto.UserResponse;
 import unimoove.api.dto.UserRoleChangeRequest;
 import unimoove.api.dto.UserUsernameChangeRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,13 +38,30 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+import java.util.Optional;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
+
+    Logger log = LoggerFactory.getLogger(UsersApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Adds a car", nickname = "addCar", notes = "Adds a new car to the user", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Cars", })
@@ -52,9 +72,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/cars",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> addCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "Car to add"  )  @Valid @RequestBody CarCreationRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Registers a user", nickname = "addUser", notes = "Adds a user to the system", tags={ "Users", })
@@ -65,8 +91,14 @@ public interface UsersApi {
     @RequestMapping(value = "/users",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addUser(@ApiParam(value = "User to add"  )  @Valid @RequestBody UserRegistrationRequest body
-);
+    default ResponseEntity<Void> addUser(@ApiParam(value = "User to add"  )  @Valid @RequestBody UserRegistrationRequest body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Deletes a car", nickname = "deleteCar", notes = "Deletes the car linked to a user", authorizations = {
@@ -78,9 +110,15 @@ public interface UsersApi {
         @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
     @RequestMapping(value = "/users/{username}/cars/{plate}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> deleteCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "By passing in the appropriate car plate, you can delete the car.",required=true) @PathVariable("plate") String plate
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Deletes a user", nickname = "deleteUser", notes = "", authorizations = {
@@ -92,8 +130,14 @@ public interface UsersApi {
         @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
     @RequestMapping(value = "/users/{username}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@ApiParam(value = "By passing in the appropriate username, you can delete the user.",required=true) @PathVariable("username") String username
-);
+    default ResponseEntity<Void> deleteUser(@ApiParam(value = "By passing in the appropriate username, you can delete the user.",required=true) @PathVariable("username") String username
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Finds a user", nickname = "getUser", notes = "", response = UserResponse.class, authorizations = {
@@ -106,8 +150,22 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<UserResponse> getUser(@ApiParam(value = "By passing in the appropriate username, you can get the user.",required=true) @PathVariable("username") String username
-);
+    default ResponseEntity<UserResponse> getUser(@ApiParam(value = "By passing in the appropriate username, you can get the user.",required=true) @PathVariable("username") String username
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"birthdate\" : \"2000-01-23\",\n  \"role\" : 0,\n  \"gender\" : 0,\n  \"name\" : \"John\",\n  \"username\" : \"johndoe\",\n  \"lastname\" : \"Doe\"\n}", UserResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the car's brand", nickname = "modifyCarBrand", notes = "", authorizations = {
@@ -119,10 +177,16 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/cars/{plate}/brand",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyCarBrand(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyCarBrand(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "By passing in the appropriate car plate, you can modify the car.",required=true) @PathVariable("plate") String plate
 ,@ApiParam(value = "The car's new brand"  )  @Valid @RequestBody CarBrandChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the car's model", nickname = "modifyCarModel", notes = "", authorizations = {
@@ -134,10 +198,16 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/cars/{plate}/model",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyCarModel(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyCarModel(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "By passing in the appropriate car plate, you can modify the car.",required=true) @PathVariable("plate") String plate
 ,@ApiParam(value = "The car's new model"  )  @Valid @RequestBody CarModelChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's birthdate", nickname = "modifyUserBirthdate", notes = "The user username you want to modify", authorizations = {
@@ -149,9 +219,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/birthdate",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserBirthdate(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserBirthdate(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's birthdate"  )  @Valid @RequestBody UserBirthdateChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's email", nickname = "modifyUserEmail", notes = "The user username you want to modify", authorizations = {
@@ -163,9 +239,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/email",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserEmail(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserEmail(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's email"  )  @Valid @RequestBody UserEmailChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's gender", nickname = "modifyUserGender", notes = "The user username you want to modify", authorizations = {
@@ -177,9 +259,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/gender",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserGender(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserGender(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's gender"  )  @Valid @RequestBody UserGenderChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's lastname", nickname = "modifyUserLastname", notes = "The user username you want to modify", authorizations = {
@@ -191,9 +279,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/lastname",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserLastname(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserLastname(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's lastname"  )  @Valid @RequestBody UserLastnameChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's name", nickname = "modifyUserName", notes = "The user username you want to modify", authorizations = {
@@ -205,9 +299,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/name",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserName(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserName(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's name"  )  @Valid @RequestBody UserNameChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's email", nickname = "modifyUserPassword", notes = "The user username you want to modify", authorizations = {
@@ -219,9 +319,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/password",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserPassword(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserPassword(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's password"  )  @Valid @RequestBody UserPasswordChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's role", nickname = "modifyUserRole", notes = "The user username you want to modify", authorizations = {
@@ -233,9 +339,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/role",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserRole(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserRole(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's role"  )  @Valid @RequestBody UserRoleChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the user's username", nickname = "modifyUserUsername", notes = "The user username you want to modify", authorizations = {
@@ -247,24 +359,15 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/username",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyUserUsername(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<Void> modifyUserUsername(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's username"  )  @Valid @RequestBody UserUsernameChangeRequest body
-);
-
-
-    @ApiOperation(value = "Obtains the trips reserved by the user", nickname = "obtainReservations", notes = "", response = ReservationPaginatedResponse.class, authorizations = {
-        @Authorization(value = "ApiKeyAuth")    }, tags={ "Reservations", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The search was successfull", response = ReservationPaginatedResponse.class),
-        @ApiResponse(code = 401, message = "The requested page needs a username and a password"),
-        @ApiResponse(code = 500, message = "Internal server error") })
-    @RequestMapping(value = "/users/reservations/{username}",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<ReservationPaginatedResponse> obtainReservations(@ApiParam(value = "",required=true) @PathVariable("username") String username
-,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
-,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Obtains the trips registered by the user", nickname = "obtainTrips", notes = "", response = TripPaginatedResponse.class, authorizations = {
@@ -276,10 +379,24 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/trips",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<TripPaginatedResponse> obtainTrips(@ApiParam(value = "",required=true) @PathVariable("username") String username
+    default ResponseEntity<TripPaginatedResponse> obtainTrips(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
 ,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"pages\" : [ {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  }, {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n}", TripPaginatedResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Searches for a car", nickname = "searchCar", notes = "Searches for a car.", response = CarResponse.class, responseContainer = "List", authorizations = {
@@ -291,8 +408,22 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{username}/cars",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<CarResponse>> searchCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
-);
+    default ResponseEntity<List<CarResponse>> searchCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"plate\" : \"9268 BAR\",\n  \"model\" : \"Marea Weekend\",\n  \"brand\" : \"Fiat\",\n  \"seats\" : 5\n}, {\n  \"plate\" : \"9268 BAR\",\n  \"model\" : \"Marea Weekend\",\n  \"brand\" : \"Fiat\",\n  \"seats\" : 5\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Searches for a user", nickname = "searchUser", notes = "Searches for a user. This operation is permited for both user and admin", response = UserPaginatedResponse.class, responseContainer = "List", authorizations = {
@@ -304,9 +435,23 @@ public interface UsersApi {
     @RequestMapping(value = "/users",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<UserPaginatedResponse>> searchUser(@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = false) String username
+    default ResponseEntity<List<UserPaginatedResponse>> searchUser(@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = false) String username
 ,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
 ,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"pages\" : [ {\n    \"birthdate\" : \"2000-01-23\",\n    \"role\" : 0,\n    \"gender\" : 0,\n    \"name\" : \"John\",\n    \"username\" : \"johndoe\",\n    \"lastname\" : \"Doe\"\n  }, {\n    \"birthdate\" : \"2000-01-23\",\n    \"role\" : 0,\n    \"gender\" : 0,\n    \"name\" : \"John\",\n    \"username\" : \"johndoe\",\n    \"lastname\" : \"Doe\"\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n}, {\n  \"pages\" : [ {\n    \"birthdate\" : \"2000-01-23\",\n    \"role\" : 0,\n    \"gender\" : 0,\n    \"name\" : \"John\",\n    \"username\" : \"johndoe\",\n    \"lastname\" : \"Doe\"\n  }, {\n    \"birthdate\" : \"2000-01-23\",\n    \"role\" : 0,\n    \"gender\" : 0,\n    \"name\" : \"John\",\n    \"username\" : \"johndoe\",\n    \"lastname\" : \"Doe\"\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

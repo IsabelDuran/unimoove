@@ -3,11 +3,10 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -16,7 +15,7 @@ import javax.validation.constraints.*;
  * TripResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class TripResponse   {
   @JsonProperty("id")
   private Integer id = null;
@@ -33,42 +32,8 @@ public class TripResponse   {
   @JsonProperty("numberAvailableSeats")
   private Integer numberAvailableSeats = null;
 
-  /**
-   * Gets or Sets state
-   */
-  public enum StateEnum {
-    AVALIBLE("Avalible"),
-    
-    FULL("Full"),
-    
-    CANCELLED("Cancelled"),
-    
-    PAST("Past");
-
-    private String value;
-
-    StateEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StateEnum fromValue(String text) {
-      for (StateEnum b : StateEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("state")
-  private StateEnum state = null;
+  private Integer state = null;
 
   @JsonProperty("price")
   private BigDecimal price = null;
@@ -174,7 +139,7 @@ public class TripResponse   {
     this.numberAvailableSeats = numberAvailableSeats;
   }
 
-  public TripResponse state(StateEnum state) {
+  public TripResponse state(Integer state) {
     this.state = state;
     return this;
   }
@@ -183,14 +148,14 @@ public class TripResponse   {
    * Get state
    * @return state
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public StateEnum getState() {
+    public Integer getState() {
     return state;
   }
 
-  public void setState(StateEnum state) {
+  public void setState(Integer state) {
     this.state = state;
   }
 

@@ -17,11 +17,11 @@ import javax.validation.constraints.*;
  * UserPaginatedResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class UserPaginatedResponse   {
   @JsonProperty("pages")
   @Valid
-  private List<UserResponse> pages = new ArrayList<UserResponse>();
+  private List<UserResponse> pages = new ArrayList<>();
 
   @JsonProperty("paginationInfo")
   private PaginationInfo paginationInfo = null;

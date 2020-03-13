@@ -3,7 +3,6 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -14,42 +13,12 @@ import javax.validation.constraints.*;
  * UserGenderChangeRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class UserGenderChangeRequest   {
-  /**
-   * Gets or Sets newGender
-   */
-  public enum NewGenderEnum {
-    MALE("male"),
-    
-    FEMALE("female");
-
-    private String value;
-
-    NewGenderEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static NewGenderEnum fromValue(String text) {
-      for (NewGenderEnum b : NewGenderEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("newGender")
-  private NewGenderEnum newGender = null;
+  private Integer newGender = null;
 
-  public UserGenderChangeRequest newGender(NewGenderEnum newGender) {
+  public UserGenderChangeRequest newGender(Integer newGender) {
     this.newGender = newGender;
     return this;
   }
@@ -58,14 +27,14 @@ public class UserGenderChangeRequest   {
    * Get newGender
    * @return newGender
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public NewGenderEnum getNewGender() {
+    public Integer getNewGender() {
     return newGender;
   }
 
-  public void setNewGender(NewGenderEnum newGender) {
+  public void setNewGender(Integer newGender) {
     this.newGender = newGender;
   }
 

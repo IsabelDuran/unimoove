@@ -2,5 +2,6 @@
   "apiPackage" : "unimoove.api",
   "modelPackage": "unimoove.api.dto",
   "invokerPackage": "unimoove",
-  "useBeanValidation": true
+  "useBeanValidation": true,
+  "dateLibrary": "java8"
 }

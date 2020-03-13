@@ -3,7 +3,6 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -14,42 +13,12 @@ import javax.validation.constraints.*;
  * UserRoleChangeRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class UserRoleChangeRequest   {
-  /**
-   * Gets or Sets newRole
-   */
-  public enum NewRoleEnum {
-    USER("user"),
-    
-    ADMIN("admin");
-
-    private String value;
-
-    NewRoleEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static NewRoleEnum fromValue(String text) {
-      for (NewRoleEnum b : NewRoleEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("newRole")
-  private NewRoleEnum newRole = null;
+  private Integer newRole = null;
 
-  public UserRoleChangeRequest newRole(NewRoleEnum newRole) {
+  public UserRoleChangeRequest newRole(Integer newRole) {
     this.newRole = newRole;
     return this;
   }
@@ -58,14 +27,14 @@ public class UserRoleChangeRequest   {
    * Get newRole
    * @return newRole
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public NewRoleEnum getNewRole() {
+    public Integer getNewRole() {
     return newRole;
   }
 
-  public void setNewRole(NewRoleEnum newRole) {
+  public void setNewRole(Integer newRole) {
     this.newRole = newRole;
   }
 

@@ -3,7 +3,6 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -14,58 +13,29 @@ import javax.validation.constraints.*;
  * PlaceCategoryChangeRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class PlaceCategoryChangeRequest   {
-  /**
-   * Gets or Sets newGender
-   */
-  public enum NewGenderEnum {
-    TOWN("town"),
-    
-    FACULTY("faculty");
+  @JsonProperty("newCategory")
+  private Integer newCategory = null;
 
-    private String value;
-
-    NewGenderEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static NewGenderEnum fromValue(String text) {
-      for (NewGenderEnum b : NewGenderEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-  @JsonProperty("newGender")
-  private NewGenderEnum newGender = null;
-
-  public PlaceCategoryChangeRequest newGender(NewGenderEnum newGender) {
-    this.newGender = newGender;
+  public PlaceCategoryChangeRequest newCategory(Integer newCategory) {
+    this.newCategory = newCategory;
     return this;
   }
 
   /**
-   * Get newGender
-   * @return newGender
+   * Get newCategory
+   * @return newCategory
   **/
-  @ApiModelProperty(value = "")
-  
-    public NewGenderEnum getNewGender() {
-    return newGender;
+  @ApiModelProperty(example = "0", required = true, value = "")
+      @NotNull
+
+    public Integer getNewCategory() {
+    return newCategory;
   }
 
-  public void setNewGender(NewGenderEnum newGender) {
-    this.newGender = newGender;
+  public void setNewCategory(Integer newCategory) {
+    this.newCategory = newCategory;
   }
 
 
@@ -78,12 +48,12 @@ public class PlaceCategoryChangeRequest   {
       return false;
     }
     PlaceCategoryChangeRequest placeCategoryChangeRequest = (PlaceCategoryChangeRequest) o;
-    return Objects.equals(this.newGender, placeCategoryChangeRequest.newGender);
+    return Objects.equals(this.newCategory, placeCategoryChangeRequest.newCategory);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(newGender);
+    return Objects.hash(newCategory);
   }
 
   @Override
@@ -91,7 +61,7 @@ public class PlaceCategoryChangeRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class PlaceCategoryChangeRequest {\n");
     
-    sb.append("    newGender: ").append(toIndentedString(newGender)).append("\n");
+    sb.append("    newCategory: ").append(toIndentedString(newCategory)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -3,10 +3,9 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,7 +14,7 @@ import javax.validation.constraints.*;
  * UserRegistrationRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class UserRegistrationRequest   {
   @JsonProperty("username")
   private String username = null;
@@ -32,71 +31,11 @@ public class UserRegistrationRequest   {
   @JsonProperty("birthdate")
   private LocalDate birthdate = null;
 
-  /**
-   * Gets or Sets gender
-   */
-  public enum GenderEnum {
-    MALE("male"),
-    
-    FEMALE("female");
-
-    private String value;
-
-    GenderEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static GenderEnum fromValue(String text) {
-      for (GenderEnum b : GenderEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("gender")
-  private GenderEnum gender = null;
+  private Integer gender = null;
 
-  /**
-   * Gets or Sets role
-   */
-  public enum RoleEnum {
-    USER("user"),
-    
-    ADMIN("admin");
-
-    private String value;
-
-    RoleEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static RoleEnum fromValue(String text) {
-      for (RoleEnum b : RoleEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("role")
-  private RoleEnum role = null;
+  private Integer role = null;
 
   public UserRegistrationRequest username(String username) {
     this.username = username;
@@ -199,7 +138,7 @@ public class UserRegistrationRequest   {
     this.birthdate = birthdate;
   }
 
-  public UserRegistrationRequest gender(GenderEnum gender) {
+  public UserRegistrationRequest gender(Integer gender) {
     this.gender = gender;
     return this;
   }
@@ -208,18 +147,18 @@ public class UserRegistrationRequest   {
    * Get gender
    * @return gender
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public GenderEnum getGender() {
+    public Integer getGender() {
     return gender;
   }
 
-  public void setGender(GenderEnum gender) {
+  public void setGender(Integer gender) {
     this.gender = gender;
   }
 
-  public UserRegistrationRequest role(RoleEnum role) {
+  public UserRegistrationRequest role(Integer role) {
     this.role = role;
     return this;
   }
@@ -228,14 +167,14 @@ public class UserRegistrationRequest   {
    * Get role
    * @return role
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public RoleEnum getRole() {
+    public Integer getRole() {
     return role;
   }
 
-  public void setRole(RoleEnum role) {
+  public void setRole(Integer role) {
     this.role = role;
   }
 

@@ -11,7 +11,11 @@ import unimoove.api.dto.TripDepartureDateTimeChangeRequest;
 import unimoove.api.dto.TripDeparturePlaceChangeRequest;
 import unimoove.api.dto.TripNumberAvailableSeatsChangeRequest;
 import unimoove.api.dto.TripPaginatedResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +28,30 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+import java.util.Optional;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 @Api(value = "trips", description = "the trips API")
 public interface TripsApi {
+
+    Logger log = LoggerFactory.getLogger(TripsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Adds a trip", nickname = "addTrip", notes = "Adds a new trip to the system", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Trips", })
@@ -41,8 +62,14 @@ public interface TripsApi {
     @RequestMapping(value = "/trips",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addTrip(@ApiParam(value = "Trip to add"  )  @Valid @RequestBody TripCreationRequest body
-);
+    default ResponseEntity<Void> addTrip(@ApiParam(value = "Trip to add"  )  @Valid @RequestBody TripCreationRequest body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Deletes a trip", nickname = "deleteTrip", notes = "", authorizations = {
@@ -54,8 +81,14 @@ public interface TripsApi {
         @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
     @RequestMapping(value = "/trips/{idTrip}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTrip(@ApiParam(value = "By passing in the appropriate trip ID, you can delete the trip.",required=true) @PathVariable("idTrip") String idTrip
-);
+    default ResponseEntity<Void> deleteTrip(@ApiParam(value = "By passing in the appropriate trip ID, you can delete the trip.",required=true) @PathVariable("idTrip") String idTrip
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the trip's arrival Place", nickname = "modifyTripArrivalPlace", notes = "The trip ID for the trip you want to modify", authorizations = {
@@ -67,9 +100,15 @@ public interface TripsApi {
     @RequestMapping(value = "/trips/{idTrip}/arrivalPlace",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyTripArrivalPlace(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
+    default ResponseEntity<Void> modifyTripArrivalPlace(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
 ,@ApiParam(value = "The trip's new arrival place"  )  @Valid @RequestBody TripArrivalPlaceChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the trip's departure date and time", nickname = "modifyTripDepartureDateTime", notes = "The trip ID for the trip you want to modify", authorizations = {
@@ -81,9 +120,15 @@ public interface TripsApi {
     @RequestMapping(value = "/trips/{idTrip}/departureDateTime",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyTripDepartureDateTime(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
+    default ResponseEntity<Void> modifyTripDepartureDateTime(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
 ,@ApiParam(value = "The trip's new departure date and time"  )  @Valid @RequestBody TripDepartureDateTimeChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the trip's departurePlace", nickname = "modifyTripDeparturePlace", notes = "The trip ID for the trip you want to modify", authorizations = {
@@ -95,9 +140,15 @@ public interface TripsApi {
     @RequestMapping(value = "/trips/{idTrip}/departurePlace",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyTripDeparturePlace(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
+    default ResponseEntity<Void> modifyTripDeparturePlace(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
 ,@ApiParam(value = "The trip's new departure place"  )  @Valid @RequestBody TripDeparturePlaceChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Modifies the trip's number of available seats", nickname = "modifyTripNumberAvailableSeats", notes = "The trip ID for the trip you want to modify", authorizations = {
@@ -109,9 +160,15 @@ public interface TripsApi {
     @RequestMapping(value = "/trips/{idTrip}/numberAvailableSeats",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyTripNumberAvailableSeats(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
+    default ResponseEntity<Void> modifyTripNumberAvailableSeats(@ApiParam(value = "",required=true) @PathVariable("idTrip") String idTrip
 ,@ApiParam(value = "The trip's new number of available seats"  )  @Valid @RequestBody TripNumberAvailableSeatsChangeRequest body
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Searches for trips", nickname = "searchTrips", notes = "Searches for trips with the specified departure and arrival place and date.", response = TripPaginatedResponse.class, authorizations = {
@@ -123,11 +180,25 @@ public interface TripsApi {
     @RequestMapping(value = "/trips",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<TripPaginatedResponse> searchTrips(@ApiParam(value = "the departure place for the trip") @Valid @RequestParam(value = "departurePlace", required = false) String departurePlace
+    default ResponseEntity<TripPaginatedResponse> searchTrips(@ApiParam(value = "the departure place for the trip") @Valid @RequestParam(value = "departurePlace", required = false) String departurePlace
 ,@ApiParam(value = "the arrival place for the trip") @Valid @RequestParam(value = "arrivalPlace", required = false) String arrivalPlace
 ,@ApiParam(value = "the departure time for the trip") @Valid @RequestParam(value = "departureDateTime", required = false) String departureDateTime
 ,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
 ,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"pages\" : [ {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  }, {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n}", TripPaginatedResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default TripsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

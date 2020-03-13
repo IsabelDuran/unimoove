@@ -3,10 +3,9 @@ package unimoove.api.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 import unimoove.api.dto.TripReservationResponse;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -16,7 +15,7 @@ import javax.validation.constraints.*;
  * ReservationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T21:29:59.978+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-13T23:33:47.450+01:00[Europe/Madrid]")
 public class ReservationResponse   {
   @JsonProperty("reservationId")
   private Integer reservationId = null;
@@ -27,40 +26,8 @@ public class ReservationResponse   {
   @JsonProperty("dateTimeReservation")
   private OffsetDateTime dateTimeReservation = null;
 
-  /**
-   * Gets or Sets status
-   */
-  public enum StatusEnum {
-    PENDING("pending"),
-    
-    PAST("past"),
-    
-    CANCELLED("cancelled");
-
-    private String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String text) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("status")
-  private StatusEnum status = null;
+  private Integer status = null;
 
   public ReservationResponse reservationId(Integer reservationId) {
     this.reservationId = reservationId;
@@ -124,7 +91,7 @@ public class ReservationResponse   {
     this.dateTimeReservation = dateTimeReservation;
   }
 
-  public ReservationResponse status(StatusEnum status) {
+  public ReservationResponse status(Integer status) {
     this.status = status;
     return this;
   }
@@ -133,14 +100,14 @@ public class ReservationResponse   {
    * Get status
    * @return status
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "0", required = true, value = "")
       @NotNull
 
-    public StatusEnum getStatus() {
+    public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(StatusEnum status) {
+  public void setStatus(Integer status) {
     this.status = status;
   }
 
