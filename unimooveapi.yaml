@@ -1,0 +1,1508 @@
+openapi: 3.0.0
+info:
+  title: Unimoove API
+  description: An API for the Unimoove application
+  version: 1.0.0
+tags:
+  - name: Users
+    description: Operations to manage users
+  - name: Cars
+    description: Operations to manage cars
+  - name: Trips
+    description: Operations to manage trips
+  - name: Reservations
+    description: Operations to manage reservations
+  - name: Places 
+    description: Operations to manage places
+  - name: Authentication
+    description: Operations to authenticate
+
+paths:
+  /authentication/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticates a user into the system
+      operationId: userLogin
+      description: Logs in a user into the system
+      responses:
+        '200':
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid input, object invalid
+        '401':
+          description: Unauthorized 
+        '409':
+          description: The request could not be completed because of a conflict
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        description: The user's username and password
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Registers a user
+      operationId: addUser
+      description: Adds a user to the system
+      responses:
+        '201':
+          description: user created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing user already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+        description: User to add
+    get:
+      tags:
+        - Users
+      summary: Searches for a user
+      operationId: searchUser
+      description: Searches for a user. This operation is permited for both user and admin
+      security:
+        - ApiKeyAuth: []
+          x-roles: [user, admin]    
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items: 
+                    $ref: '#/components/schemas/UserPaginatedResponse'
+        '401':
+          description:   The requested page needs a username and a password
+        '500':
+          description: Internal server error
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: the username to be searched
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: the number of the page
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: the number of element per page            
+  /users/{username}:
+    get:
+      tags:
+        - Users
+      summary: Finds a user
+      operationId: getUser
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate username, you can get the user.'
+      security:
+        - ApiKeyAuth: [user]
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: bad input parameter
+        '404':
+          description: user not found
+        '401':
+          description:   The requested page needs a username and a password
+    delete:
+      tags:
+        - Users
+      summary: Deletes a user
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate username, you can delete the user.'
+      security:
+        - ApiKeyAuth: [admin, user]
+      responses:
+        '200':
+          description: user deleted succesfully
+        '400':
+          description: bad input parameter
+        '404':
+          description: user not found
+        '401':
+          description:   The requested page needs a username and a password      
+  /users/{username}/username:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's username
+      operationId: modifyUserUsername
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]      
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUsernameChangeRequest'
+        description: The new user's username
+  /users/{username}/email:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's email
+      operationId: modifyUserEmail
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]      
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailChangeRequest'
+        description: The new user's email
+  /users/{username}/password:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's email
+      operationId: modifyUserPassword
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]      
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordChangeRequest'
+        description: The new user's password
+  /users/{username}/name:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's name
+      operationId: modifyUserName
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [user]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserNameChangeRequest'
+        description: The new user's name
+  /users/{username}/lastname:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's lastname
+      operationId: modifyUserLastname
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]      
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLastnameChangeRequest'
+        description: The new user's lastname
+  /users/{username}/birthdate:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's birthdate
+      operationId: modifyUserBirthdate
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]        
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBirthdateChangeRequest'
+        description: The new user's birthdate
+  /users/{username}/gender:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's gender
+      operationId: modifyUserGender
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]        
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGenderChangeRequest'
+        description: The new user's gender
+  /users/{username}/role:
+    put:
+      tags: 
+        - Users
+      summary: Modifies the user's role
+      operationId: modifyUserRole
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      description: 'The user username you want to modify'
+      security:
+        - ApiKeyAuth: [user]        
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleChangeRequest'
+        description: The new user's role        
+  /users/{username}/cars:
+    post:
+      tags:
+        - Cars
+      summary: Adds a car
+      operationId: addCar
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true      
+      description: Adds a new car to the user
+      security:
+        - ApiKeyAuth: [User]      
+      responses:
+        '201':
+          description: Car created
+        '400':
+          description: 'invalid input, object invalid'
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarCreationRequest'
+        description: Car to add  
+    get:
+      tags:
+        - Cars
+      summary: Searches for a car
+      operationId: searchCar
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true        
+      description: Searches for a car.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items: 
+                    $ref: '#/components/schemas/CarResponse'
+        '403':
+          description: Access denied
+        '500':
+          description: Internal server error  
+  /users/{username}/cars/{plate}:
+    delete:
+      tags:
+        - Cars
+      summary: Deletes a car
+      operationId: deleteCar
+      description: Deletes the car linked to a user
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true       
+        - in: path
+          name: plate
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate car plate, you can delete the car.'
+      security:
+        - ApiKeyAuth: [user]
+      responses:
+        '200':
+          description: car deleted succesfully
+        '400':
+          description: bad input parameter
+        '404':
+          description: car not found
+        '401':
+          description:   The requested page needs a username and a password
+  /users/{username}/cars/{plate}/brand:
+    put:
+      tags:
+        - Cars
+      summary: Modifies the car's brand
+      operationId: modifyCarBrand
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true       
+        - in: path
+          name: plate
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate car plate, you can modify the car.'
+      security:
+        - ApiKeyAuth: [user]  
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarBrandChangeRequest'
+        description: The car's new brand  
+  /users/{username}/cars/{plate}/model:  
+    put:
+      tags:
+        - Cars
+      summary: Modifies the car's model
+      operationId: modifyCarModel
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true       
+        - in: path
+          name: plate
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate car plate, you can modify the car.'
+      security:
+        - ApiKeyAuth: [User]  
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarModelChangeRequest'
+        description: The car's new model    
+  /trips:
+    post:
+      tags:
+        - Trips
+      summary: Adds a trip
+      operationId: addTrip
+      description: Adds a new trip to the system        
+      security:
+        - ApiKeyAuth: [User]      
+      responses:
+        '201':
+          description: Trip created
+        '400':
+          description: 'invalid input, object invalid'
+        '401':
+          description:   The requested page needs a username and a password          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripCreationRequest'
+        description: Trip to add
+    get:
+      tags:
+        - Trips
+      summary: Searches for trips
+      operationId: searchTrips
+      description: Searches for trips with the specified departure and arrival place and date.
+      security:
+        - ApiKeyAuth: [] 
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TripPaginatedResponse'
+        '403':
+          description: Access denied
+        '500':
+          description: Internal server error
+      parameters:
+        - in: query
+          name: departurePlace
+          schema:
+            type: string
+          description: the departure place for the trip
+        - in: query
+          name: arrivalPlace
+          schema:
+            type: string
+          description: the arrival place for the trip
+        - in: query
+          name: departureDateTime
+          schema:
+            type: string
+          description: the departure time for the trip
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: the number of the page
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: the number of element per page
+  /reservations:
+    post:
+      tags: 
+      - Reservations
+      summary: Adds a reservation
+      operationId: addReservation
+      description: Adds a new reservation to the system        
+      security:
+        - ApiKeyAuth: [User]      
+      responses:  
+        '201':
+          description: Reservation created
+        '400':
+          description: 'invalid input, object invalid'
+        '401':
+          description:   The requested page needs a username and a password   
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCreationRequest'
+        description: Reservation to add
+  /user/{username}/reservations:
+    get:
+      tags:
+        - Reservations
+      summary: Obtains the reservations the user has made
+      operationId: obtainReservations
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true   
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: the number of the page
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: the number of element per page        
+      security:
+        - ApiKeyAuth: [user] 
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/ReservationPaginatedResponse'
+        '401':
+          description:   The requested page needs a username and a password 
+        '500':
+          description: Internal server error    
+  /reservations/{idReservation}:
+    delete:
+      tags:
+        - Reservations
+      summary: Deletes a reservation
+      operationId: deleteReservation
+      parameters:
+        - in: path
+          name: idReservation
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate reservation ID, you can delete the reservation.'
+      security:
+        - ApiKeyAuth: [user]
+      responses:
+        '200':
+          description: reservation deleted succesfully
+        '400':
+          description: bad input parameter
+        '404':
+          description: reservation not found
+        '401':
+          description:   The requested page needs a username and a password    
+  /users/{username}/trips:
+    get:
+      tags:
+        - Trips
+      summary: Obtains the trips registered by the user
+      operationId: obtainTrips
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true   
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: the number of the page
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: the number of element per page        
+      security:
+        - ApiKeyAuth: [user] 
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/TripPaginatedResponse'
+        '401':
+          description:   The requested page needs a username and a password 
+        '500':
+          description: Internal server error  
+  /trips/{idTrip}:
+    delete:
+      tags:
+        - Trips
+      summary: Deletes a trip
+      operationId: deleteTrip
+      parameters:
+        - in: path
+          name: idTrip
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate trip ID, you can delete the trip.'
+      security:
+        - ApiKeyAuth: [user]
+      responses:
+        '200':
+          description: trip deleted succesfully
+        '400':
+          description: bad input parameter
+        '404':
+          description: trip not found
+        '401':
+          description:   The requested page needs a username and a password  
+  /trips/{idTrip}/departurePlace:
+    put:
+      tags:
+        - Trips
+      summary: Modifies the trip's departurePlace
+      operationId: modifyTripDeparturePlace
+      parameters:
+        - in: path
+          name: idTrip
+          schema:
+            type: string
+          required: true
+      description: 'The trip ID for the trip you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [User]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripDeparturePlaceChangeRequest'
+        description: The trip's new departure place  
+  /trips/{idTrip}/arrivalPlace:
+    put:
+      tags:
+        - Trips
+      summary: Modifies the trip's arrival Place
+      operationId: modifyTripArrivalPlace
+      parameters:
+        - in: path
+          name: idTrip
+          schema:
+            type: string
+          required: true
+      description: 'The trip ID for the trip you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [User]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripArrivalPlaceChangeRequest'
+        description: The trip's new arrival place 
+  /trips/{idTrip}/departureDateTime:
+    put:
+      tags:
+        - Trips
+      summary: Modifies the trip's departure date and time
+      operationId: modifyTripDepartureDateTime
+      parameters:
+        - in: path
+          name: idTrip
+          schema:
+            type: string
+          required: true
+      description: 'The trip ID for the trip you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [User]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripDepartureDateTimeChangeRequest'
+        description: The trip's new departure date and time  
+  /trips/{idTrip}/numberAvailableSeats:
+    put:
+      tags:
+        - Trips
+      summary: Modifies the trip's number of available seats
+      operationId: modifyTripNumberAvailableSeats
+      parameters:
+        - in: path
+          name: idTrip
+          schema:
+            type: string
+          required: true
+      description: 'The trip ID for the trip you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [User]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '401':
+          description:   The requested page needs a username and a password 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripNumberAvailableSeatsChangeRequest'
+        description: The trip's new number of available seats   
+  /places:
+    post:
+      tags:
+        - Places
+      summary: Adds a place
+      operationId: addPlace
+      description: Adds a place to the system
+      security:
+        - ApiKeyAuth: [Admin]      
+      responses:
+        '201':
+          description: Place created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing place already exists
+        '401':
+          description:   The requested page needs a username and a password       
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceCreationRequest'
+        description: Place to add
+    get:
+      tags:
+        - Places
+      summary: Searches for a place
+      operationId: searchPlace
+      description: Searches for a place.
+      security:
+        - ApiKeyAuth: [Admin]
+      responses:
+        '200':
+          description: The search was successfull
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items: 
+                    $ref: '#/components/schemas/PlaceResponse'
+        '403':
+          description: Access denied
+        '401':
+          description:   The requested page needs a username and a password         
+        '500':
+          description: Internal server error
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: the place to be searched
+  /places/{idPlace}:
+    get:
+      tags:
+        - Places
+      summary: Finds a place
+      operationId: getPlace
+      parameters:
+        - in: path
+          name: idPlace
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate place ID, you can get the place.'
+      security:
+        - ApiKeyAuth: [Admin]
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceResponse'
+        '400':
+          description: bad input parameter
+        '404':
+          description: place not found
+        '403':
+          description: Access denied
+        '401':
+          description:   The requested page needs a username and a password           
+    delete:
+      tags:
+        - Places
+      summary: Deletes a place
+      operationId: deletePLace
+      parameters:
+        - in: path
+          name: idPlace
+          schema:
+            type: string
+          required: true
+          description: 'By passing in the appropriate place ID, you can delete the place.'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: user deleted succesfully
+        '400':
+          description: bad input parameter
+        '404':
+          description: user not found
+        '403':
+          description: Access denied
+  /places/{idPlace}/name:
+    put:
+      tags: 
+        - Places
+      summary: Modifies the places's name
+      operationId: modifyPlaceName
+      parameters:
+        - in: path
+          name: idPlace
+          schema:
+            type: string
+          required: true
+      description: 'The place ID for the place you want to modify'
+      security:
+        - ApiKeyAuth: []
+          x-roles: [admin]
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '403':
+          description: Access denied
+        '401':
+          description:   The requested page needs a username and a password       
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceNameChangeRequest'
+        description: The place's new name
+  /places/{idPlace}/category:
+    put:
+      tags: 
+        - Places
+      summary: Modifies the place's category
+      operationId: modifyPlaceCategory
+      parameters:
+        - in: path
+          name: idPlace
+          schema:
+            type: string
+          required: true
+      description: 'The place ID for the place you want to modify'
+      security:
+        - ApiKeyAuth: [admin]        
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '403':
+          description: Access denied
+        '401':
+          description:   The requested page needs a username and a password       
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceCategoryChangeRequest'
+        description: The place's new category
+  /places/{idPlace}/idPlace:
+    put:
+      tags: 
+        - Places
+      summary: Modifies the place's ID
+      operationId: modifyPlaceId
+      parameters:
+        - in: path
+          name: idPlace
+          schema:
+            type: string
+          required: true
+      description: 'The place ID for the place you want to modify'
+      security:
+        - ApiKeyAuth: [admin]        
+      responses:
+        '400':
+          description: bad input parameter
+        '200':
+          description: operation completed successfully
+        '403':
+          description: Access denied
+        '401':
+          description:   The requested page needs a username and a password       
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceIdChangeRequest'
+        description: The place's new ID
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: 
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: 'johndoe'
+        password:
+          type: string
+          format: password
+          example: '1234'      
+    LoginResponse:
+      type: object
+      properties:
+        apiKey:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' 
+    UserRegistrationRequest:
+        type: object
+        required:
+          - username
+          - email
+          - name
+          - lastname
+          - password
+          - birthdate
+          - gender
+          - role
+        properties:
+          username:
+            type: string
+            example: 'johndoe'
+          name:
+            type: string
+            example: 'John'
+          lastname:
+            type: string
+            example: 'Doe'
+          password:
+            type: string
+            format: password
+            example: '1234'
+          birthdate:
+            type: string
+            format: date
+          gender:
+            type: string
+            enum: [male, female]
+          role:
+            type: string
+            enum: [user, admin]          
+    UserResponse:
+        type: object
+        required:
+          - username
+          - name
+          - lastname
+          - birthdate
+          - gender
+        properties:
+          username:
+            type: string
+            example: 'johndoe'
+          name:
+            type: string
+            example: 'John'
+          lastname:
+            type: string
+            example: 'Doe'
+          birthdate:
+            type: string
+            format: date
+          gender:
+            type: string
+            enum: [male, female]
+          role:
+            type: string
+            enum: [user, admin]
+            description: Role will be omited if the user requesting is not an admin
+    UserPaginatedResponse:
+      type: object
+      required:
+        - pages
+        - paginationInfo
+      properties:
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'    
+    UserUsernameChangeRequest:
+        type: object
+        required:
+          - newUsername
+        properties:
+          newUsername:
+            type: string
+            example: 'newJohn'              
+    UserEmailChangeRequest:
+        type: object
+        required:
+          - newEmail
+        properties:
+          newEmail:
+            type: string
+            example: 'new@example.com'
+    UserPasswordChangeRequest:
+        type: object
+        required:
+          - newPassword
+        properties:
+          newPassword:
+            type: string
+            example: '4321'
+    UserNameChangeRequest:
+        type: object
+        required:
+          - newName
+        properties:
+          newName:
+            type: string
+            example: 'Paco'
+    UserLastnameChangeRequest:
+        type: object
+        required:
+          - newLastname
+        properties:
+          newLastname:
+            type: string
+            example: 'Diaz'       
+    UserBirthdateChangeRequest:
+        type: object
+        required:
+          - newBirthdate
+        properties:
+          newBirthdate:
+            type: string
+            example: '1996-05-10'                   
+    UserGenderChangeRequest:
+        type: object
+        required:
+          - newGender
+        properties:
+          newGender:
+            type: string
+            enum: [male, female]
+    UserRoleChangeRequest:
+        type: object
+        required:
+          - newRole
+        properties:
+          newRole:
+            type: string
+            enum: [user, admin]            
+    CarCreationRequest:
+      type: object
+      required:
+        - plate
+        - brand
+        - model
+        - seats
+      properties:
+        plate:
+          type: string
+          example: '9268 BAR'
+        brand:
+          type: string
+          example: 'Fiat'
+        model:
+          type: string
+          example: 'Marea Weekend'
+        seats:
+          type: integer
+          example: 5    
+    CarResponse:
+      type: object
+      properties:
+        plate:
+          type: string
+          example: '9268 BAR'
+        brand:
+          type: string
+          example: 'Fiat'
+        model:
+          type: string
+          example: 'Marea Weekend'    
+        seats:
+          type: integer
+          example: 5      
+    CarBrandChangeRequest:
+      type: object
+      required:
+        - newCarBrand
+      properties:
+        newCarBrand:
+          type: string
+          example: 'Ford'
+    CarModelChangeRequest:
+      type: object
+      required:
+        - newCarModel
+      properties:
+        newCarModel:
+          type: string
+          example: 'Fiesta'    
+    TripCreationRequest:
+      type: object
+      required:
+        - departurePlace
+        - arrivalPlace
+        - departureDateTime
+        - numberAvailableSeats
+        - price
+      properties:
+        departurePlace:
+          type: string
+          example: 'CA'
+        arrivalPlace:
+          type: string
+          example: 'ESI'    
+        departureDateTime:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'    
+        numberAvailableSeats:
+          type: integer
+          example: 2
+        price:
+          type: number
+          example: 1.0
+    TripResponse:
+      type: object
+      required:
+        - id
+        - departurePlace
+        - arrivalPlace
+        - departureDateTime
+        - numberAvailableSeats
+        - state
+        - price
+      properties:
+        id:
+          type: integer
+          example: 1
+        departurePlace:
+          type: string
+          example: 'CA'
+        arrivalPlace:
+          type: string
+          example: 'ESI'    
+        departureDateTime:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'    
+        numberAvailableSeats:
+          type: integer
+          example: 2
+        state:
+          type: string
+          enum: [Avalible, Full, Cancelled, Past] 
+        price:
+          type: number
+          example: 1.0    
+    TripReservationResponse:
+      type: object
+      required:
+        - id
+        - departurePlace
+        - arrivalPlace
+        - departureDateTime
+        - state
+        - price
+      properties:
+        id:
+          type: integer
+          example: 1
+        departurePlace:
+          type: string
+          example: 'CA'
+        arrivalPlace:
+          type: string
+          example: 'ESI'    
+        departureDateTime:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'    
+        state:
+          type: string
+          enum: [Avalible, Full, Cancelled, Past] 
+        price:
+          type: number
+          example: 1.0     
+    TripPaginatedResponse:
+      type: object
+      required:
+        - pages
+        - paginationInfo
+      properties:
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TripResponse'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'
+    TripDeparturePlaceChangeRequest:
+      type: object
+      required:
+        - newPlace
+      properties:
+        newPlace:
+          type: string
+          example: 'CA'
+    TripArrivalPlaceChangeRequest:
+      type: object
+      required:
+        - newPlace
+      properties:
+        newPlace:
+          type: string
+          example: 'ESI' 
+    TripDepartureDateTimeChangeRequest:
+      type: object
+      required:
+        - newDepartureDateTime
+      properties:
+        newDepartureDateTime:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+    TripNumberAvailableSeatsChangeRequest:
+      type: object
+      required:
+        - newNumberAvailableSeats
+      properties:
+        newNumberAvailableSeats:
+          type: integer
+          example: 2     
+    ReservationCreationRequest:
+      type: object
+      required:
+        - idTrip
+      properties:
+        idTrip:
+          type: integer
+          example: 1
+    ReservationResponse:
+      type: object
+      required:
+        - reservationId
+        - trip
+        - dateTimeReservation
+        - status
+      properties:
+        reservationId:
+          type: integer
+          example: 1
+        trip:
+          $ref: '#/components/schemas/TripReservationResponse'
+        dateTimeReservation:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+        status:
+          type: string
+          enum: [pending, accepted, past, cancelled]    
+    ReservationPaginatedResponse:
+      type: object
+      required:
+        - pages
+        - paginationInfo
+      properties:
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationResponse'
+        paginationInfo:
+          $ref: '#/components/schemas/PaginationInfo'    
+    PlaceCreationRequest:
+      type: object
+      required:
+        - idPlace
+        - name
+        - category
+      properties:
+        idPlace:
+          type: string
+          example: 'PR'
+        name:
+          type: string
+          example: 'Puerto Real'
+        category:
+          type: string
+          enum: ['Town','University']
+    PlaceResponse:
+      type: object
+      required:
+        - name
+        - category
+      properties:
+        name:
+          type: string
+          example: 'Puerto Real'
+        category:
+          type: string
+          enum: ['Town','University']          
+    PlaceNameChangeRequest:      
+        type: object
+        required:
+          - newName
+        properties:
+          newName:
+            type: string
+            example: 'Cadiz'  
+    PlaceCategoryChangeRequest:        
+        type: object
+        required:
+          - newCategory
+        properties:
+          newGender:
+            type: string
+            enum: [town, faculty]
+    PlaceIdChangeRequest:
+      type: object
+      required:
+        - newPlaceId
+      properties:
+        newPlaceId:
+          type: string
+          example: 'CA'
+    PaginationInfo:
+      type: object
+      required:
+        - totalPages
+        - totalElements
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer  
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+      x-roles: [admin, user]
+# Added by API Auto Mocking Plugin
+
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/IsabelDuran/unimoove/1.0.0

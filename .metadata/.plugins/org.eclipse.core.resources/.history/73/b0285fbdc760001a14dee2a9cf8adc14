@@ -1,0 +1,5 @@
+package unimoove.api.dto;
+
+public class User {
+
+}

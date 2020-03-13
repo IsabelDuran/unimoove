@@ -1,0 +1,6 @@
+{
+  "apiPackage" : "unimoove.api",
+  "modelPackage": "unimoove.api.dto",
+  "invokerPackage": "unimoove",
+  "useBeanValidation": true
+}

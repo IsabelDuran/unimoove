@@ -1,0 +1,73 @@
+package unimoove.api;
+
+import unimoove.api.dto.User;
+import unimoove.api.dto.UserRequest;
+import unimoove.api.dto.UserResponse;
+import unimoove.api.repositories.UserRepository;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.*;
+import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-07T22:51:24.580+01:00[Europe/Madrid]")
+@Controller
+public class UserApiController implements UserApi {
+
+    private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
+
+    private final ObjectMapper objectMapper;
+
+    private final HttpServletRequest request;
+    
+    private final UserRepository uR;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public UserApiController(ObjectMapper objectMapper, HttpServletRequest request, UserRepository uR) {
+        this.objectMapper = objectMapper;
+        this.request = request;
+        this.uR = uR;
+    }
+
+    public ResponseEntity<Void> addUser(@ApiParam(value = "User to add"  )  @Valid @RequestBody UserRequest body
+) {
+        String accept = request.getHeader("Accept");
+//        User a = new User();
+//        a.name = "Isabelita";
+//        this.uR.save(a);
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<UserResponse> getUser(@ApiParam(value = "",required=true) @PathVariable("username") String username
+) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<UserResponse>(objectMapper.readValue("{\n  \"birthdate\" : \"2000-01-23\",\n  \"gender\" : \"male\",\n  \"name\" : \"John\",\n  \"username\" : \"johndoe\",\n  \"lastname\" : \"Doe\"\n}", UserResponse.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<UserResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<UserResponse>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+}

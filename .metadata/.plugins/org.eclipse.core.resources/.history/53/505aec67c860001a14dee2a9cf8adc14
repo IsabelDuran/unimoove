@@ -1,0 +1,6 @@
+package unimoove.api.dto;
+
+@Entity
+public class User {
+
+}

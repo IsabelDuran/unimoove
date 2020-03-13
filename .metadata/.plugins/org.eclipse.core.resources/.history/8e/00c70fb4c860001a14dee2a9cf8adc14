@@ -1,0 +1,8 @@
+package unimoove.api.dto;
+
+import javax.persistence.Entity;
+
+@Entity
+public class User {
+
+}

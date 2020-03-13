@@ -1,0 +1,18 @@
+package unimoove.api.dto;
+
+import javax.persistence.Entity;
+
+import org.threeten.bp.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity
+public class User {
+	
+	  private String username;
+	  private String name;
+	  private String lastname;
+	  private String password;
+	  private LocalDate birthdate;
+
+}
