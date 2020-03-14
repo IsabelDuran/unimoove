@@ -3,5 +3,7 @@
   "modelPackage": "unimoove.api.dto",
   "invokerPackage": "unimoove",
   "useBeanValidation": true,
-  "dateLibrary": "java8"
+  "dateLibrary": "java8",
+  "defaultInterfaces": false,
+  "springBootVersion": "2.1.7.RELEASE"
 }

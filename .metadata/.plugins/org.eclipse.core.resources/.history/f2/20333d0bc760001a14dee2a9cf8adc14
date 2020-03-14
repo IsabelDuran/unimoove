@@ -1,5 +1,0 @@
-package unimoove.api.repositories.copy;
-
-public interface UserRepository {
-
-}

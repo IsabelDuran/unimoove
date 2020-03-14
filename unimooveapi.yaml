@@ -618,7 +618,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ReservationCreationRequest'
         description: Reservation to add
-  /user/reservations/{username}:
+  /users/{username}/reservations:
     get:
       tags:
         - Reservations
@@ -648,7 +648,6 @@ paths:
           content:
               application/json:
                 schema:
-                  type: object
                   $ref: '#/components/schemas/ReservationPaginatedResponse'
         '401':
           description:   The requested page needs a username and a password 
@@ -708,7 +707,6 @@ paths:
           content:
               application/json:
                 schema:
-                  type: object
                   $ref: '#/components/schemas/TripPaginatedResponse'
         '401':
           description:   The requested page needs a username and a password 
@@ -1404,9 +1402,9 @@ components:
       type: object
       required:
         - reservationId
-        - trip
         - dateTimeReservation
         - status
+        - trip
       properties:
         reservationId:
           type: integer
