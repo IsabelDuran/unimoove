@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-14T00:59:07.824+01:00[Europe/Madrid]")
+
 @Controller
 public class PlacesApiController implements PlacesApi {
 

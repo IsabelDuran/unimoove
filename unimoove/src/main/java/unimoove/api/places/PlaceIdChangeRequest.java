@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
  * PlaceIdChangeRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-14T00:59:07.824+01:00[Europe/Madrid]")
+
 public class PlaceIdChangeRequest   {
   @JsonProperty("newPlaceId")
   private String newPlaceId = null;
