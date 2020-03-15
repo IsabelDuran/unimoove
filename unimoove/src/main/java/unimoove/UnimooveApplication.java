@@ -4,14 +4,22 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan(basePackages = { "unimoove", "unimoove.api", "io.swagger.configuration" })
-public class Swagger2SpringBoot implements CommandLineRunner {
+public class UnimooveApplication implements CommandLineRunner {
+
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder(11);
+	}
 
 	@Override
 	public void run(String... arg0) throws Exception {
@@ -21,7 +29,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new SpringApplication(Swagger2SpringBoot.class).run(args);
+		new SpringApplication(UnimooveApplication.class).run(args);
 	}
 
 	class ExitException extends RuntimeException implements ExitCodeGenerator {

@@ -7,6 +7,7 @@ package unimoove.api.users;
 
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
+import unimoove.users.UniqueUsernameException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -52,12 +53,12 @@ public interface UsersApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "user created"),
         @ApiResponse(code = 400, message = "invalid input, object invalid"),
-        @ApiResponse(code = 409, message = "an existing user already exists") })
+        @ApiResponse(code = 409, message = "conflict") })
     @RequestMapping(value = "/users",
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> addUser(@ApiParam(value = "User to add"  )  @Valid @RequestBody UserRegistrationRequest body
-);
+) throws UniqueUsernameException;
 
 
     @ApiOperation(value = "Deletes a car", nickname = "deleteCar", notes = "Deletes the car linked to a user", authorizations = {

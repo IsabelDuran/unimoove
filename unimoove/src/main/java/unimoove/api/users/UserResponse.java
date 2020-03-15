@@ -36,8 +36,9 @@ public class UserResponse   {
     this.username = username;
     return this;
   }
+ 
 
-  /**
+/**
    * Get username
    * @return username
   **/
