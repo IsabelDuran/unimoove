@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -33,19 +34,16 @@ public class UsersApiController implements UsersApi {
 	private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
 	private final ObjectMapper objectMapper;
-	
-	private UserMapper userMapper;
 
 	private UserService userService;
 
 	private final HttpServletRequest request;
 
 	@Autowired
-	public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService userService, UserMapper userMapper) {
+	public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService userService) {
 		this.objectMapper = objectMapper;
 		this.request = request;
 		this.userService = userService;
-		this.userMapper = userMapper;
 	}
 
 	@Override
@@ -85,11 +83,9 @@ public class UsersApiController implements UsersApi {
 	}
 
 	public ResponseEntity<UserResponse> getUser(
-			@ApiParam(value = "By passing in the appropriate username, you can get the user.", required = true) @PathVariable("username") String username) {
-
-	User user = userService.getUserByUsername(username);
-	UserResponse response = userMapper.userToUserResponse(user);
-	return new ResponseEntity<UserResponse>(response, HttpStatus.OK);
+			@ApiParam(value = "By passing in the appropriate username, you can get the user.", required = true) @PathVariable("username") String username)
+			throws EntityNotFoundException {
+		return new ResponseEntity<UserResponse>(userService.getUserByUsername(username), HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyCarBrand(
