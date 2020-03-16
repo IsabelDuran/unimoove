@@ -77,9 +77,10 @@ public class UsersApiController implements UsersApi {
 	}
 
 	public ResponseEntity<Void> deleteUser(
-			@ApiParam(value = "By passing in the appropriate username, you can delete the user.", required = true) @PathVariable("username") String username) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+			@ApiParam(value = "By passing in the appropriate username, you can delete the user.", required = true) @PathVariable("username") String username)
+			throws IllegalArgumentException {
+		userService.deleteUser(username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<UserResponse> getUser(

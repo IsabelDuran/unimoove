@@ -17,7 +17,6 @@ public class UsersServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 	private UserMapper userMapper;
 
-	
 	@Autowired
 	public UsersServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
 		super();
@@ -36,18 +35,27 @@ public class UsersServiceImpl implements UserService {
 		} catch (DataIntegrityViolationException exception) {
 			throw new UniqueUsernameException("Username already exists");
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public UserResponse getUserByUsername(String username) throws EntityNotFoundException {
 		User user = userRepository.findUserByUsername(username);
-		if(user == null)
+		if (user == null)
 			throw new EntityNotFoundException("Usuario no encontrado");
-		
+
 		return userMapper.userToUserResponse(user);
 	}
-	
-	
+
+	@Override
+	public Boolean deleteUser(String username){
+		User user = userRepository.findUserByUsername(username); 
+		if(user == null)
+			throw new IllegalArgumentException("Usuario no encontrado");
+		
+		userRepository.delete(user);
+		return true;
+	}
+
 }

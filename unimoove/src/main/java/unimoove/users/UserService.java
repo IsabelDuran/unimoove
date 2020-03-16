@@ -11,4 +11,5 @@ import unimoove.api.users.UserResponse;
 public interface UserService {	
 	public Boolean registerUser(UserRegistrationRequest registrationRequest) throws UniqueUsernameException;
 	public UserResponse getUserByUsername(String username) throws EntityNotFoundException;
+	public Boolean deleteUser(String username) throws IllegalArgumentException;
 }
