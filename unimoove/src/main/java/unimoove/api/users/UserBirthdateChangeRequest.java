@@ -1,10 +1,15 @@
 package unimoove.api.users;
 
+import java.time.LocalDate;
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * UserBirthdateChangeRequest
@@ -13,9 +18,9 @@ import javax.validation.constraints.*;
 
 public class UserBirthdateChangeRequest   {
   @JsonProperty("newBirthdate")
-  private String newBirthdate = null;
+  private LocalDate newBirthdate = null;
 
-  public UserBirthdateChangeRequest newBirthdate(String newBirthdate) {
+  public UserBirthdateChangeRequest newBirthdate(LocalDate newBirthdate) {
     this.newBirthdate = newBirthdate;
     return this;
   }
@@ -27,11 +32,11 @@ public class UserBirthdateChangeRequest   {
   @ApiModelProperty(example = "1996-05-10", required = true, value = "")
       @NotNull
 
-    public String getNewBirthdate() {
+    public LocalDate getNewBirthdate() {
     return newBirthdate;
   }
 
-  public void setNewBirthdate(String newBirthdate) {
+  public void setNewBirthdate(LocalDate newBirthdate) {
     this.newBirthdate = newBirthdate;
   }
 

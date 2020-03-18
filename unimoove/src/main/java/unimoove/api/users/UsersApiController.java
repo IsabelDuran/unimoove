@@ -1,8 +1,8 @@
 package unimoove.api.users;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,37 +18,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.annotations.ApiParam;
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
+import unimoove.cars.CarsService;
 import unimoove.users.UniqueUsernameException;
-import unimoove.users.User;
-import unimoove.users.UserMapper;
-import unimoove.users.UserService;
+import unimoove.users.UsersService;
 
 @Controller
 public class UsersApiController implements UsersApi {
 
 	private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
-	private final ObjectMapper objectMapper;
-
-	private UserService userService;
+	private UsersService userService;
+	private CarsService carsService;
 
 	private final HttpServletRequest request;
 
 	@Autowired
-	public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService userService) {
-		this.objectMapper = objectMapper;
-		this.request = request;
+	public UsersApiController(UsersService userService, CarsService carsService, HttpServletRequest request) {
 		this.userService = userService;
-	}
-
-	@Override
-	public Optional<ObjectMapper> getObjectMapper() {
-		return Optional.ofNullable(objectMapper);
+		this.carsService = carsService;
+		this.request = request;
 	}
 
 	@Override
@@ -58,8 +49,8 @@ public class UsersApiController implements UsersApi {
 
 	public ResponseEntity<Void> addCar(@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "Car to add") @Valid @RequestBody CarCreationRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		carsService.addCar(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> addUser(
@@ -108,8 +99,8 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> modifyUserBirthdate(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's birthdate") @Valid @RequestBody UserBirthdateChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserBirthdate(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserEmail(
@@ -122,61 +113,49 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> modifyUserGender(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's gender") @Valid @RequestBody UserGenderChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserGender(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserLastname(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's lastname") @Valid @RequestBody UserLastnameChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserLastname(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserName(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's name") @Valid @RequestBody UserNameChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserName(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserPassword(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's password") @Valid @RequestBody UserPasswordChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserPassword(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserRole(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's role") @Valid @RequestBody UserRoleChangeRequest body) {
 		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserUsername(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's username") @Valid @RequestBody UserUsernameChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserUsername(body, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<ReservationPaginatedResponse> obtainReservations(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<ReservationPaginatedResponse>(objectMapper.readValue(
-						"{\n  \"pages\" : [ {\n    \"trip\" : {\n      \"price\" : 1.0,\n      \"arrivalPlace\" : \"ESI\",\n      \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n      \"id\" : 1,\n      \"state\" : 0,\n      \"departurePlace\" : \"CA\"\n    },\n    \"reservationId\" : 1,\n    \"dateTimeReservation\" : \"2017-07-21T17:32:28Z\",\n    \"status\" : 0\n  }, {\n    \"trip\" : {\n      \"price\" : 1.0,\n      \"arrivalPlace\" : \"ESI\",\n      \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n      \"id\" : 1,\n      \"state\" : 0,\n      \"departurePlace\" : \"CA\"\n    },\n    \"reservationId\" : 1,\n    \"dateTimeReservation\" : \"2017-07-21T17:32:28Z\",\n    \"status\" : 0\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n}",
-						ReservationPaginatedResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<ReservationPaginatedResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
 		return new ResponseEntity<ReservationPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
@@ -184,17 +163,6 @@ public class UsersApiController implements UsersApi {
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<TripPaginatedResponse>(objectMapper.readValue(
-						"{\n  \"pages\" : [ {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  }, {\n    \"price\" : 1.0,\n    \"arrivalPlace\" : \"ESI\",\n    \"numberAvailableSeats\" : 2,\n    \"departureDateTime\" : \"2017-07-21T17:32:28Z\",\n    \"id\" : 1,\n    \"state\" : 0,\n    \"departurePlace\" : \"CA\"\n  } ],\n  \"paginationInfo\" : {\n    \"totalPages\" : 0,\n    \"totalElements\" : 6\n  }\n}",
-						TripPaginatedResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<TripPaginatedResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
 
 		return new ResponseEntity<TripPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -202,7 +170,7 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<List<CarResponse>> searchCar(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username) {
 
-		return new ResponseEntity<List<CarResponse>>(HttpStatus.NOT_IMPLEMENTED);
+		return new ResponseEntity<List<CarResponse>>(carsService.getCarsFromUser(username).stream().collect(Collectors.toList()), HttpStatus.OK);
 	}
 
 	public ResponseEntity<List<UserPaginatedResponse>> searchUser(

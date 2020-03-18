@@ -10,4 +10,7 @@ public interface UsersRepository extends CrudRepository<User, Long> {
 	
 	@Query("select u from User u where u.username = :username")
 	public User findUserByUsername(@Param("username") String username);
+	
+	@Query("select u from User u LEFT JOIN FETCH u.cars c where u.username = :username")
+	public User findUserByUsernameWithCars(@Param("username") String username);
 }

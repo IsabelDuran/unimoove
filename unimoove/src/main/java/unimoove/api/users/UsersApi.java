@@ -29,8 +29,6 @@ public interface UsersApi {
 
     Logger log = LoggerFactory.getLogger(UsersApi.class);
 
-    Optional<ObjectMapper> getObjectMapper();
-
     Optional<HttpServletRequest> getRequest();
 
     
@@ -202,7 +200,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Modifies the user's email", nickname = "modifyUserPassword", notes = "The user username you want to modify", authorizations = {
+    @ApiOperation(value = "Modifies the user's password", nickname = "modifyUserPassword", notes = "The user username you want to modify", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 400, message = "bad input parameter"),
@@ -274,7 +272,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Searches for a car", nickname = "searchCar", notes = "Searches for a car.", response = CarResponse.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get cars from user", nickname = "searchCar", notes = "Get cars from user", response = CarResponse.class, responseContainer = "List", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Cars", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "The search was successfull", response = CarResponse.class, responseContainer = "List"),

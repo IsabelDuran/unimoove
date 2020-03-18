@@ -16,11 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = { "unimoove", "unimoove.api", "io.swagger.configuration" })
 public class UnimooveApplication implements CommandLineRunner {
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(11);
-	}
-
 	@Override
 	public void run(String... arg0) throws Exception {
 		if (arg0.length > 0 && arg0[0].equals("exitcode")) {

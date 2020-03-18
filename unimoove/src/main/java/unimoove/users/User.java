@@ -1,13 +1,17 @@
 package unimoove.users;
 
 import java.time.LocalDate;
-
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import unimoove.cars.Car;
 
 @Entity
 public class User {
@@ -28,6 +32,9 @@ public class User {
 	 * Value 0 for Admin or Value 1 for User
 	 */
 	private Integer role;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<Car> cars;
 		
 	public User(String name, String lastname, String username, String password, LocalDate birthdate, Integer gender,
 			Integer role) {
@@ -101,6 +108,14 @@ public class User {
 
 	public void setRole(Integer role) {
 		this.role = role;
+	}
+
+	public Set<Car> getCars() {
+		return cars;
+	}
+
+	public void setCars(Set<Car> cars) {
+		this.cars = cars;
 	}
 	
 }
