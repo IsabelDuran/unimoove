@@ -3,6 +3,7 @@ package unimoove.users;
 import java.time.LocalDate;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,7 @@ public class User {
 	 */
 	private Integer role;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private Set<Car> cars;
 		
 	public User(String name, String lastname, String username, String password, LocalDate birthdate, Integer gender,

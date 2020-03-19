@@ -63,8 +63,8 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> deleteCar(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "By passing in the appropriate car plate, you can delete the car.", required = true) @PathVariable("plate") String plate) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		carsService.deleteCar(plate, username);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> deleteUser(
@@ -84,16 +84,16 @@ public class UsersApiController implements UsersApi {
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "By passing in the appropriate car plate, you can modify the car.", required = true) @PathVariable("plate") String plate,
 			@ApiParam(value = "The car's new brand") @Valid @RequestBody CarBrandChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		carsService.modifyCarBrand(body, plate);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyCarModel(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "By passing in the appropriate car plate, you can modify the car.", required = true) @PathVariable("plate") String plate,
 			@ApiParam(value = "The car's new model") @Valid @RequestBody CarModelChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		carsService.modifyCarModel(body, plate);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserBirthdate(

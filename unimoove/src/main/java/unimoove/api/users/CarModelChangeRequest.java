@@ -12,27 +12,27 @@ import javax.validation.constraints.*;
 @Validated
 
 public class CarModelChangeRequest   {
-  @JsonProperty("newCarModel")
-  private String newCarModel = null;
+  @JsonProperty("newModel")
+  private String newModel = null;
 
-  public CarModelChangeRequest newCarModel(String newCarModel) {
-    this.newCarModel = newCarModel;
+  public CarModelChangeRequest newModel(String newModel) {
+    this.newModel = newModel;
     return this;
   }
 
   /**
-   * Get newCarModel
-   * @return newCarModel
+   * Get newModel
+   * @return newModel
   **/
   @ApiModelProperty(example = "Fiesta", required = true, value = "")
       @NotNull
 
-    public String getNewCarModel() {
-    return newCarModel;
+    public String getNewModel() {
+    return newModel;
   }
 
-  public void setNewCarModel(String newCarModel) {
-    this.newCarModel = newCarModel;
+  public void setNewModel(String newModel) {
+    this.newModel = newModel;
   }
 
 
@@ -45,12 +45,12 @@ public class CarModelChangeRequest   {
       return false;
     }
     CarModelChangeRequest carModelChangeRequest = (CarModelChangeRequest) o;
-    return Objects.equals(this.newCarModel, carModelChangeRequest.newCarModel);
+    return Objects.equals(this.newModel, carModelChangeRequest.newModel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(newCarModel);
+    return Objects.hash(newModel);
   }
 
   @Override
@@ -58,7 +58,7 @@ public class CarModelChangeRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class CarModelChangeRequest {\n");
     
-    sb.append("    newCarModel: ").append(toIndentedString(newCarModel)).append("\n");
+    sb.append("    newModel: ").append(toIndentedString(newModel)).append("\n");
     sb.append("}");
     return sb.toString();
   }
