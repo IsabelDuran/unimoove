@@ -11,7 +11,7 @@ import unimoove.api.users.CarResponse;
 
 @Service
 public interface CarsService {
-	public void addCar(CarCreationRequest carCreationRequest, String username);
+	public void addCar(CarCreationRequest carCreationRequest, String username) throws MaxCarsPerUserReached;
 	public Set<CarResponse> getCarsFromUser(String username);
 	public void deleteCar(String plate, String username);
 	public void modifyCarBrand(CarBrandChangeRequest carBrandChangeRequest, String plate);

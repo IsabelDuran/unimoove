@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiParam;
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.cars.CarsService;
+import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.users.UniqueUsernameException;
 import unimoove.users.UsersService;
 
@@ -48,7 +49,7 @@ public class UsersApiController implements UsersApi {
 	}
 
 	public ResponseEntity<Void> addCar(@ApiParam(value = "", required = true) @PathVariable("username") String username,
-			@ApiParam(value = "Car to add") @Valid @RequestBody CarCreationRequest body) {
+			@ApiParam(value = "Car to add") @Valid @RequestBody CarCreationRequest body) throws MaxCarsPerUserReached {
 		carsService.addCar(body, username);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -147,7 +148,7 @@ public class UsersApiController implements UsersApi {
 
 	public ResponseEntity<Void> modifyUserUsername(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
-			@ApiParam(value = "The new user's username") @Valid @RequestBody UserUsernameChangeRequest body) {
+			@ApiParam(value = "The new user's username") @Valid @RequestBody UserUsernameChangeRequest body) throws UniqueUsernameException {
 		userService.modifyUserUsername(body, username);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

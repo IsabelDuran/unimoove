@@ -7,6 +7,7 @@ package unimoove.api.users;
 
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
+import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.users.UniqueUsernameException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,13 +39,14 @@ public interface UsersApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "Car created"),
         @ApiResponse(code = 400, message = "invalid input, object invalid"),
-        @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
+        @ApiResponse(code = 401, message = "The requested page needs a username and a password"),
+    	@ApiResponse(code = 409, message = "conflict") })
     @RequestMapping(value = "/users/{username}/cars",
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> addCar(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "Car to add"  )  @Valid @RequestBody CarCreationRequest body
-);
+) throws MaxCarsPerUserReached;
 
 
     @ApiOperation(value = "Registers a user", nickname = "addUser", notes = "Adds a user to the system", tags={ "Users", })
@@ -239,7 +241,7 @@ public interface UsersApi {
         method = RequestMethod.PUT)
     ResponseEntity<Void> modifyUserUsername(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's username"  )  @Valid @RequestBody UserUsernameChangeRequest body
-);
+) throws UniqueUsernameException;
 
 
     @ApiOperation(value = "Obtains the trips reserved by the user", nickname = "obtainReservations", notes = "", response = ReservationPaginatedResponse.class, authorizations = {

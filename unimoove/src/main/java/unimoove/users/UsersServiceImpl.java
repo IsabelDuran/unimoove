@@ -114,11 +114,15 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	@Transactional
-	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) {
+	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) throws UniqueUsernameException {
 		User user = findUserByUsername(username);
 
 		user.setUsername(usernameChangeRequest.getNewUsername());
-		userRepository.save(user);
+		try {
+			userRepository.save(user);
+		} catch (DataIntegrityViolationException exception) {
+			throw new UniqueUsernameException("Username already exists");
+		}
 		
 	}
 	

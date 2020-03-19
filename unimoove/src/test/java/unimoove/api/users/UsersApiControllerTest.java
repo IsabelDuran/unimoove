@@ -326,6 +326,88 @@ public class UsersApiControllerTest {
 		}
 	}
 	
+	@Test
+	public void testThatAUserCantHaveMoreThan5Cars() throws Exception {
+		try {
+			User user = usersRepository
+					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+			user.setCars(new HashSet<Car>());
+			
+			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
+			user.getCars().add(carA);
+			
+			Car carB = carRepository.save(new Car("0001BOB", "Peugot", "208", 5));
+			user.getCars().add(carB);
+			
+			Car carC = carRepository.save(new Car("1244JPG", "Citröen", "C4", 5));
+			user.getCars().add(carC);
+			
+			Car carD = carRepository.save(new Car("1478PEP", "Seat", "León", 5));
+			user.getCars().add(carD);
+			
+			Car carE = carRepository.save(new Car("5678JPG", "Opel", "Corsa", 7));
+			user.getCars().add(carE);
+			
+			usersRepository.save(user);
+
+			String carRegistrationRequest = "{  \"brand\": \"Fiat\", \"model\": \"Marea Weekend\", \"plate\": \"9632BOB\", \"seats\": 5}";
+			mvc.perform(post("/users/isa/cars").contentType(MediaType.APPLICATION_JSON).content(carRegistrationRequest))
+			.andExpect(status().is(409));
+			
+			
+		} finally {
+			deleteUser("isa");
+			deleteCar("9268BAR");
+			deleteCar("0001BOB");
+			deleteCar("1244JPG");
+			deleteCar("1478PEP");
+			deleteCar("5678JPG");
+			deleteCar("9632BOB");
+		}
+	}
+	
+	@Test
+	public void testCantAddTwoCarsWithSamePlate() throws Exception {
+		try {
+			User user = usersRepository
+					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+			user.setCars(new HashSet<Car>());
+			
+			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
+			user.getCars().add(carA);
+			
+			usersRepository.save(user);
+			
+			String carRegistrationRequest = "{  \"brand\": \"Fiat\", \"model\": \"Marea Weekend\", \"plate\": \"9268BAR\", \"seats\": 5}";
+			mvc.perform(post("/users/isa/cars").contentType(MediaType.APPLICATION_JSON).content(carRegistrationRequest))
+			.andExpect(status().is(409));
+			
+		} finally {
+			deleteUser("isa");
+			deleteCar("9268BAR");
+		}
+	}
+	
+	@Test
+	public void testCantAddTwoUsersWithSameUsername() throws Exception{
+		try {
+			User user = usersRepository
+					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+			
+			String registrationRequest = "{\n" + "  \"birthdate\": \"2000-08-16\",\n" + "  \"gender\": 1,\n"
+					+ "  \"lastname\": \"Duran\",\n" + "  \"name\": \"Isabel\",\n" + "  \"password\": \"1234\",\n"
+					+ "  \"role\": 1,\n" + "  \"username\": \"isa\"\n" + "}";
+			mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(registrationRequest))
+					.andExpect(status().is(409));
+
+		} finally {
+			deleteUser("isa");
+		}
+	}
+	
 	private void deleteUser(String username) {
 		User user = usersRepository.findUserByUsername(username);
 		if(user != null)

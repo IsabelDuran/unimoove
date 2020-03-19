@@ -18,6 +18,7 @@ import unimoove.users.UsersRepository;
 @Service
 public class CarsServiceImpl implements CarsService {
 
+	private static final int MAX_CARS_PER_USER = 5;
 	private CarsRepository carsRepository;
 	private UsersRepository userRepository;
 	private CarMapper carMapper;
@@ -32,11 +33,13 @@ public class CarsServiceImpl implements CarsService {
 
 	@Override
 	@Transactional
-	public void addCar(CarCreationRequest carCreationRequest, String username) {
+	public void addCar(CarCreationRequest carCreationRequest, String username) throws MaxCarsPerUserReached {
 		Car newCar = carMapper.carCreationRequestToCar(carCreationRequest);
 		User user = userRepository.findUserByUsername(username);
 		if(user == null)
 			throw new EntityNotFoundException("Usuario no encontrado");
+		if(user.getCars().size() >= MAX_CARS_PER_USER)
+			throw new MaxCarsPerUserReached("Has superado el máximo de coches permitidos por usuario");
 
 		user.getCars().add(carsRepository.save(newCar));
 		userRepository.save(user);

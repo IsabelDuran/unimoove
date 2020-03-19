@@ -23,5 +23,5 @@ public interface UsersService {
 	public void modifyUserLastname(UserLastnameChangeRequest userLastnameChangeRequest, String username);
 	public void modifyUserName(UserNameChangeRequest userNameChangeRequest, String username);
 	public void modifyUserPassword(UserPasswordChangeRequest userPasswordChangeRequest, String username);
-	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username);
+	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) throws UniqueUsernameException;
 }

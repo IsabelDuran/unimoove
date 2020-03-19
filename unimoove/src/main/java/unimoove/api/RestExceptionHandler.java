@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import unimoove.api.utils.ApiError;
+import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.users.UniqueUsernameException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -24,19 +25,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	// other exception handlers
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	protected ResponseEntity<Object> handleConstraintViolation(DataIntegrityViolationException ex) {
+	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
 		ApiError response = new ApiError(HttpStatus.CONFLICT);
 		response.setMessage(ex.getMessage());
 		return buildResponseEntity(response);
 	}
 
 	@ExceptionHandler(UniqueUsernameException.class)
-	protected ResponseEntity<Object> handleConstraintViolation(UniqueUsernameException ex) {
+	protected ResponseEntity<Object> handleUniqueUsernameException(UniqueUsernameException ex) {
 		ApiError response = new ApiError(HttpStatus.CONFLICT);
 		response.setMessage(ex.getMessage());
 		return buildResponseEntity(response);
 	}
 
+	@ExceptionHandler(MaxCarsPerUserReached.class)
+	protected ResponseEntity<Object> handleMaxCarsPerUserReached(MaxCarsPerUserReached ex) {
+		ApiError response = new ApiError(HttpStatus.CONFLICT);
+		response.setMessage(ex.getMessage());
+		return buildResponseEntity(response);
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
