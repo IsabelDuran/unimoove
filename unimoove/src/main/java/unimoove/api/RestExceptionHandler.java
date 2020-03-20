@@ -2,6 +2,7 @@ package unimoove.api;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,7 +31,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		response.setMessage(ex.getMessage());
 		return buildResponseEntity(response);
 	}
-
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+		ApiError response = new ApiError(HttpStatus.CONFLICT);
+		response.setMessage(ex.getMessage());
+		return buildResponseEntity(response);
+	}
+	
 	@ExceptionHandler(UniqueUsernameException.class)
 	protected ResponseEntity<Object> handleUniqueUsernameException(UniqueUsernameException ex) {
 		ApiError response = new ApiError(HttpStatus.CONFLICT);
