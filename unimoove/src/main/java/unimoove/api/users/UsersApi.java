@@ -290,13 +290,13 @@ public interface UsersApi {
     @ApiOperation(value = "Searches for a user", nickname = "searchUser", notes = "Searches for a user. This operation is permited for both user and admin", response = UserPaginatedResponse.class, responseContainer = "List", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The search was successfull", response = UserPaginatedResponse.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "The search was successfull", response = UserPaginatedResponse.class),
         @ApiResponse(code = 401, message = "The requested page needs a username and a password"),
         @ApiResponse(code = 500, message = "Internal server error") })
     @RequestMapping(value = "/users",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<UserPaginatedResponse>> searchUser(@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = false) String username
+    ResponseEntity<UserPaginatedResponse> searchUser(@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = true) String username
 ,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
 ,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
 );

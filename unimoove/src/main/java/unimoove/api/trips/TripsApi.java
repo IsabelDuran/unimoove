@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.security.Principal;
 import java.util.Optional;
 
 @Api(value = "trips", description = "the trips API")

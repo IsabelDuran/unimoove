@@ -174,12 +174,11 @@ public class UsersApiController implements UsersApi {
 		return new ResponseEntity<List<CarResponse>>(carsService.getCarsFromUser(username).stream().collect(Collectors.toList()), HttpStatus.OK);
 	}
 
-	public ResponseEntity<List<UserPaginatedResponse>> searchUser(
-			@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = false) String username,
-			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size) {
-
-		return new ResponseEntity<List<UserPaginatedResponse>>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<UserPaginatedResponse> searchUser(
+			@ApiParam(value = "the username to be searched") @Valid @RequestParam(value = "username", required = true) String username,
+			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size) {
+		return new ResponseEntity<UserPaginatedResponse>(userService.searchUsersByUsername(username, page, size), HttpStatus.OK);
 	}
 
 }

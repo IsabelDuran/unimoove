@@ -1,10 +1,17 @@
 package unimoove.users;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +19,12 @@ import unimoove.api.users.UserBirthdateChangeRequest;
 import unimoove.api.users.UserGenderChangeRequest;
 import unimoove.api.users.UserLastnameChangeRequest;
 import unimoove.api.users.UserNameChangeRequest;
+import unimoove.api.users.UserPaginatedResponse;
 import unimoove.api.users.UserPasswordChangeRequest;
 import unimoove.api.users.UserRegistrationRequest;
 import unimoove.api.users.UserResponse;
 import unimoove.api.users.UserUsernameChangeRequest;
+import unimoove.api.utils.PaginationInfo;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -131,6 +140,31 @@ public class UsersServiceImpl implements UsersService {
 		if (user == null)
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
+	}
+
+	@Override
+	public UserPaginatedResponse searchUsersByUsername(String username, Integer page, Integer size) {
+		Page<User> matchedUsers = userRepository.searchUserWithUsername(username, PageRequest.of(page, size));
+		
+		List<UserResponse> userResponses = matchedUsers.map(user -> userMapper.userToUserResponse(user)).stream().collect(Collectors.toList());
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setTotalElements(matchedUsers.getNumberOfElements());
+		paginationInfo.setTotalPages(matchedUsers.getTotalPages());
+		
+		UserPaginatedResponse userPaginatedResponse = new UserPaginatedResponse(); 
+		userPaginatedResponse.setPages(userResponses);
+		userPaginatedResponse.setPaginationInfo(paginationInfo);
+		
+		return userPaginatedResponse;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserDetails userDetails = userRepository.findUserByUsername(username);
+		if(userDetails == null)
+			throw new UsernameNotFoundException("El usuario " + username + " no se ha encontrado.");
+		
+		return userDetails;
 	}
 
 }

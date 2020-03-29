@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import unimoove.api.utils.ApiError;
+import unimoove.authentication.UnsuccessfulLoginException;
 import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.users.UniqueUsernameException;
 
@@ -42,6 +43,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(UniqueUsernameException.class)
 	protected ResponseEntity<Object> handleUniqueUsernameException(UniqueUsernameException ex) {
 		ApiError response = new ApiError(HttpStatus.CONFLICT);
+		response.setMessage(ex.getMessage());
+		return buildResponseEntity(response);
+	}
+	
+	@ExceptionHandler(UnsuccessfulLoginException.class)
+	protected ResponseEntity<Object> handleUnsuccessfulLoginException(UnsuccessfulLoginException ex) {
+		ApiError response = new ApiError(HttpStatus.UNAUTHORIZED);
 		response.setMessage(ex.getMessage());
 		return buildResponseEntity(response);
 	}
