@@ -7,28 +7,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import unimoove.users.User;
 
 @Entity
 public class Trip {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	private String departurePlace;
 	private String arrivalPlace;
 	private OffsetDateTime departureDateTime;
 	private Integer numberAvailableSeats;
 	private BigDecimal price;
+	/*
+	 * 0 for available, 1 for full, 2 for cancelled, 3 for past
+	 * */
+	private Integer state = 0;
+	
+	@ManyToOne
+	private User user;
 	
 	public Trip() {
-	}
-
-	public Trip(String departurePlace, String arrivalPlace, OffsetDateTime departureDateTime,
-			Integer numberAvailableSeats, BigDecimal price) {
-		this.departurePlace = departurePlace;
-		this.arrivalPlace = arrivalPlace;
-		this.departureDateTime = departureDateTime;
-		this.numberAvailableSeats = numberAvailableSeats;
-		this.price = price;
 	}
 
 	public String getDeparturePlace() {
@@ -70,5 +71,29 @@ public class Trip {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public Long getId() {
+		return id;
+	}
+	
+	
+	
+	
 	
 }

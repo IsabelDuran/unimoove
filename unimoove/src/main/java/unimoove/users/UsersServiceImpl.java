@@ -143,6 +143,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
+	@Transactional
 	public UserPaginatedResponse searchUsersByUsername(String username, Integer page, Integer size) {
 		Page<User> matchedUsers = userRepository.searchUserWithUsername(username, PageRequest.of(page, size));
 		
@@ -159,6 +160,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails userDetails = userRepository.findUserByUsername(username);
 		if(userDetails == null)

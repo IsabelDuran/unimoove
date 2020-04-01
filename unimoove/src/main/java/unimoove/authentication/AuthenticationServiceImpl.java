@@ -2,17 +2,15 @@ package unimoove.authentication;
 
 import java.util.Date;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
-import io.jsonwebtoken.Clock;
 import unimoove.api.authentication.LoginRequest;
 import unimoove.api.authentication.LoginResponse;
 import unimoove.users.User;

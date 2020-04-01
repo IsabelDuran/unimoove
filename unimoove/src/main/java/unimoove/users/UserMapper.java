@@ -10,7 +10,10 @@ import unimoove.api.users.UserResponse;
 public interface UserMapper {
 	
 	UserResponse userToUserResponse(User user);
+	
+	@Mapping(target = "authorities", ignore = true)
 	@Mapping(target = "cars", ignore = true)
+	@Mapping(target = "trips", ignore = true)
 	User userRegistrationRequestToUser(UserRegistrationRequest userRegistrationRequest);
 
 }

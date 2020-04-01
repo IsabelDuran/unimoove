@@ -23,6 +23,7 @@ import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.cars.CarsService;
 import unimoove.cars.MaxCarsPerUserReached;
+import unimoove.trips.TripsService;
 import unimoove.users.UniqueUsernameException;
 import unimoove.users.UsersService;
 
@@ -33,20 +34,26 @@ public class UsersApiController implements UsersApi {
 
 	private UsersService userService;
 	private CarsService carsService;
+	private TripsService tripsService;
 
 	private final HttpServletRequest request;
 
 	@Autowired
-	public UsersApiController(UsersService userService, CarsService carsService, HttpServletRequest request) {
+	public UsersApiController(UsersService userService, CarsService carsService, TripsService tripsService,
+			HttpServletRequest request) {
+		super();
 		this.userService = userService;
 		this.carsService = carsService;
+		this.tripsService = tripsService;
 		this.request = request;
 	}
+	
 
 	@Override
 	public Optional<HttpServletRequest> getRequest() {
 		return Optional.ofNullable(request);
 	}
+
 
 	public ResponseEntity<Void> addCar(@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "Car to add") @Valid @RequestBody CarCreationRequest body) throws MaxCarsPerUserReached {
@@ -162,10 +169,10 @@ public class UsersApiController implements UsersApi {
 
 	public ResponseEntity<TripPaginatedResponse> obtainTrips(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
-			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size) {
+			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size) {
 
-		return new ResponseEntity<TripPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
+		return new ResponseEntity<TripPaginatedResponse>(tripsService.obtainUserTrips(username, page, size), HttpStatus.OK);
 	}
 
 	public ResponseEntity<List<CarResponse>> searchCar(

@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import unimoove.cars.Car;
+import unimoove.trips.Trip;
 
 @Entity
 public class User implements UserDetails {
@@ -42,6 +43,9 @@ public class User implements UserDetails {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private Set<Car> cars;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<Trip> trips;
 
 	public User(String name, String lastname, String username, String password, LocalDate birthdate, Integer gender,
 			Integer role) {
@@ -124,6 +128,14 @@ public class User implements UserDetails {
 
 	public void setCars(Set<Car> cars) {
 		this.cars = cars;
+	}
+
+	public Set<Trip> getTrips() {
+		return trips;
+	}
+
+	public void setTrips(Set<Trip> trips) {
+		this.trips = trips;
 	}
 
 	@Override

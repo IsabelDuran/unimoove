@@ -55,7 +55,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 					logger.debug("Se ha obtenido el usuario " + userDetails.getUsername());
 					if (isTokenNonExpired(jws)) {
 						UsernamePasswordAuthenticationToken usernamePAT = new UsernamePasswordAuthenticationToken(
-								userDetails, null, userDetails.getAuthorities());
+								userDetails.getUsername(), null, userDetails.getAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(usernamePAT);
 					}
 				}

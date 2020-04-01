@@ -3,7 +3,9 @@ package unimoove.api.users;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -74,6 +77,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserName() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
@@ -95,6 +99,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserLastname() throws Exception {
 
 		try {
@@ -116,6 +121,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserBirthdate() throws Exception {
 
 		try {
@@ -135,6 +141,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserGender() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
@@ -154,6 +161,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserPassword() throws Exception {
 
 		try {
@@ -183,6 +191,7 @@ public class UsersApiControllerTest {
 //	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserUsername() throws Exception {
 
 		try {
@@ -198,10 +207,12 @@ public class UsersApiControllerTest {
 
 		} finally {
 			deleteUser("paca");
+			deleteUser("isa");
 		}
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyUserUsernameWrong() throws Exception {
 
 		try {
@@ -227,6 +238,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testAddCar() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
@@ -254,6 +266,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyCarBrand() throws Exception {
 		try {
 			User user = usersRepository
@@ -277,6 +290,7 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testModifyCarModel() throws Exception {
 		try {
 			User user = usersRepository
@@ -299,6 +313,7 @@ public class UsersApiControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 	public void testThatWhenAUserIsDeletedTheirCarsAreDeleted() throws Exception {
 		try {
 			User user = usersRepository
@@ -327,6 +342,7 @@ public class UsersApiControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 	public void testThatAUserCantHaveMoreThan5Cars() throws Exception {
 		try {
 			User user = usersRepository
@@ -368,6 +384,7 @@ public class UsersApiControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 	public void testCantAddTwoCarsWithSamePlate() throws Exception {
 		try {
 			User user = usersRepository
@@ -391,6 +408,7 @@ public class UsersApiControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 	public void testCantAddTwoUsersWithSameUsername() throws Exception{
 		try {
 			User user = usersRepository

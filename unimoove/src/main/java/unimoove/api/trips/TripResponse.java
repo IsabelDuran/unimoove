@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 
 public class TripResponse   {
   @JsonProperty("id")
-  private Integer id = null;
+  private Long id = null;
 
   @JsonProperty("departurePlace")
   private String departurePlace = null;
@@ -36,7 +36,7 @@ public class TripResponse   {
   @JsonProperty("price")
   private BigDecimal price = null;
 
-  public TripResponse id(Integer id) {
+  public TripResponse id(Long id) {
     this.id = id;
     return this;
   }
@@ -48,11 +48,11 @@ public class TripResponse   {
   @ApiModelProperty(example = "1", required = true, value = "")
       @NotNull
 
-    public Integer getId() {
+    public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
