@@ -32,6 +32,20 @@ public class Trip {
 	public Trip() {
 	}
 
+	public Trip(String departurePlace, String arrivalPlace, OffsetDateTime departureDateTime,
+			Integer numberAvailableSeats, BigDecimal price, Integer state, User user) {
+		super();
+		this.departurePlace = departurePlace;
+		this.arrivalPlace = arrivalPlace;
+		this.departureDateTime = departureDateTime;
+		this.numberAvailableSeats = numberAvailableSeats;
+		this.price = price;
+		this.state = state;
+		this.user = user;
+	}
+
+
+
 	public String getDeparturePlace() {
 		return departurePlace;
 	}

@@ -1,7 +1,5 @@
 package unimoove.api.trips;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -32,11 +30,6 @@ public class TripsApiController implements TripsApi {
 		super();
 		this.request = request;
 		this.tripsService = tripsService;
-	}
-
-	@Override
-	public Optional<HttpServletRequest> getRequest() {
-		return Optional.ofNullable(request);
 	}
 
 	public ResponseEntity<Void> addTrip(@ApiParam(value = "Trip to add") @Valid @RequestBody TripCreationRequest body) {

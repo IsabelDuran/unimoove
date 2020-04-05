@@ -5,9 +5,6 @@
  */
 package unimoove.api.trips;
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -30,10 +27,6 @@ import io.swagger.annotations.Authorization;
 public interface TripsApi {
 
     Logger log = LoggerFactory.getLogger(TripsApi.class);
-
-    Optional<HttpServletRequest> getRequest();
-
-    
 
     @ApiOperation(value = "Adds a trip", nickname = "addTrip", notes = "Adds a new trip to the system", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Trips", })
@@ -129,8 +122,8 @@ public interface TripsApi {
     ResponseEntity<TripPaginatedResponse> searchTrips(@ApiParam(value = "the departure place for the trip") @Valid @RequestParam(value = "departurePlace", required = false) String departurePlace
 ,@ApiParam(value = "the arrival place for the trip") @Valid @RequestParam(value = "arrivalPlace", required = false) String arrivalPlace
 ,@ApiParam(value = "the departure time for the trip") @Valid @RequestParam(value = "departureDateTime", required = false) String departureDateTime
-,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page
-,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size
+,@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false,  defaultValue = "0") Integer page
+,@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false,  defaultValue = "25") Integer size
 );
 
 }

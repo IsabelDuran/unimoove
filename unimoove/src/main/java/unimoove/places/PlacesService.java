@@ -7,6 +7,7 @@ import unimoove.api.places.PlaceCategoryChangeRequest;
 import unimoove.api.places.PlaceCreationRequest;
 import unimoove.api.places.PlaceIdChangeRequest;
 import unimoove.api.places.PlaceNameChangeRequest;
+import unimoove.api.places.PlacePaginatedResponse;
 import unimoove.api.places.PlaceResponse;
 
 @Service
@@ -17,4 +18,5 @@ public interface PlacesService {
 	public void modifyPlaceId(PlaceIdChangeRequest placeIdChangeRequest, String placeId);
 	public void modifyPlaceName(PlaceNameChangeRequest placeNameChangeRequest, String placeId);
 	public void modifyPlaceCategory(PlaceCategoryChangeRequest placeCategoryChangeRequest, String placeId);
+	public PlacePaginatedResponse searchPlaces(String name, Integer page, Integer size);
 }

@@ -43,7 +43,7 @@ public class TripsServiceImp implements TripsService {
 	@Override
 	@Transactional
 	public void addTrip(TripCreationRequest tripCreationRequest) {
-		Trip trip = tripMapper.tripCreationRequestToTrip(tripCreationRequest);
+		Trip trip = getTrip(tripCreationRequest);
 		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
 		trip.setUser(user);
 		user.getTrips().add(tripsRepository.save(trip));
@@ -141,6 +141,11 @@ public class TripsServiceImp implements TripsService {
 		tripPaginatedResponse.setPaginationInfo(paginationInfo);
 
 		return tripPaginatedResponse;
+	}
+	
+	private Trip getTrip(TripCreationRequest tripCreationRequest) {
+		Trip trip = tripMapper.tripCreationRequestToTrip(tripCreationRequest);
+		return trip;
 	}
 
 }

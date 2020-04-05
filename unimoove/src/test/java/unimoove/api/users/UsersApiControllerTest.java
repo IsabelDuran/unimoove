@@ -1,14 +1,19 @@
 package unimoove.api.users;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 
@@ -25,6 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import unimoove.cars.Car;
 import unimoove.cars.CarsRepository;
+import unimoove.trips.Trip;
+import unimoove.trips.TripsRepository;
 import unimoove.users.User;
 import unimoove.users.UsersRepository;
 
@@ -47,6 +54,9 @@ public class UsersApiControllerTest {
 	private CarsRepository carRepository;
 
 	@Autowired
+	private TripsRepository tripsRepository;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Test
@@ -64,12 +74,12 @@ public class UsersApiControllerTest {
 					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			User resultUser = usersRepository.findUserByUsername("isa");
-			assertThat(resultUser.getName(), is(user.getName()));
-			assertThat(resultUser.getLastname(), is(user.getLastname()));
-			assertThat(resultUser.getUsername(), is(user.getUsername()));
+			assertThat(resultUser.getName(), equalTo(user.getName()));
+			assertThat(resultUser.getLastname(), equalTo(user.getLastname()));
+			assertThat(resultUser.getUsername(), equalTo(user.getUsername()));
 			assertTrue(passwordEncoder.matches("1234", resultUser.getPassword()));
-			assertThat(resultUser.getBirthdate(), is(user.getBirthdate()));
-			assertThat(resultUser.getGender(), is(user.getGender()));
+			assertThat(resultUser.getBirthdate(), equalTo(user.getBirthdate()));
+			assertThat(resultUser.getGender(), equalTo(user.getGender()));
 		} finally {
 			deleteUser("isa");
 		}
@@ -90,7 +100,7 @@ public class UsersApiControllerTest {
 					put("/users/isa/name").contentType(MediaType.APPLICATION_JSON).content("{ \"newName\": \"Pepa\" }"))
 					.andExpect(status().isOk());
 			User resultUser = usersRepository.findUserByUsername("isa");
-			assertThat(resultUser.getName(), is("Pepa"));
+			assertThat(resultUser.getName(), equalTo("Pepa"));
 
 		} finally {
 			deleteUser("isa");
@@ -112,7 +122,7 @@ public class UsersApiControllerTest {
 			mvc.perform(put("/users/isa/lastname").contentType(MediaType.APPLICATION_JSON)
 					.content("{ \"newLastname\": \"Diaz\" }")).andExpect(status().isOk());
 			User userResult = usersRepository.findUserByUsername("isa");
-			assertThat(userResult.getLastname(), is("Diaz"));
+			assertThat(userResult.getLastname(), equalTo("Diaz"));
 
 		} finally {
 			deleteUser("isa");
@@ -133,7 +143,7 @@ public class UsersApiControllerTest {
 			mvc.perform(put("/users/isa/birthdate").contentType(MediaType.APPLICATION_JSON)
 					.content("{ \"newBirthdate\": \"1996-05-10\" }")).andExpect(status().isOk());
 			User resultUser = usersRepository.findUserByUsername("isa");
-			assertThat(resultUser.getBirthdate(), is(LocalDate.parse("10/05/1996", formatter)));
+			assertThat(resultUser.getBirthdate(), equalTo(LocalDate.parse("10/05/1996", formatter)));
 
 		} finally {
 			deleteUser("isa");
@@ -153,7 +163,7 @@ public class UsersApiControllerTest {
 					put("/users/isa/gender").contentType(MediaType.APPLICATION_JSON).content("{ \"newGender\": 0 }"))
 					.andExpect(status().isOk());
 			User resultUser = usersRepository.findUserByUsername("isa");
-			assertThat(resultUser.getGender(), is(0));
+			assertThat(resultUser.getGender(), equalTo(0));
 
 		} finally {
 			deleteUser("isa");
@@ -187,7 +197,7 @@ public class UsersApiControllerTest {
 //				.contentType(MediaType.APPLICATION_JSON)
 //				.content("{ \"newRole\": 0 }")).andExpect(status().isOk());
 //		User resultUser = usersRepository.findUserByUsername("isa");
-//		assertThat(resultUser.getRole(), is(0));
+//		assertThat(resultUser.getRole(), equalTo(0));
 //	}
 
 	@Test
@@ -203,7 +213,7 @@ public class UsersApiControllerTest {
 			mvc.perform(put("/users/isa/username").contentType(MediaType.APPLICATION_JSON)
 					.content("{ \"newUsername\": \"paca\" }")).andExpect(status().isOk());
 			User resultUser = usersRepository.findUserByUsername("paca");
-			assertThat(resultUser.getUsername(), is("paca"));
+			assertThat(resultUser.getUsername(), equalTo("paca"));
 
 		} finally {
 			deleteUser("paca");
@@ -254,10 +264,10 @@ public class UsersApiControllerTest {
 			Car car = new Car("9268BAR", "Fiat", "Marea Weekend", 5);
 			Car resultCar = carRepository.findByPlate("9268BAR");
 
-			assertThat(resultCar.getPlate(), is(car.getPlate()));
-			assertThat(resultCar.getBrand(), is(car.getBrand()));
-			assertThat(resultCar.getModel(), is(car.getModel()));
-			assertThat(resultCar.getSeats(), is(car.getSeats()));
+			assertThat(resultCar.getPlate(), equalTo(car.getPlate()));
+			assertThat(resultCar.getBrand(), equalTo(car.getBrand()));
+			assertThat(resultCar.getModel(), equalTo(car.getModel()));
+			assertThat(resultCar.getSeats(), equalTo(car.getSeats()));
 
 		} finally {
 			deleteUser("isa");
@@ -269,20 +279,20 @@ public class UsersApiControllerTest {
 	@WithMockUser
 	public void testModifyCarBrand() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			User user = usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
-			
+
 			Car car = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
 			user.getCars().add(car);
 			usersRepository.save(user);
-			
+
 			mvc.perform(put("/users/isa/cars/9268BAR/brand").contentType(MediaType.APPLICATION_JSON)
 					.content("{ \"newBrand\": \"Ford\" }")).andExpect(status().isOk());
 			Car resultCar = carRepository.findByPlate("9268BAR");
-			assertThat(resultCar.getBrand(), is("Ford"));
-			
+			assertThat(resultCar.getBrand(), equalTo("Ford"));
+
 		} finally {
 			deleteUser("isa");
 			deleteCar("9268BAR");
@@ -293,85 +303,84 @@ public class UsersApiControllerTest {
 	@WithMockUser
 	public void testModifyCarModel() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			User user = usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
-			
+
 			Car car = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
 			user.getCars().add(car);
 			usersRepository.save(user);
 			mvc.perform(put("/users/isa/cars/9268BAR/model").contentType(MediaType.APPLICATION_JSON)
 					.content("{ \"newModel\": \"Fiesta\"}")).andExpect(status().isOk());
 			Car resultCar = carRepository.findByPlate("9268BAR");
-			assertThat(resultCar.getModel(), is("Fiesta"));
-			
+			assertThat(resultCar.getModel(), equalTo("Fiesta"));
+
 		} finally {
 			deleteUser("isa");
 			deleteCar("9268BAR");
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void testThatWhenAUserIsDeletedTheirCarsAreDeleted() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			User user = usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
-			
+
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
 			user.getCars().add(carA);
-			
+
 			Car carB = carRepository.save(new Car("1111CAC", "Ford", "Fiesta", 5));
 			user.getCars().add(carB);
-			
+
 			usersRepository.save(user);
-			
+
 			mvc.perform(delete("/users/isa")).andExpect(status().isOk());
-			assertTrue(usersRepository.findUserByUsername("isa") ==  null);
+			assertTrue(usersRepository.findUserByUsername("isa") == null);
 			assertTrue(carRepository.findByPlate("9268BAR") == null);
 			assertTrue(carRepository.findByPlate("1111CCC") == null);
-			
+
 		} finally {
 			deleteUser("isa");
 			deleteCar("9268BAR");
 			deleteCar("1111CCC");
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void testThatAUserCantHaveMoreThan5Cars() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			User user = usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
-			
+
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
 			user.getCars().add(carA);
-			
+
 			Car carB = carRepository.save(new Car("0001BOB", "Peugot", "208", 5));
 			user.getCars().add(carB);
-			
+
 			Car carC = carRepository.save(new Car("1244JPG", "Citröen", "C4", 5));
 			user.getCars().add(carC);
-			
+
 			Car carD = carRepository.save(new Car("1478PEP", "Seat", "León", 5));
 			user.getCars().add(carD);
-			
+
 			Car carE = carRepository.save(new Car("5678JPG", "Opel", "Corsa", 7));
 			user.getCars().add(carE);
-			
+
 			usersRepository.save(user);
 
 			String carRegistrationRequest = "{  \"brand\": \"Fiat\", \"model\": \"Marea Weekend\", \"plate\": \"9632BOB\", \"seats\": 5}";
 			mvc.perform(post("/users/isa/cars").contentType(MediaType.APPLICATION_JSON).content(carRegistrationRequest))
-			.andExpect(status().is(409));
-			
-			
+					.andExpect(status().is(409));
+
 		} finally {
 			deleteUser("isa");
 			deleteCar("9268BAR");
@@ -382,39 +391,39 @@ public class UsersApiControllerTest {
 			deleteCar("9632BOB");
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void testCantAddTwoCarsWithSamePlate() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			User user = usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
-			
+
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
 			user.getCars().add(carA);
-			
+
 			usersRepository.save(user);
-			
+
 			String carRegistrationRequest = "{  \"brand\": \"Fiat\", \"model\": \"Marea Weekend\", \"plate\": \"9268BAR\", \"seats\": 5}";
 			mvc.perform(post("/users/isa/cars").contentType(MediaType.APPLICATION_JSON).content(carRegistrationRequest))
-			.andExpect(status().is(409));
-			
+					.andExpect(status().is(409));
+
 		} finally {
 			deleteUser("isa");
 			deleteCar("9268BAR");
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
-	public void testCantAddTwoUsersWithSameUsername() throws Exception{
+	public void testCantAddTwoUsersWithSameUsername() throws Exception {
 		try {
-			User user = usersRepository
-					.save(new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+			usersRepository.save(
+					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
-			
+
 			String registrationRequest = "{\n" + "  \"birthdate\": \"2000-08-16\",\n" + "  \"gender\": 1,\n"
 					+ "  \"lastname\": \"Duran\",\n" + "  \"name\": \"Isabel\",\n" + "  \"password\": \"1234\",\n"
 					+ "  \"role\": 1,\n" + "  \"username\": \"isa\"\n" + "}";
@@ -425,17 +434,54 @@ public class UsersApiControllerTest {
 			deleteUser("isa");
 		}
 	}
-	
+
+	@Test
+	@WithMockUser("isa")
+	public void testGetUserTrips() throws Exception {
+		Trip trip = null;
+		try {
+			User user = new User("Isabel", "Duran", "isa",
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+
+			usersRepository.save(user);
+			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0, user);
+			tripsRepository.save(trip);
+			
+			mvc.perform(get("/users/isa/trips")
+					.param("page", "0")
+					.param("size", "25"))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("\"arrivalPlace\":\"ESI\"")))
+			.andExpect(content().string(containsString("\"departureDateTime\":\"2017-07-21T19:32:28+02:00\"")))
+			.andExpect(content().string(containsString("\"departurePlace\":\"CA\"")))
+			.andExpect(content().string(containsString("\"totalPages\":1")))
+			.andExpect(content().string(containsString("\"totalPages\":1")));
+			
+		} finally {
+			User user = usersRepository.findUserByUsernameWithTrips("isa");
+			user.getTrips().clear();
+			usersRepository.save(user);
+			deleteTrip(trip);
+			deleteUser("isa");
+		}
+	}
+
 	private void deleteUser(String username) {
 		User user = usersRepository.findUserByUsername(username);
-		if(user != null)
+		if (user != null)
 			usersRepository.delete(user);
 	}
-	
+
 	private void deleteCar(String plate) {
 		Car car = carRepository.findByPlate(plate);
-		if(car != null)
+		if (car != null)
 			carRepository.delete(car);
+	}
+	
+	private void deleteTrip(Trip trip) {
+		if (trip != null)
+			tripsRepository.delete(trip);
 	}
 
 }

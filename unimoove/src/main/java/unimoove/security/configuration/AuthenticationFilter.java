@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,7 +54,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 					logger.debug("Se ha obtenido el usuario " + userDetails.getUsername());
 					if (isTokenNonExpired(jws)) {
 						UsernamePasswordAuthenticationToken usernamePAT = new UsernamePasswordAuthenticationToken(
-								userDetails.getUsername(), null, userDetails.getAuthorities());
+								userDetails, null, userDetails.getAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(usernamePAT);
 					}
 				}
