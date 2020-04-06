@@ -128,11 +128,29 @@ public class UserRegistrationRequest {
 	}
 
 	/**
+	 * Get email
+	 * 
+	 * @return email
+	 **/
+	@ApiModelProperty(example = "example@example.com", required = true, value = "")
+	@NotNull
+	
+	@Valid
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
+	/**
 	 * Get birthdate
 	 * 
 	 * @return birthdate
 	 **/
-	@ApiModelProperty(required = true, value = "")
+	@ApiModelProperty(example = "1999-01-01", required = true, value = "")
 	@NotNull
 
 	@Valid
@@ -235,14 +253,5 @@ public class UserRegistrationRequest {
 		}
 		return o.toString().replace("\n", "\n    ");
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	
 }
