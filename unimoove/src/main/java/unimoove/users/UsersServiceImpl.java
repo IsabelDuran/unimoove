@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import unimoove.api.users.UserBirthdateChangeRequest;
+import unimoove.api.users.UserEmailChangeRequest;
 import unimoove.api.users.UserGenderChangeRequest;
 import unimoove.api.users.UserLastnameChangeRequest;
 import unimoove.api.users.UserNameChangeRequest;
@@ -167,6 +168,16 @@ public class UsersServiceImpl implements UsersService {
 			throw new UsernameNotFoundException("El usuario " + username + " no se ha encontrado.");
 		
 		return userDetails;
+	}
+
+	@Override
+	@Transactional
+	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username) {
+		User user = findUserByUsername(username);
+
+		user.setEmail(userEmailChangeRequest.getNewEmail());
+		userRepository.save(user);
+		
 	}
 
 }

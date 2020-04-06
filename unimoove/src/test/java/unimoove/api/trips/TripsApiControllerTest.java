@@ -236,7 +236,8 @@ public class TripsApiControllerTest {
 	}
 
 	private User createUser() {
-		User user = new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+		User user = new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", 
+				"isa@example.com",
 				LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
 
 		usersRepository.save(user);

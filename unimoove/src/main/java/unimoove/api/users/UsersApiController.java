@@ -26,6 +26,7 @@ import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.trips.TripsService;
 import unimoove.users.UniqueUsernameException;
 import unimoove.users.UsersService;
+import unimoove.utils.SecurityUtils;
 
 @Controller
 public class UsersApiController implements UsersApi {
@@ -107,42 +108,42 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> modifyUserBirthdate(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's birthdate") @Valid @RequestBody UserBirthdateChangeRequest body) {
-		userService.modifyUserBirthdate(body, username);
+		userService.modifyUserBirthdate(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserEmail(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's email") @Valid @RequestBody UserEmailChangeRequest body) {
-		request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+		userService.modifyUserEmail(body, SecurityUtils.currentUserUsername());
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserGender(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's gender") @Valid @RequestBody UserGenderChangeRequest body) {
-		userService.modifyUserGender(body, username);
+		userService.modifyUserGender(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserLastname(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's lastname") @Valid @RequestBody UserLastnameChangeRequest body) {
-		userService.modifyUserLastname(body, username);
+		userService.modifyUserLastname(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserName(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's name") @Valid @RequestBody UserNameChangeRequest body) {
-		userService.modifyUserName(body, username);
+		userService.modifyUserName(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyUserPassword(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's password") @Valid @RequestBody UserPasswordChangeRequest body) {
-		userService.modifyUserPassword(body, username);
+		userService.modifyUserPassword(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
@@ -156,7 +157,7 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> modifyUserUsername(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's username") @Valid @RequestBody UserUsernameChangeRequest body) throws UniqueUsernameException {
-		userService.modifyUserUsername(body, username);
+		userService.modifyUserUsername(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

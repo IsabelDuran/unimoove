@@ -18,6 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import unimoove.cars.Car;
 import unimoove.trips.Trip;
 
@@ -35,6 +37,7 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String username;
 	private String password;
+	private String email;
 	private LocalDate birthdate;
 	/**
 	 * Value 0 for Male or Value 1 for Female
@@ -51,13 +54,14 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Trip> trips;
 
-	public User(String name, String lastname, String username, String password, LocalDate birthdate, Integer gender,
+	public User(String name, String lastname, String username, String password, String email, LocalDate birthdate, Integer gender,
 			Integer role) {
 		super();
 		this.name = name;
 		this.lastname = lastname;
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.role = role;
@@ -96,6 +100,14 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public LocalDate getBirthdate() {

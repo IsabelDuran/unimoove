@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import unimoove.api.users.UserBirthdateChangeRequest;
+import unimoove.api.users.UserEmailChangeRequest;
 import unimoove.api.users.UserGenderChangeRequest;
 import unimoove.api.users.UserLastnameChangeRequest;
 import unimoove.api.users.UserNameChangeRequest;
@@ -26,5 +27,6 @@ public interface UsersService extends UserDetailsService{
 	public void modifyUserName(UserNameChangeRequest userNameChangeRequest, String username);
 	public void modifyUserPassword(UserPasswordChangeRequest userPasswordChangeRequest, String username);
 	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) throws UniqueUsernameException;
+	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username);
 	public UserPaginatedResponse searchUsersByUsername(String username, Integer page, Integer size);
 }

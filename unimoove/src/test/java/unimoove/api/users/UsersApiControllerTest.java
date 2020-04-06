@@ -70,7 +70,7 @@ public class UsersApiControllerTest {
 					.andExpect(status().isOk());
 
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
 					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			User resultUser = usersRepository.findUserByUsername("isa");
@@ -87,14 +87,14 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
 	public void testModifyUserName() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
-			usersRepository.save(user);
+			usersRepository.save(user).getEmail();
 
 			mvc.perform(
 					put("/users/isa/name").contentType(MediaType.APPLICATION_JSON).content("{ \"newName\": \"Pepa\" }"))
@@ -109,13 +109,13 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
 	public void testModifyUserLastname() throws Exception {
 
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 
@@ -131,13 +131,13 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
 	public void testModifyUserBirthdate() throws Exception {
 
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 			mvc.perform(put("/users/isa/birthdate").contentType(MediaType.APPLICATION_JSON)
@@ -151,12 +151,12 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
 	public void testModifyUserGender() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 			mvc.perform(
@@ -171,13 +171,34 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
+	public void testModifyUserEmail() throws Exception {
+		try {
+			User user = new User("Isabel", "Duran", "isa",
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
+			usersRepository.save(user);
+			mvc.perform(
+					put("/users/isa/email")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{ \"newEmail\": \"isabel@example.com\" }"))
+					.andExpect(status().isOk());
+			User resultUser = usersRepository.findUserByUsername("isa");
+			assertThat(resultUser.getEmail(), equalTo("isabel@example.com"));
+
+		} finally {
+			deleteUser("isa");
+		}
+	}
+
+	@Test
+	@WithMockUser("isa")
 	public void testModifyUserPassword() throws Exception {
 
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 			mvc.perform(put("/users/isa/password").contentType(MediaType.APPLICATION_JSON)
@@ -201,13 +222,13 @@ public class UsersApiControllerTest {
 //	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("isa")
 	public void testModifyUserUsername() throws Exception {
 
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 			mvc.perform(put("/users/isa/username").contentType(MediaType.APPLICATION_JSON)
@@ -222,18 +243,18 @@ public class UsersApiControllerTest {
 	}
 
 	@Test
-	@WithMockUser
+	@WithMockUser("paca")
 	public void testModifyUserUsernameWrong() throws Exception {
 
 		try {
 			User userA = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
 					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(userA);
 
 			User userB = new User("Francisca", "Diaz", "paca",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "paca@example.com",
 					LocalDate.parse("10/05/1966", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(userB);
@@ -252,8 +273,8 @@ public class UsersApiControllerTest {
 	public void testAddCar() throws Exception {
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
 
@@ -281,7 +302,7 @@ public class UsersApiControllerTest {
 		try {
 			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
 
 			Car car = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
@@ -305,7 +326,7 @@ public class UsersApiControllerTest {
 		try {
 			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
 
 			Car car = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
@@ -328,7 +349,7 @@ public class UsersApiControllerTest {
 		try {
 			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
 
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
@@ -357,7 +378,7 @@ public class UsersApiControllerTest {
 		try {
 			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
 
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
@@ -398,7 +419,7 @@ public class UsersApiControllerTest {
 		try {
 			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 			user.setCars(new HashSet<Car>());
 
 			Car carA = carRepository.save(new Car("9268BAR", "Fiat", "Marea", 5));
@@ -420,9 +441,9 @@ public class UsersApiControllerTest {
 	@WithMockUser
 	public void testCantAddTwoUsersWithSameUsername() throws Exception {
 		try {
-			usersRepository.save(
+			User user = usersRepository.save(
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-							LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
+							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 
 			String registrationRequest = "{\n" + "  \"birthdate\": \"2000-08-16\",\n" + "  \"gender\": 1,\n"
 					+ "  \"lastname\": \"Duran\",\n" + "  \"name\": \"Isabel\",\n" + "  \"password\": \"1234\",\n"
@@ -441,23 +462,21 @@ public class UsersApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = new User("Isabel", "Duran", "isa",
-					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
-					LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER);
+					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
+					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
-			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0, user);
+			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0,
+					user);
 			tripsRepository.save(trip);
-			
-			mvc.perform(get("/users/isa/trips")
-					.param("page", "0")
-					.param("size", "25"))
-			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("\"arrivalPlace\":\"ESI\"")))
-			.andExpect(content().string(containsString("\"departureDateTime\":\"2017-07-21T19:32:28+02:00\"")))
-			.andExpect(content().string(containsString("\"departurePlace\":\"CA\"")))
-			.andExpect(content().string(containsString("\"totalPages\":1")))
-			.andExpect(content().string(containsString("\"totalPages\":1")));
-			
+
+			mvc.perform(get("/users/isa/trips").param("page", "0").param("size", "25")).andExpect(status().isOk())
+					.andExpect(content().string(containsString("\"arrivalPlace\":\"ESI\"")))
+					.andExpect(content().string(containsString("\"departureDateTime\":\"2017-07-21T19:32:28+02:00\"")))
+					.andExpect(content().string(containsString("\"departurePlace\":\"CA\"")))
+					.andExpect(content().string(containsString("\"totalPages\":1")))
+					.andExpect(content().string(containsString("\"totalPages\":1")));
+
 		} finally {
 			User user = usersRepository.findUserByUsernameWithTrips("isa");
 			user.getTrips().clear();
@@ -478,7 +497,7 @@ public class UsersApiControllerTest {
 		if (car != null)
 			carRepository.delete(car);
 	}
-	
+
 	private void deleteTrip(Trip trip) {
 		if (trip != null)
 			tripsRepository.delete(trip);
