@@ -14,6 +14,7 @@ public interface UserMapper {
 	@Mapping(target = "authorities", ignore = true)
 	@Mapping(target = "cars", ignore = true)
 	@Mapping(target = "trips", ignore = true)
+	@Mapping(target = "reservations", ignore = true)
 	User userRegistrationRequestToUser(UserRegistrationRequest userRegistrationRequest);
 
 }

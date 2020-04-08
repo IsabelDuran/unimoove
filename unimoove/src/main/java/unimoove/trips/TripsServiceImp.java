@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class TripsServiceImp implements TripsService {
 	@Transactional
 	public void addTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = getTrip(tripCreationRequest);
-		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
+		User user = getUser();
 		trip.setUser(user);
 		user.getTrips().add(tripsRepository.save(trip));
 
@@ -53,11 +54,12 @@ public class TripsServiceImp implements TripsService {
 
 	}
 
+
 	@Override
 	@Transactional
 	public void deleteTrip(String idTrip) {
 		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
+		User user = getUser();
 		user.getTrips().remove(trip);
 
 		tripsRepository.delete(trip);
@@ -148,4 +150,10 @@ public class TripsServiceImp implements TripsService {
 		return trip;
 	}
 
+	private User getUser() {
+		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
+		if(user == null)
+			throw new EntityNotFoundException("Usuario no encontrado");
+		return user;
+	}
 }

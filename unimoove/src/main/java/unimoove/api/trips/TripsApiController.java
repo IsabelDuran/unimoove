@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.annotations.ApiParam;
+import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.trips.TripsService;
 
 @Controller
@@ -79,6 +80,10 @@ public class TripsApiController implements TripsApi {
 			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size) {
 		
 		return new ResponseEntity<TripPaginatedResponse>(tripsService.searchTrips(departurePlace, arrivalPlace, departureDateTime, page, size), HttpStatus.OK);
+	}
+
+	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(@Valid Integer page, @Valid Integer size) {
+		return new ResponseEntity<ReservationPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
 }

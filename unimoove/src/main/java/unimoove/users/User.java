@@ -18,9 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import unimoove.cars.Car;
+import unimoove.reservations.Reservation;
 import unimoove.trips.Trip;
 
 @Entity
@@ -50,12 +49,15 @@ public class User implements UserDetails {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private Set<Car> cars;
-	
+
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Trip> trips;
 
-	public User(String name, String lastname, String username, String password, String email, LocalDate birthdate, Integer gender,
-			Integer role) {
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<Reservation> reservations;
+
+	public User(String name, String lastname, String username, String password, String email, LocalDate birthdate,
+			Integer gender, Integer role) {
 		super();
 		this.name = name;
 		this.lastname = lastname;
@@ -152,6 +154,14 @@ public class User implements UserDetails {
 
 	public void setTrips(Set<Trip> trips) {
 		this.trips = trips;
+	}
+
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 	@Override

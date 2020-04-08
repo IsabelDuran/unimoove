@@ -13,9 +13,9 @@ import javax.validation.constraints.*;
 
 public class ReservationCreationRequest   {
   @JsonProperty("idTrip")
-  private Integer idTrip = null;
+  private Long idTrip = null;
 
-  public ReservationCreationRequest idTrip(Integer idTrip) {
+  public ReservationCreationRequest idTrip(Long idTrip) {
     this.idTrip = idTrip;
     return this;
   }
@@ -27,11 +27,11 @@ public class ReservationCreationRequest   {
   @ApiModelProperty(example = "1", required = true, value = "")
       @NotNull
 
-    public Integer getIdTrip() {
+    public Long getIdTrip() {
     return idTrip;
   }
 
-  public void setIdTrip(Integer idTrip) {
+  public void setIdTrip(Long idTrip) {
     this.idTrip = idTrip;
   }
 

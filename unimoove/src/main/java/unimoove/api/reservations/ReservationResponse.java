@@ -17,8 +17,8 @@ import javax.validation.constraints.*;
 @Validated
 
 public class ReservationResponse   {
-  @JsonProperty("reservationId")
-  private Integer reservationId = null;
+  @JsonProperty("id")
+  private Long id = null;
 
   @JsonProperty("trip")
   private TripReservationResponse trip = null;
@@ -29,24 +29,24 @@ public class ReservationResponse   {
   @JsonProperty("status")
   private Integer status = null;
 
-  public ReservationResponse reservationId(Integer reservationId) {
-    this.reservationId = reservationId;
+  public ReservationResponse id(Long id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get reservationId
-   * @return reservationId
+   * Get id
+   * @return id
   **/
   @ApiModelProperty(example = "1", required = true, value = "")
       @NotNull
 
-    public Integer getReservationId() {
-    return reservationId;
+    public Long getId() {
+    return id;
   }
 
-  public void setReservationId(Integer reservationId) {
-    this.reservationId = reservationId;
+  public void setid(Long id) {
+    this.id = id;
   }
 
   public ReservationResponse trip(TripReservationResponse trip) {
@@ -121,7 +121,7 @@ public class ReservationResponse   {
       return false;
     }
     ReservationResponse reservationResponse = (ReservationResponse) o;
-    return Objects.equals(this.reservationId, reservationResponse.reservationId) &&
+    return Objects.equals(this.id, reservationResponse.id) &&
         Objects.equals(this.trip, reservationResponse.trip) &&
         Objects.equals(this.dateTimeReservation, reservationResponse.dateTimeReservation) &&
         Objects.equals(this.status, reservationResponse.status);
@@ -129,7 +129,7 @@ public class ReservationResponse   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(reservationId, trip, dateTimeReservation, status);
+    return Objects.hash(id, trip, dateTimeReservation, status);
   }
 
   @Override
@@ -137,7 +137,7 @@ public class ReservationResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class ReservationResponse {\n");
     
-    sb.append("    reservationId: ").append(toIndentedString(reservationId)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    trip: ").append(toIndentedString(trip)).append("\n");
     sb.append("    dateTimeReservation: ").append(toIndentedString(dateTimeReservation)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");

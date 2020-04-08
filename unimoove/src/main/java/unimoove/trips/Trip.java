@@ -2,13 +2,16 @@ package unimoove.trips;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import unimoove.reservations.Reservation;
 import unimoove.users.User;
 
 @Entity
@@ -28,6 +31,9 @@ public class Trip {
 	
 	@ManyToOne
 	private User user;
+	
+	@OneToMany
+	private Set<Reservation> reservations;
 	
 	public Trip() {
 	}
@@ -105,9 +111,14 @@ public class Trip {
 	public Long getId() {
 		return id;
 	}
-	
-	
-	
+
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
 	
 	
 }
