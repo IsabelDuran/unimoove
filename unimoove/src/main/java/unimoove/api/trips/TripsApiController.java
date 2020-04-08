@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.annotations.ApiParam;
 import unimoove.api.reservations.ReservationPaginatedResponse;
+import unimoove.reservations.ReservationsService;
 import unimoove.trips.TripsService;
+import unimoove.users.UsersService;
 
 @Controller
 public class TripsApiController implements TripsApi {
@@ -25,12 +27,16 @@ public class TripsApiController implements TripsApi {
 	private final HttpServletRequest request;
 
 	private TripsService tripsService;
+	
+	private ReservationsService reservationsService;
 
 	@Autowired
-	public TripsApiController(HttpServletRequest request, TripsService tripsService) {
+	public TripsApiController(HttpServletRequest request, TripsService tripsService,
+			ReservationsService reservationsService) {
 		super();
 		this.request = request;
 		this.tripsService = tripsService;
+		this.reservationsService = reservationsService;
 	}
 
 	public ResponseEntity<Void> addTrip(@ApiParam(value = "Trip to add") @Valid @RequestBody TripCreationRequest body) {
@@ -85,7 +91,7 @@ public class TripsApiController implements TripsApi {
 	
 	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(String idTrip, @Valid Integer page,
 			@Valid Integer size) {
-		return new ResponseEntity<ReservationPaginatedResponse>(tripsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
+		return new ResponseEntity<ReservationPaginatedResponse>(reservationsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
 	}
 
 }

@@ -20,5 +20,4 @@ public interface TripsService {
 	public void modifyTripNumberAvailableSeats(TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, String idTrip);
 	public TripPaginatedResponse searchTrips(String departurePlace, String arrivalPlace, String departureDateTime, Integer page, Integer size);
 	public TripPaginatedResponse obtainUserTrips(String username, Integer page, Integer size);
-	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size);
 }

@@ -2,7 +2,6 @@ package unimoove.trips;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import unimoove.api.reservations.ReservationPaginatedResponse;
-import unimoove.api.reservations.ReservationResponse;
 import unimoove.api.trips.TripArrivalPlaceChangeRequest;
 import unimoove.api.trips.TripCreationRequest;
 import unimoove.api.trips.TripDepartureDateTimeChangeRequest;
@@ -23,7 +20,6 @@ import unimoove.api.trips.TripNumberAvailableSeatsChangeRequest;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.api.trips.TripResponse;
 import unimoove.api.utils.PaginationInfo;
-import unimoove.reservations.Reservation;
 import unimoove.reservations.ReservationMapper;
 import unimoove.reservations.ReservationsRepository;
 import unimoove.users.User;
@@ -37,22 +33,15 @@ public class TripsServiceImp implements TripsService {
 
 	private UsersRepository usersRepository;
 	
-	private ReservationsRepository reservationsRepository;
-
 	private TripMapper tripMapper;
-	
-	private ReservationMapper reservationMapper;
 
 	
 	@Autowired
-	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository,
-			ReservationsRepository reservationsRepository, TripMapper tripMapper, ReservationMapper reservationMapper) {
+	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository, TripMapper tripMapper) {
 		super();
 		this.tripsRepository = tripsRepository;
 		this.usersRepository = usersRepository;
-		this.reservationsRepository = reservationsRepository;
 		this.tripMapper = tripMapper;
-		this.reservationMapper = reservationMapper;
 	}
 
 	@Override
@@ -159,27 +148,6 @@ public class TripsServiceImp implements TripsService {
 		tripPaginatedResponse.setPaginationInfo(paginationInfo);
 
 		return tripPaginatedResponse;
-	}
-
-	@Override
-	@Transactional
-	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size) {
-		Page<Reservation> matchedReservations = reservationsRepository
-				.searchReservationsByIdTrip(Long.parseLong(idTrip), PageRequest.of(page, size));
-		List<ReservationResponse> reservationResponses = matchedReservations
-				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
-				.stream().collect(Collectors.toList());
-		
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
-		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
-		
-		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
-		reservationPaginatedResponse.setPages(reservationResponses);
-		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
-		
-		return reservationPaginatedResponse;
-		
 	}
 	
 	private Trip getTrip(TripCreationRequest tripCreationRequest) {

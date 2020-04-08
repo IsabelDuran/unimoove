@@ -36,10 +36,6 @@ public interface UsersApi {
 
     Logger log = LoggerFactory.getLogger(UsersApi.class);
 
-    Optional<HttpServletRequest> getRequest();
-
-    
-
     @ApiOperation(value = "Adds a car", nickname = "addCar", notes = "Adds a new car to the user", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "Cars", })
     @ApiResponses(value = { 

@@ -23,6 +23,7 @@ import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.cars.CarsService;
 import unimoove.cars.MaxCarsPerUserReached;
+import unimoove.reservations.ReservationsService;
 import unimoove.trips.TripsService;
 import unimoove.users.UniqueUsernameException;
 import unimoove.users.UsersService;
@@ -34,27 +35,22 @@ public class UsersApiController implements UsersApi {
 	private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
 	private UsersService userService;
+	
 	private CarsService carsService;
+	
 	private TripsService tripsService;
-
-	private final HttpServletRequest request;
+	
+	private ReservationsService reservationsService;
 
 	@Autowired
 	public UsersApiController(UsersService userService, CarsService carsService, TripsService tripsService,
-			HttpServletRequest request) {
+			ReservationsService reservationsService) {
 		super();
 		this.userService = userService;
 		this.carsService = carsService;
 		this.tripsService = tripsService;
-		this.request = request;
+		this.reservationsService = reservationsService;
 	}
-	
-
-	@Override
-	public Optional<HttpServletRequest> getRequest() {
-		return Optional.ofNullable(request);
-	}
-
 
 	public ResponseEntity<Void> addCar(@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "Car to add") @Valid @RequestBody CarCreationRequest body) throws MaxCarsPerUserReached {
@@ -150,7 +146,6 @@ public class UsersApiController implements UsersApi {
 	public ResponseEntity<Void> modifyUserRole(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
 			@ApiParam(value = "The new user's role") @Valid @RequestBody UserRoleChangeRequest body) {
-		request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
@@ -163,9 +158,9 @@ public class UsersApiController implements UsersApi {
 
 	public ResponseEntity<ReservationPaginatedResponse> obtainReservations(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
-			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false) Integer size) {
-		return new ResponseEntity<ReservationPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
+			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size) {
+		return new ResponseEntity<ReservationPaginatedResponse>(reservationsService.getUserReservations(username, page, size), HttpStatus.OK);
 	}
 
 	public ResponseEntity<TripPaginatedResponse> obtainTrips(

@@ -1,14 +1,21 @@
 package unimoove.reservations;
 
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import unimoove.api.reservations.ReservationCreationRequest;
+import unimoove.api.reservations.ReservationPaginatedResponse;
+import unimoove.api.reservations.ReservationResponse;
+import unimoove.api.utils.PaginationInfo;
 import unimoove.trips.Trip;
 import unimoove.trips.TripsRepository;
 import unimoove.users.User;
@@ -25,14 +32,17 @@ public class ReservationsServiceImpl implements ReservationsService {
 	private UsersRepository usersRepository;
 
 	private TripsRepository tripsRepository;
+	
+	private ReservationMapper reservationMapper;
 
 	@Autowired
 	public ReservationsServiceImpl(ReservationsRepository reservationsRepository, UsersRepository usersRepository,
-			TripsRepository tripsRepository) {
+			TripsRepository tripsRepository, ReservationMapper reservationMapper) {
 		super();
 		this.reservationsRepository = reservationsRepository;
 		this.usersRepository = usersRepository;
 		this.tripsRepository = tripsRepository;
+		this.reservationMapper = reservationMapper;
 	}
 
 	@Override
@@ -65,6 +75,47 @@ public class ReservationsServiceImpl implements ReservationsService {
 		tripsRepository.save(trip);
 		usersRepository.save(user);
 	}
+	
+	@Override
+	@Transactional
+	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size) {
+		Page<Reservation> matchedReservations = reservationsRepository
+				.searchReservationsByIdTrip(Long.parseLong(idTrip), PageRequest.of(page, size));
+		List<ReservationResponse> reservationResponses = matchedReservations
+				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
+				.stream().collect(Collectors.toList());
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
+		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
+		
+		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
+		reservationPaginatedResponse.setPages(reservationResponses);
+		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
+		
+		return reservationPaginatedResponse;
+		
+	}
+
+	@Override
+	@Transactional
+	public ReservationPaginatedResponse getUserReservations(String username, Integer page, Integer size) {
+		Page<Reservation> matchedReservations = reservationsRepository
+				.searchUserReservations(usersRepository.findUserByUsername(username).getId(), PageRequest.of(page, size));
+		List<ReservationResponse> reservationResponses = matchedReservations
+				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
+				.stream().collect(Collectors.toList());
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
+		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
+		
+		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
+		reservationPaginatedResponse.setPages(reservationResponses);
+		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
+		
+		return reservationPaginatedResponse;
+	}
 
 	private User getUser() {
 		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
@@ -72,6 +123,7 @@ public class ReservationsServiceImpl implements ReservationsService {
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
 	}
+
 
 
 }
