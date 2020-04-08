@@ -114,6 +114,7 @@ public interface TripsApi {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@RequestMapping(value = "/trips/{idTrip}/reservations", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReservationPaginatedResponse> getTripReservations(
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
 			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 

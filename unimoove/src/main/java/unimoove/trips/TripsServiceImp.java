@@ -2,6 +2,7 @@ package unimoove.trips;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import unimoove.api.reservations.ReservationPaginatedResponse;
+import unimoove.api.reservations.ReservationResponse;
 import unimoove.api.trips.TripArrivalPlaceChangeRequest;
 import unimoove.api.trips.TripCreationRequest;
 import unimoove.api.trips.TripDepartureDateTimeChangeRequest;
@@ -20,6 +23,9 @@ import unimoove.api.trips.TripNumberAvailableSeatsChangeRequest;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.api.trips.TripResponse;
 import unimoove.api.utils.PaginationInfo;
+import unimoove.reservations.Reservation;
+import unimoove.reservations.ReservationMapper;
+import unimoove.reservations.ReservationsRepository;
 import unimoove.users.User;
 import unimoove.users.UsersRepository;
 import unimoove.utils.SecurityUtils;
@@ -30,15 +36,23 @@ public class TripsServiceImp implements TripsService {
 	private TripsRepository tripsRepository;
 
 	private UsersRepository usersRepository;
+	
+	private ReservationsRepository reservationsRepository;
 
 	private TripMapper tripMapper;
+	
+	private ReservationMapper reservationMapper;
 
+	
 	@Autowired
-	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository, TripMapper tripMapper) {
+	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository,
+			ReservationsRepository reservationsRepository, TripMapper tripMapper, ReservationMapper reservationMapper) {
 		super();
 		this.tripsRepository = tripsRepository;
 		this.usersRepository = usersRepository;
+		this.reservationsRepository = reservationsRepository;
 		this.tripMapper = tripMapper;
+		this.reservationMapper = reservationMapper;
 	}
 
 	@Override
@@ -130,7 +144,9 @@ public class TripsServiceImp implements TripsService {
 	@Override
 	@Transactional
 	public TripPaginatedResponse obtainUserTrips(String username, Integer page, Integer size) {
-		Page<Trip> matchedTrips = tripsRepository.searchUserTrip(usersRepository.findUserByUsernameWithTrips(username).getId(), PageRequest.of(page, size));
+		Page<Trip> matchedTrips = tripsRepository
+				.searchUserTrip(usersRepository
+						.findUserByUsernameWithTrips(username).getId(), PageRequest.of(page, size));
 		List<TripResponse> tripResponses = matchedTrips.map(trip -> tripMapper.tripToTripResponse(trip)).stream()
 				.collect(Collectors.toList());
 
@@ -144,6 +160,27 @@ public class TripsServiceImp implements TripsService {
 
 		return tripPaginatedResponse;
 	}
+
+	@Override
+	@Transactional
+	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size) {
+		Page<Reservation> matchedReservations = reservationsRepository
+				.searchReservationsByIdTrip(Long.parseLong(idTrip), PageRequest.of(page, size));
+		List<ReservationResponse> reservationResponses = matchedReservations
+				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
+				.stream().collect(Collectors.toList());
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
+		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
+		
+		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
+		reservationPaginatedResponse.setPages(reservationResponses);
+		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
+		
+		return reservationPaginatedResponse;
+		
+	}
 	
 	private Trip getTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = tripMapper.tripCreationRequestToTrip(tripCreationRequest);
@@ -156,4 +193,5 @@ public class TripsServiceImp implements TripsService {
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
 	}
+
 }

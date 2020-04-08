@@ -101,7 +101,7 @@ public class ReservationsApiControllerTest {
 			User user = createUser();
 			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user);
 			tripsRepository.save(trip).getId();
-			reservation = new Reservation(LocalDateTime.now(), STATUS_PENDING, trip);
+			reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
 			Long idReservation = reservationsRepository.save(reservation).getId();
 			mvc.perform(delete("/reservations/" + idReservation)).andExpect(status().isOk());
 			

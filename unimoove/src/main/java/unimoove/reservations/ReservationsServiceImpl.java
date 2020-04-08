@@ -1,6 +1,6 @@
 package unimoove.reservations;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -40,7 +40,7 @@ public class ReservationsServiceImpl implements ReservationsService {
 	public void addReservation(ReservationCreationRequest reservationCreationRequest) {
 		Trip trip = tripsRepository.findById(reservationCreationRequest.getIdTrip()).orElse(null);
 		User user = getUser();
-		Reservation reservation = new Reservation(LocalDateTime.now(), STATUS_PENDING, trip);
+		Reservation reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
 		reservation.setUser(user);
 		user.getReservations().add(reservation);
 		trip.getReservations().add(reservation);

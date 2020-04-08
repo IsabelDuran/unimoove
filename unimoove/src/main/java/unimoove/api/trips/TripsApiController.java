@@ -82,8 +82,10 @@ public class TripsApiController implements TripsApi {
 		return new ResponseEntity<TripPaginatedResponse>(tripsService.searchTrips(departurePlace, arrivalPlace, departureDateTime, page, size), HttpStatus.OK);
 	}
 
-	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(@Valid Integer page, @Valid Integer size) {
-		return new ResponseEntity<ReservationPaginatedResponse>(HttpStatus.NOT_IMPLEMENTED);
+	
+	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(String idTrip, @Valid Integer page,
+			@Valid Integer size) {
+		return new ResponseEntity<ReservationPaginatedResponse>(tripsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
 	}
 
 }

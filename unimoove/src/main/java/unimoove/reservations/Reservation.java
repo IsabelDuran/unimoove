@@ -1,6 +1,6 @@
 package unimoove.reservations;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +16,7 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private LocalDateTime dateTimeReservation;
+	private OffsetDateTime dateTimeReservation;
 	/**
 	 * 0 for pending, 1 for accepted, 2 for denied, 3 for cancelled, 4 for past
 	 */
@@ -28,7 +28,7 @@ public class Reservation {
 	@ManyToOne
 	private User user;
 
-	public Reservation(LocalDateTime dateTimeReservation, Integer status, Trip trip) {
+	public Reservation(OffsetDateTime dateTimeReservation, Integer status, Trip trip) {
 		super();
 		this.dateTimeReservation = dateTimeReservation;
 		this.status = status;
@@ -39,11 +39,11 @@ public class Reservation {
 
 	}
 
-	public LocalDateTime getDateTimeReservation() {
+	public OffsetDateTime getDateTimeReservation() {
 		return dateTimeReservation;
 	}
 
-	public void setDateTimeReservation(LocalDateTime dateTimeReservation) {
+	public void setDateTimeReservation(OffsetDateTime dateTimeReservation) {
 		this.dateTimeReservation = dateTimeReservation;
 	}
 
