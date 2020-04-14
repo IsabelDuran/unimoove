@@ -63,15 +63,22 @@ public class UsersApiControllerTest {
 	public void testAddUser() throws Exception {
 
 		try {
-			String registrationRequest = "{\n" + "  \"birthdate\": \"2000-08-16\",\n" + "  \"gender\": 1,\n"
-					+ "  \"lastname\": \"Duran\",\n" + "  \"name\": \"Isabel\",\n" + "  \"password\": \"1234\",\n"
-					+ "  \"role\": 1,\n" + "  \"username\": \"isa\"\n" + "}";
+			String registrationRequest = "{\n" + 
+					"  \"birthdate\": \"1999-01-01\",\n" + 
+					"  \"email\": \"isa@example.com\",\n" + 
+					"  \"gender\": 1,\n" + 
+					"  \"lastname\": \"Duran\",\n" + 
+					"  \"name\": \"Isabel\",\n" + 
+					"  \"password\": 1234,\n" + 
+					"  \"role\": 1,\n" + 
+					"  \"username\": \"isa\"\n" + 
+					"}";
 			mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(registrationRequest))
 					.andExpect(status().isOk());
 
 			User user = new User("Isabel", "Duran", "isa",
 					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
-					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
+					LocalDate.parse("01/01/1999", formatter), GENDER_FEMALE, ROLE_USER);
 
 			User resultUser = usersRepository.findUserByUsername("isa");
 			assertThat(resultUser.getName(), equalTo(user.getName()));
@@ -80,6 +87,7 @@ public class UsersApiControllerTest {
 			assertTrue(passwordEncoder.matches("1234", resultUser.getPassword()));
 			assertThat(resultUser.getBirthdate(), equalTo(user.getBirthdate()));
 			assertThat(resultUser.getGender(), equalTo(user.getGender()));
+			assertThat(resultUser.getEmail(), equalTo(user.getEmail()));
 		} finally {
 			deleteUser("isa");
 		}
@@ -445,9 +453,16 @@ public class UsersApiControllerTest {
 					new User("Isabel", "Duran", "isa", "$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq",
 							"isa@example.com", LocalDate.parse("10/05/1996", formatter), GENDER_FEMALE, ROLE_USER));
 
-			String registrationRequest = "{\n" + "  \"birthdate\": \"2000-08-16\",\n" + "  \"gender\": 1,\n"
-					+ "  \"lastname\": \"Duran\",\n" + "  \"name\": \"Isabel\",\n" + "  \"password\": \"1234\",\n"
-					+ "  \"role\": 1,\n" + "  \"username\": \"isa\"\n" + "}";
+			String registrationRequest = "{\n" + 
+					"  \"birthdate\": \"1999-01-01\",\n" + 
+					"  \"email\": \"isa@example.com\",\n" + 
+					"  \"gender\": 0,\n" + 
+					"  \"lastname\": \"Duran\",\n" + 
+					"  \"name\": \"Isabel\",\n" + 
+					"  \"password\": 1234,\n" + 
+					"  \"role\": 1,\n" + 
+					"  \"username\": \"isa\"\n" + 
+					"}";
 			mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(registrationRequest))
 					.andExpect(status().is(409));
 
