@@ -18,6 +18,8 @@ import unimoove.api.users.UserUsernameChangeRequest;
 
 @Service
 public interface UsersService extends UserDetailsService{	
+	public User findUserById(Long id);
+	public UserResponse getUserById(Long idUser) throws EntityNotFoundException;
 	public void registerUser(UserRegistrationRequest registrationRequest) throws UniqueUsernameException;
 	public UserResponse getUserByUsername(String username) throws EntityNotFoundException;
 	public void deleteUser(String username) throws IllegalArgumentException;

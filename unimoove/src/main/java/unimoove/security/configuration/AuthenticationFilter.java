@@ -21,10 +21,11 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClock;
+import unimoove.users.UsersService;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-	private UserDetailsService userDetailsService;
+	private UsersService usersService;
 
 	private Clock clock = DefaultClock.INSTANCE;
 
@@ -32,9 +33,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 	private String secret;
 
-	public AuthenticationFilter(UserDetailsService userDetailsService, String secret) {
+	public AuthenticationFilter(UsersService usersService, String secret) {
 		super();
-		this.userDetailsService = userDetailsService;
+		this.usersService = usersService;
 		this.secret = secret;
 	}
 
@@ -42,15 +43,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String xApiKey = request.getHeader("X-API-KEY");
-		String username = null;
+		Long idUser = null;
 		Jws<Claims> jws;
 		if (xApiKey != null) {
 			try {
 				jws = Jwts.parser().setSigningKey(secret).parseClaimsJws(xApiKey);
-				username = jws.getBody().getSubject();
+				idUser = Long.parseLong(jws.getBody().getSubject());
 
-				if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+				if (idUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+					UserDetails userDetails = usersService.findUserById(idUser);
 					logger.debug("Se ha obtenido el usuario " + userDetails.getUsername());
 					if (isTokenNonExpired(jws)) {
 						UsernamePasswordAuthenticationToken usernamePAT = new UsernamePasswordAuthenticationToken(

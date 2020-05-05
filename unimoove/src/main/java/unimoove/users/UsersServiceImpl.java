@@ -119,12 +119,13 @@ public class UsersServiceImpl implements UsersService {
 
 		user.setPassword(passwordEncoder.encode(userPasswordChangeRequest.getNewPassword()));
 		userRepository.save(user);
-		
+
 	}
-	
+
 	@Override
 	@Transactional
-	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) throws UniqueUsernameException {
+	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username)
+			throws UniqueUsernameException {
 		User user = findUserByUsername(username);
 
 		user.setUsername(usernameChangeRequest.getNewUsername());
@@ -133,9 +134,9 @@ public class UsersServiceImpl implements UsersService {
 		} catch (DataIntegrityViolationException exception) {
 			throw new UniqueUsernameException("Username already exists");
 		}
-		
+
 	}
-	
+
 	private User findUserByUsername(String username) {
 		User user = userRepository.findUserByUsername(username);
 		if (user == null)
@@ -147,16 +148,17 @@ public class UsersServiceImpl implements UsersService {
 	@Transactional
 	public UserPaginatedResponse searchUsersByUsername(String username, Integer page, Integer size) {
 		Page<User> matchedUsers = userRepository.searchUserWithUsername(username, PageRequest.of(page, size));
-		
-		List<UserResponse> userResponses = matchedUsers.map(user -> userMapper.userToUserResponse(user)).stream().collect(Collectors.toList());
+
+		List<UserResponse> userResponses = matchedUsers.map(user -> userMapper.userToUserResponse(user)).stream()
+				.collect(Collectors.toList());
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setTotalElements(matchedUsers.getNumberOfElements());
 		paginationInfo.setTotalPages(matchedUsers.getTotalPages());
-		
-		UserPaginatedResponse userPaginatedResponse = new UserPaginatedResponse(); 
+
+		UserPaginatedResponse userPaginatedResponse = new UserPaginatedResponse();
 		userPaginatedResponse.setPages(userResponses);
 		userPaginatedResponse.setPaginationInfo(paginationInfo);
-		
+
 		return userPaginatedResponse;
 	}
 
@@ -164,9 +166,9 @@ public class UsersServiceImpl implements UsersService {
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails userDetails = userRepository.findUserByUsername(username);
-		if(userDetails == null)
+		if (userDetails == null)
 			throw new UsernameNotFoundException("El usuario " + username + " no se ha encontrado.");
-		
+
 		return userDetails;
 	}
 
@@ -177,7 +179,24 @@ public class UsersServiceImpl implements UsersService {
 
 		user.setEmail(userEmailChangeRequest.getNewEmail());
 		userRepository.save(user);
-		
+
+	}
+
+	@Override
+	@Transactional
+	public User findUserById(Long id) {
+		return userRepository.findById(id).orElse(null);
+
+	}
+
+	@Override
+	@Transactional
+	public UserResponse getUserById(Long idUser) throws EntityNotFoundException {
+		User user = userRepository.findById(idUser).orElse(null);
+		if(user == null)
+			throw new EntityNotFoundException("Usuario no encontrado");
+
+		return userMapper.userToUserResponse(user);
 	}
 
 }

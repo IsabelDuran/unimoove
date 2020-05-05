@@ -80,9 +80,9 @@ public class UsersApiController implements UsersApi {
 	}
 
 	public ResponseEntity<UserResponse> getUser(
-			@ApiParam(value = "By passing in the appropriate username, you can get the user.", required = true) @PathVariable("username") String username)
+			@ApiParam(value = "By passing in the appropriate user id, you can get the user.", required = true) @PathVariable("idUser") Long idUser)
 			throws EntityNotFoundException {
-		return new ResponseEntity<UserResponse>(userService.getUserByUsername(username), HttpStatus.OK);
+		return new ResponseEntity<UserResponse>(userService.getUserById(idUser), HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyCarBrand(

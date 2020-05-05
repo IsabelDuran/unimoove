@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import unimoove.users.UsersService;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -21,14 +23,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private String secret;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UsersService usersService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+		auth.userDetailsService(usersService).passwordEncoder(passwordEncoder);
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.permitAll().antMatchers("/authentication/login").permitAll().anyRequest().authenticated();
 
 		http.headers().frameOptions().disable();
-		http.addFilterBefore(new AuthenticationFilter(userDetailsService, secret),
+		http.addFilterBefore(new AuthenticationFilter(usersService, secret),
 				UsernamePasswordAuthenticationFilter.class);
 	}
 

@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public LoginResponse loginUser(LoginRequest loginRequest) throws UnsuccessfulLoginException {
 		User user = usersRepository.findUserByUsername(loginRequest.getUsername());
 		if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-			String token = Jwts.builder().setSubject(user.getUsername())
+			String token = Jwts.builder().setSubject(user.getId().toString())
 					.setExpiration(new Date(clock.now().getTime() + expiration * 1000))
 					.signWith(SignatureAlgorithm.HS256, secret).compact();
 			LoginResponse loginResponse = new LoginResponse();

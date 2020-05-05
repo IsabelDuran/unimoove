@@ -15,18 +15,23 @@ import javax.validation.constraints.*;
 
 public class UserRegistrationRequest {
 	@JsonProperty("username")
+	@Pattern(regexp="^[a-zA-Z0-9]+$",message="El nombre de usuario debe ser alfanúmerico y no debe contener espacios")
 	private String username = null;
 
 	@JsonProperty("name")
+	@NotBlank(message = "El nombre no puede estar vacío")
 	private String name = null;
 
 	@JsonProperty("lastname")
+	@NotBlank(message = "Los apellidos no pueden estar vacíos")
 	private String lastname = null;
 
 	@JsonProperty("password")
+	@NotBlank(message = "La contraseña no puede estar vacia")
 	private String password = null;
 
 	@JsonProperty("email")
+	@Email
 	private String email = null;
 
 	@JsonProperty("birthdate")
