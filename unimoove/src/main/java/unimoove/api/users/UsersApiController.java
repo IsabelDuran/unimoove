@@ -25,6 +25,7 @@ import unimoove.cars.CarsService;
 import unimoove.cars.MaxCarsPerUserReached;
 import unimoove.reservations.ReservationsService;
 import unimoove.trips.TripsService;
+import unimoove.users.UniqueEmailException;
 import unimoove.users.UniqueUsernameException;
 import unimoove.users.UsersService;
 import unimoove.utils.SecurityUtils;
@@ -110,7 +111,7 @@ public class UsersApiController implements UsersApi {
 
 	public ResponseEntity<Void> modifyUserEmail(
 			@ApiParam(value = "", required = true) @PathVariable("username") String username,
-			@ApiParam(value = "The new user's email") @Valid @RequestBody UserEmailChangeRequest body) {
+			@ApiParam(value = "The new user's email") @Valid @RequestBody UserEmailChangeRequest body) throws UniqueEmailException {
 		userService.modifyUserEmail(body, SecurityUtils.currentUserUsername());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

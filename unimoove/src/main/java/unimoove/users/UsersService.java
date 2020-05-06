@@ -29,6 +29,6 @@ public interface UsersService extends UserDetailsService{
 	public void modifyUserName(UserNameChangeRequest userNameChangeRequest, String username);
 	public void modifyUserPassword(UserPasswordChangeRequest userPasswordChangeRequest, String username);
 	public void modifyUserUsername(UserUsernameChangeRequest usernameChangeRequest, String username) throws UniqueUsernameException;
-	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username);
+	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username) throws UniqueEmailException;
 	public UserPaginatedResponse searchUsersByUsername(String username, Integer page, Integer size);
 }

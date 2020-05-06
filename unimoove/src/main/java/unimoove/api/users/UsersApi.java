@@ -29,6 +29,7 @@ import io.swagger.annotations.Authorization;
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.cars.MaxCarsPerUserReached;
+import unimoove.users.UniqueEmailException;
 import unimoove.users.UniqueUsernameException;
 
 @Api(value = "users", description = "the users API")
@@ -159,7 +160,7 @@ public interface UsersApi {
         method = RequestMethod.PUT)
     ResponseEntity<Void> modifyUserEmail(@ApiParam(value = "",required=true) @PathVariable("username") String username
 ,@ApiParam(value = "The new user's email"  )  @Valid @RequestBody UserEmailChangeRequest body
-);
+) throws UniqueEmailException;
 
 
     @ApiOperation(value = "Modifies the user's gender", nickname = "modifyUserGender", notes = "The user username you want to modify", authorizations = {

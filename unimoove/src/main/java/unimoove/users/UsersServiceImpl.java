@@ -174,11 +174,16 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	@Transactional
-	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username) {
+	public void modifyUserEmail(UserEmailChangeRequest userEmailChangeRequest, String username) throws UniqueEmailException {
 		User user = findUserByUsername(username);
 
 		user.setEmail(userEmailChangeRequest.getNewEmail());
-		userRepository.save(user);
+		try {
+			
+			userRepository.save(user);
+		} catch (DataIntegrityViolationException exception) {
+			throw new UniqueEmailException("El email introducido ya existe");
+		}
 
 	}
 
