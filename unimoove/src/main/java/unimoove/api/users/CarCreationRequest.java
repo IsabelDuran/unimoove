@@ -13,12 +13,15 @@ import javax.validation.constraints.*;
 
 public class CarCreationRequest   {
   @JsonProperty("plate")
+  @NotBlank
   private String plate = null;
 
   @JsonProperty("brand")
+  @NotBlank
   private String brand = null;
 
   @JsonProperty("model")
+  @NotBlank
   private String model = null;
 
   @JsonProperty("seats")
