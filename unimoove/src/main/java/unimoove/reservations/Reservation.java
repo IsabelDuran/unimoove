@@ -7,11 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import unimoove.trips.Trip;
 import unimoove.users.User;
 
 @Entity
+@Table(name="reservation")
 public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

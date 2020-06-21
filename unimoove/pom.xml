@@ -13,6 +13,10 @@
 		<springfox-version>2.9.2</springfox-version>
 		<org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
+		<sonar.projectKey>IsabelDuran_unimoove</sonar.projectKey>
+  <sonar.organization>isabelduran</sonar.organization>
+  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  <sonar.login>413b6402994499a85d9c70744481f3f79a01e327</sonar.login>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -60,6 +64,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -128,6 +133,11 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+			<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

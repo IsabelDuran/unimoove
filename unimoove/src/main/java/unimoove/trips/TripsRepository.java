@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TripsRepository extends CrudRepository<Trip, Long> {
 
-	@Query("select t from Trip t WHERE t.departurePlace LIKE :departurePlace AND t.arrivalPlace LIKE :arrivalPlace AND t.departureDateTime >= :departureDateTime")
+	@Query("select t from Trip t WHERE t.departurePlace LIKE :departurePlace AND t.arrivalPlace LIKE :arrivalPlace AND t.departureDateTime >= :departureDateTime ORDER BY t.departureDateTime")
 	public Page<Trip> searchTrips(@Param("departurePlace") String departurePlace,
 			@Param("arrivalPlace") String arrivalPlace, @Param("departureDateTime") OffsetDateTime departureDateTime,
 			Pageable page);
