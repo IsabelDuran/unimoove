@@ -122,5 +122,9 @@ public class Trip {
 		this.reservations = reservations;
 	}
 	
+	public void decreaseAvailableSeats() {
+		this.numberAvailableSeats = this.numberAvailableSeats - 1;
+	}
+	
 	
 }

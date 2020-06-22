@@ -4,6 +4,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import unimoove.api.trips.TripReservationResponse;
+import unimoove.api.users.UserReservationResponse;
+import unimoove.api.users.UserReservationResponse;
 
 import java.time.OffsetDateTime;
 
@@ -16,143 +18,167 @@ import javax.validation.constraints.*;
  */
 @Validated
 
-public class ReservationResponse   {
-  @JsonProperty("id")
-  private Long id = null;
+public class ReservationResponse {
+	@JsonProperty("id")
+	private Long id = null;
 
-  @JsonProperty("trip")
-  private TripReservationResponse trip = null;
+	@JsonProperty("trip")
+	private TripReservationResponse trip = null;
 
-  @JsonProperty("dateTimeReservation")
-  private OffsetDateTime dateTimeReservation = null;
+	@JsonProperty("user")
+	private UserReservationResponse user = null;
 
-  @JsonProperty("status")
-  private Integer status = null;
+	@JsonProperty("dateTimeReservation")
+	private OffsetDateTime dateTimeReservation = null;
 
-  public ReservationResponse id(Long id) {
-    this.id = id;
-    return this;
-  }
+	@JsonProperty("status")
+	private Integer status = null;
 
-  /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(example = "1", required = true, value = "")
-      @NotNull
+	public ReservationResponse id(Long id) {
+		this.id = id;
+		return this;
+	}
 
-    public Long getId() {
-    return id;
-  }
+	/**
+	 * Get id
+	 * 
+	 * @return id
+	 **/
+	@ApiModelProperty(example = "1", required = true, value = "")
+	@NotNull
 
-  public void setid(Long id) {
-    this.id = id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public ReservationResponse trip(TripReservationResponse trip) {
-    this.trip = trip;
-    return this;
-  }
+	public void setid(Long id) {
+		this.id = id;
+	}
 
-  /**
-   * Get trip
-   * @return trip
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
+	public ReservationResponse trip(TripReservationResponse trip) {
+		this.trip = trip;
+		return this;
+	}
 
-    @Valid
-    public TripReservationResponse getTrip() {
-    return trip;
-  }
+	/**
+	 * Get trip
+	 * 
+	 * @return trip
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
 
-  public void setTrip(TripReservationResponse trip) {
-    this.trip = trip;
-  }
+	@Valid
+	public TripReservationResponse getTrip() {
+		return trip;
+	}
 
-  public ReservationResponse dateTimeReservation(OffsetDateTime dateTimeReservation) {
-    this.dateTimeReservation = dateTimeReservation;
-    return this;
-  }
+	public void setTrip(TripReservationResponse trip) {
+		this.trip = trip;
+	}
 
-  /**
-   * Get dateTimeReservation
-   * @return dateTimeReservation
-  **/
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
-      @NotNull
+	public ReservationResponse dateTimeReservation(OffsetDateTime dateTimeReservation) {
+		this.dateTimeReservation = dateTimeReservation;
+		return this;
+	}
 
-    @Valid
-    public OffsetDateTime getDateTimeReservation() {
-    return dateTimeReservation;
-  }
+	/**
+	 * Get dateTimeReservation
+	 * 
+	 * @return dateTimeReservation
+	 **/
+	@ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
+	@NotNull
 
-  public void setDateTimeReservation(OffsetDateTime dateTimeReservation) {
-    this.dateTimeReservation = dateTimeReservation;
-  }
+	@Valid
+	public OffsetDateTime getDateTimeReservation() {
+		return dateTimeReservation;
+	}
 
-  public ReservationResponse status(Integer status) {
-    this.status = status;
-    return this;
-  }
+	public void setDateTimeReservation(OffsetDateTime dateTimeReservation) {
+		this.dateTimeReservation = dateTimeReservation;
+	}
 
-  /**
-   * Get status
-   * @return status
-  **/
-  @ApiModelProperty(example = "0", required = true, value = "")
-      @NotNull
+	public ReservationResponse status(Integer status) {
+		this.status = status;
+		return this;
+	}
 
-    public Integer getStatus() {
-    return status;
-  }
+	/**
+	 * Get status
+	 * 
+	 * @return status
+	 **/
+	@ApiModelProperty(example = "0", required = true, value = "")
+	@NotNull
 
-  public void setStatus(Integer status) {
-    this.status = status;
-  }
+	public Integer getStatus() {
+		return status;
+	}
 
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ReservationResponse reservationResponse = (ReservationResponse) o;
-    return Objects.equals(this.id, reservationResponse.id) &&
-        Objects.equals(this.trip, reservationResponse.trip) &&
-        Objects.equals(this.dateTimeReservation, reservationResponse.dateTimeReservation) &&
-        Objects.equals(this.status, reservationResponse.status);
-  }
+	/**
+	 * Get user
+	 * 
+	 * @return user
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, trip, dateTimeReservation, status);
-  }
+	@Valid
+	public UserReservationResponse getUser() {
+		return user;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ReservationResponse {\n");
-    
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    trip: ").append(toIndentedString(trip)).append("\n");
-    sb.append("    dateTimeReservation: ").append(toIndentedString(dateTimeReservation)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	public void setUser(UserReservationResponse user) {
+		this.user = user;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ReservationResponse reservationResponse = (ReservationResponse) o;
+		return Objects.equals(this.id, reservationResponse.id) && Objects.equals(this.trip, reservationResponse.trip)
+				&& Objects.equals(this.user, reservationResponse.user)
+				&& Objects.equals(this.dateTimeReservation, reservationResponse.dateTimeReservation)
+				&& Objects.equals(this.status, reservationResponse.status);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, trip, user, dateTimeReservation, status);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class ReservationResponse {\n");
+
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    trip: ").append(toIndentedString(trip)).append("\n");
+		sb.append("    user: ").append(toIndentedString(user)).append("\n");
+		sb.append("    dateTimeReservation: ").append(toIndentedString(dateTimeReservation)).append("\n");
+		sb.append("    status: ").append(toIndentedString(status)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
