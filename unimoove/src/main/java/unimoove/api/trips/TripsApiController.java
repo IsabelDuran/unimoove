@@ -94,4 +94,9 @@ public class TripsApiController implements TripsApi {
 		return new ResponseEntity<ReservationPaginatedResponse>(reservationsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
 	}
 
+	public ResponseEntity<Void> modifyTripStatus(String idTrip, @Valid TripStatusChangeRequest body) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
