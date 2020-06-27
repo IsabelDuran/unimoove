@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import unimoove.api.reservations.ReservationCreationRequest;
 import unimoove.api.reservations.ReservationPaginatedResponse;
 import unimoove.api.reservations.ReservationResponse;
+import unimoove.api.reservations.ReservationStateChangeRequest;
 import unimoove.api.utils.PaginationInfo;
 import unimoove.trips.Trip;
 import unimoove.trips.TripsRepository;
@@ -27,6 +28,7 @@ public class ReservationsServiceImpl implements ReservationsService {
 
 	private static final int STATUS_PENDING = 0;
 	private static final int STATUS_FULL = 1;
+	private static final int STATUS_CANCELLED = 3;
 
 	private ReservationsRepository reservationsRepository;
 
@@ -125,6 +127,17 @@ public class ReservationsServiceImpl implements ReservationsService {
 
 		return reservationPaginatedResponse;
 	}
+	
+	@Override
+	@Transactional
+	public void modifyReservationState(ReservationStateChangeRequest reservationStateChangeRequest,
+			String idReservation) {
+		Reservation reservation = reservationsRepository.findById(Long.parseLong(idReservation)).get();
+		reservation.setStatus(STATUS_CANCELLED);
+		
+		reservationsRepository.save(reservation);
+		
+	}
 
 	private User getUser() {
 		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
@@ -132,5 +145,7 @@ public class ReservationsServiceImpl implements ReservationsService {
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
 	}
+
+
 
 }

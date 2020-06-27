@@ -43,8 +43,8 @@ public class ReservationsApiController implements ReservationsApi {
 
 	@Override
 	public ResponseEntity<Void> modifyReservationStatus(String idReservation, @Valid ReservationStateChangeRequest body) {
-		// TODO Auto-generated method stub
-		return null;
+		reservationsService.modifyReservationState(body, idReservation);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 }
