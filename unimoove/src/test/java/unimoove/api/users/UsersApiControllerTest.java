@@ -64,7 +64,7 @@ public class UsersApiControllerTest {
 
 		try {
 			String registrationRequest = "{\n" + 
-					"  \"birthdate\": \"1999-01-01\",\n" + 
+					"  \"birthdate\": \"1999-02-11\",\n" + 
 					"  \"email\": \"isa@example.com\",\n" + 
 					"  \"gender\": 1,\n" + 
 					"  \"lastname\": \"Duran\",\n" + 
@@ -78,7 +78,7 @@ public class UsersApiControllerTest {
 
 			User user = new User("Isabel", "Duran", "isa",
 					"$2y$11$QheqQcllDhUDCxpR7GXcE.Dh8BBGZZFft.ljptQtb6iZs9DGyLvnq", "isa@example.com",
-					LocalDate.parse("01/01/1999", formatter), GENDER_FEMALE, ROLE_USER);
+					LocalDate.parse("11/02/1999", formatter), GENDER_FEMALE, ROLE_USER);
 
 			User resultUser = usersRepository.findUserByUsername("isa");
 			assertThat(resultUser.getName(), equalTo(user.getName()));

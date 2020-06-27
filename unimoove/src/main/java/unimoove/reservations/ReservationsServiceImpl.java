@@ -26,13 +26,14 @@ import unimoove.utils.SecurityUtils;
 public class ReservationsServiceImpl implements ReservationsService {
 
 	private static final int STATUS_PENDING = 0;
+	private static final int STATUS_FULL = 1;
 
 	private ReservationsRepository reservationsRepository;
 
 	private UsersRepository usersRepository;
 
 	private TripsRepository tripsRepository;
-	
+
 	private ReservationMapper reservationMapper;
 
 	@Autowired
@@ -47,17 +48,25 @@ public class ReservationsServiceImpl implements ReservationsService {
 
 	@Override
 	@Transactional
-	public void addReservation(ReservationCreationRequest reservationCreationRequest) {
+	public void addReservation(ReservationCreationRequest reservationCreationRequest) throws FullTripException {
 		Trip trip = tripsRepository.findById(reservationCreationRequest.getIdTrip()).orElse(null);
-		User user = getUser();
-		Reservation reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
-		reservation.setUser(user);
-		user.getReservations().add(reservation);
-		trip.getReservations().add(reservation);
+		if (trip.getState() == 0) {
+			User user = getUser();
+			Reservation reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
+			reservation.setUser(user);
+			user.getReservations().add(reservation);
+			trip.getReservations().add(reservation);
+			trip.decreaseAvailableSeats();
+			if(trip.getNumberAvailableSeats() == 0) {
+				trip.setState(STATUS_FULL);
+			}
 
-		reservationsRepository.save(reservation);
-		tripsRepository.save(trip);
-		usersRepository.save(user);
+			reservationsRepository.save(reservation);
+			tripsRepository.save(trip);
+			usersRepository.save(user);
+		} else {
+			throw new FullTripException("The trip is already full");
+		}
 
 	}
 
@@ -67,53 +76,53 @@ public class ReservationsServiceImpl implements ReservationsService {
 		Reservation reservation = reservationsRepository.findById(Long.parseLong(idReservation)).get();
 		Trip trip = tripsRepository.findById(reservation.getTrip().getId()).orElse(null);
 		User user = getUser();
-		
+
 		user.getReservations().remove(reservation);
 		trip.getReservations().remove(reservation);
-		
+
 		reservationsRepository.delete(reservation);
 		tripsRepository.save(trip);
 		usersRepository.save(user);
 	}
-	
+
 	@Override
 	@Transactional
 	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size) {
 		Page<Reservation> matchedReservations = reservationsRepository
 				.searchReservationsByIdTrip(Long.parseLong(idTrip), PageRequest.of(page, size));
 		List<ReservationResponse> reservationResponses = matchedReservations
-				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
-				.stream().collect(Collectors.toList());
-		
+				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation)).stream()
+				.collect(Collectors.toList());
+
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
 		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
-		
+
 		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
 		reservationPaginatedResponse.setPages(reservationResponses);
 		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
-		
+
 		return reservationPaginatedResponse;
-		
+
 	}
 
 	@Override
 	@Transactional
 	public ReservationPaginatedResponse getUserReservations(String username, Integer page, Integer size) {
-		Page<Reservation> matchedReservations = reservationsRepository
-				.searchUserReservations(usersRepository.findUserByUsername(username).getId(), PageRequest.of(page, size));
+		Page<Reservation> matchedReservations = reservationsRepository.searchUserReservations(
+				usersRepository.findUserByUsername(username).getId(), PageRequest.of(page, size));
 		List<ReservationResponse> reservationResponses = matchedReservations
-				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation))
-				.stream().collect(Collectors.toList());
-		
+				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation)).stream()
+				.collect(Collectors.toList());
+
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setTotalElements(matchedReservations.getNumberOfElements());
 		paginationInfo.setTotalPages(matchedReservations.getTotalPages());
-		
+
 		ReservationPaginatedResponse reservationPaginatedResponse = new ReservationPaginatedResponse();
 		reservationPaginatedResponse.setPages(reservationResponses);
 		reservationPaginatedResponse.setPaginationInfo(paginationInfo);
-		
+
 		return reservationPaginatedResponse;
 	}
 
@@ -123,7 +132,5 @@ public class ReservationsServiceImpl implements ReservationsService {
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
 	}
-
-
 
 }

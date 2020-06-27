@@ -86,6 +86,17 @@ public interface TripsApi {
 			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
 			@ApiParam(value = "The trip's new number of available seats") @Valid @RequestBody TripNumberAvailableSeatsChangeRequest body);
 
+	@ApiOperation(value = "Modifies the trip's status", nickname = "modifyTripStatus", notes = "The trip ID for the trip you want to modify", authorizations = {
+			@Authorization(value = "ApiKeyAuth") }, tags = { "Trips", })
+	@ApiResponses(value = { @ApiResponse(code = 400, message = "bad input parameter"),
+			@ApiResponse(code = 200, message = "operation completed successfully"),
+			@ApiResponse(code = 401, message = "The requested page needs a username and a password") })
+	@RequestMapping(value = "/trips/{idTrip}/status", consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<Void> modifyTripStatus(
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
+			@ApiParam(value = "The trip's new status") @Valid @RequestBody TripStatusChangeRequest body);
+	
 	@ApiOperation(value = "Searches for trips", nickname = "searchTrips", notes = "Searches for trips with the specified departure and arrival place and date.", response = TripPaginatedResponse.class, authorizations = {
 			@Authorization(value = "ApiKeyAuth") }, tags = { "Trips", })
 	@ApiResponses(value = {
@@ -113,14 +124,5 @@ public interface TripsApi {
 			@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 	
-	@ApiOperation(value = "Modifies the trip's status", nickname = "modifyTripStatus", notes = "The trip ID for the trip you want to modify", authorizations = {
-			@Authorization(value = "ApiKeyAuth") }, tags = { "Trips", })
-	@ApiResponses(value = { @ApiResponse(code = 400, message = "bad input parameter"),
-			@ApiResponse(code = 200, message = "operation completed successfully"),
-			@ApiResponse(code = 401, message = "The requested page needs a username and a password") })
-	@RequestMapping(value = "/trips/{idTrip}/status", consumes = {
-			"application/json" }, method = RequestMethod.PUT)
-	ResponseEntity<Void> modifyTripStatus(
-			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
-			@ApiParam(value = "The trip's new status") @Valid @RequestBody TripStatusChangeRequest body);
+
 }

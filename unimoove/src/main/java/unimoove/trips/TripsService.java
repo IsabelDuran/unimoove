@@ -9,6 +9,7 @@ import unimoove.api.trips.TripDepartureDateTimeChangeRequest;
 import unimoove.api.trips.TripDeparturePlaceChangeRequest;
 import unimoove.api.trips.TripNumberAvailableSeatsChangeRequest;
 import unimoove.api.trips.TripPaginatedResponse;
+import unimoove.api.trips.TripStatusChangeRequest;
 
 @Service
 public interface TripsService {
@@ -18,6 +19,7 @@ public interface TripsService {
 	public void modifyTripDepartureDateTime(TripDepartureDateTimeChangeRequest tripDepartureDateTimeChangeRequest, String idTrip);
 	public void modifyTripDeparturePlace(TripDeparturePlaceChangeRequest tripDeparturePlaceChangeRequest, String idTrip);
 	public void modifyTripNumberAvailableSeats(TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, String idTrip);
+	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, String idTrip);
 	public TripPaginatedResponse searchTrips(String departurePlace, String arrivalPlace, String departureDateTime, Integer page, Integer size);
 	public TripPaginatedResponse obtainUserTrips(String username, Integer page, Integer size);
 }

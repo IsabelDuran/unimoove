@@ -77,6 +77,11 @@ public class TripsApiController implements TripsApi {
 		tripsService.modifyTripNumberAvailableSeats(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
+	public ResponseEntity<Void> modifyTripStatus(String idTrip, @Valid TripStatusChangeRequest body) {
+		tripsService.modifyTripStatus(body, idTrip);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 
 	public ResponseEntity<TripPaginatedResponse> searchTrips(
 			@ApiParam(value = "the departure place for the trip") @Valid @RequestParam(value = "departurePlace", required = false) String departurePlace,
@@ -92,11 +97,6 @@ public class TripsApiController implements TripsApi {
 	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(String idTrip, @Valid Integer page,
 			@Valid Integer size) {
 		return new ResponseEntity<ReservationPaginatedResponse>(reservationsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
-	}
-
-	public ResponseEntity<Void> modifyTripStatus(String idTrip, @Valid TripStatusChangeRequest body) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

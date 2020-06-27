@@ -2,6 +2,7 @@ package unimoove.trips;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,16 +20,17 @@ import unimoove.api.trips.TripDeparturePlaceChangeRequest;
 import unimoove.api.trips.TripNumberAvailableSeatsChangeRequest;
 import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.api.trips.TripResponse;
+import unimoove.api.trips.TripStatusChangeRequest;
 import unimoove.api.utils.PaginationInfo;
-import unimoove.reservations.ReservationMapper;
-import unimoove.reservations.ReservationsRepository;
+import unimoove.reservations.Reservation;
 import unimoove.users.User;
 import unimoove.users.UsersRepository;
 import unimoove.utils.SecurityUtils;
 
 @Service
 public class TripsServiceImp implements TripsService {
-
+	private static final int STATUS_CANCELLED = 3;
+	
 	private TripsRepository tripsRepository;
 
 	private UsersRepository usersRepository;
@@ -107,6 +109,21 @@ public class TripsServiceImp implements TripsService {
 		trip.setNumberAvailableSeats(tripNumberAvailableSeatsChangeRequest.getNewNumberAvailableSeats());
 
 		tripsRepository.save(trip);
+	}
+	
+	@Override
+	@Transactional
+	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, String idTrip) {
+		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
+		trip.setState(tripStatusChangeRequest.getNewStatus());
+		Set<Reservation> reservations = trip.getReservations();
+		
+		for (Reservation reservation : reservations) {
+			reservation.setStatus(STATUS_CANCELLED);
+		}
+		
+		tripsRepository.save(trip);
+		
 	}
 
 	@Override

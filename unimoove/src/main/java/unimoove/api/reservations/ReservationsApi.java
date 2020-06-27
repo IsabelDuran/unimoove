@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
+import unimoove.reservations.FullTripException;
 
 @Api(value = "reservations", description = "the reservations API")
 public interface ReservationsApi {
@@ -37,7 +38,7 @@ public interface ReservationsApi {
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> addReservation(@ApiParam(value = "Reservation to add"  )  @Valid @RequestBody ReservationCreationRequest body
-);
+) throws FullTripException;
 
 
     @ApiOperation(value = "Deletes a reservation", nickname = "deleteReservation", notes = "", authorizations = {
@@ -51,5 +52,16 @@ public interface ReservationsApi {
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteReservation(@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.",required=true) @PathVariable("idReservation") String idReservation
 );
+    
+    @ApiOperation(value = "Modifies the reservation's state", nickname = "modifyReservationState", notes = "The reservation ID for the reservation you want to modify", authorizations = {
+			@Authorization(value = "ApiKeyAuth") }, tags = { "Reservations", })
+	@ApiResponses(value = { @ApiResponse(code = 400, message = "bad input parameter"),
+			@ApiResponse(code = 200, message = "operation completed successfully"),
+			@ApiResponse(code = 401, message = "The requested page needs a username and a password") })
+	@RequestMapping(value = "/reservations/{idReservation}/state", consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<Void> modifyReservationStatus(
+			@ApiParam(value = "", required = true) @PathVariable("idReservation") String idReservation,
+			@ApiParam(value = "The reservation's new status") @Valid @RequestBody ReservationStateChangeRequest body);
 
 }

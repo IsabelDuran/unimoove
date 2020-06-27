@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import unimoove.api.utils.ApiError;
 import unimoove.authentication.UnsuccessfulLoginException;
 import unimoove.cars.MaxCarsPerUserReached;
+import unimoove.reservations.FullTripException;
 import unimoove.users.UniqueUsernameException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -56,6 +57,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(MaxCarsPerUserReached.class)
 	protected ResponseEntity<Object> handleMaxCarsPerUserReached(MaxCarsPerUserReached ex) {
+		ApiError response = new ApiError(HttpStatus.CONFLICT);
+		response.setMessage(ex.getMessage());
+		return buildResponseEntity(response);
+	}
+	
+	@ExceptionHandler(FullTripException.class)
+	protected ResponseEntity<Object> handleFullTripException(FullTripException ex) {
 		ApiError response = new ApiError(HttpStatus.CONFLICT);
 		response.setMessage(ex.getMessage());
 		return buildResponseEntity(response);
