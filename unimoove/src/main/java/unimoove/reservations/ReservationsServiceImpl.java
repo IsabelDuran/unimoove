@@ -28,7 +28,6 @@ public class ReservationsServiceImpl implements ReservationsService {
 
 	private static final int STATUS_PENDING = 0;
 	private static final int STATUS_FULL = 1;
-	private static final int STATUS_CANCELLED = 3;
 
 	private ReservationsRepository reservationsRepository;
 
@@ -133,7 +132,7 @@ public class ReservationsServiceImpl implements ReservationsService {
 	public void modifyReservationState(ReservationStateChangeRequest reservationStateChangeRequest,
 			String idReservation) {
 		Reservation reservation = reservationsRepository.findById(Long.parseLong(idReservation)).get();
-		reservation.setStatus(STATUS_CANCELLED);
+		reservation.setStatus(reservationStateChangeRequest.getnewState());
 		
 		reservationsRepository.save(reservation);
 		

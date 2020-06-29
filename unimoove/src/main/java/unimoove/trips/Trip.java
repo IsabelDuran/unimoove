@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import unimoove.cars.Car;
 import unimoove.reservations.Reservation;
 import unimoove.users.User;
 
@@ -37,11 +38,14 @@ public class Trip {
 	@OneToMany
 	private Set<Reservation> reservations;
 	
+	@ManyToOne
+	private Car car;
+
 	public Trip() {
 	}
 
 	public Trip(String departurePlace, String arrivalPlace, OffsetDateTime departureDateTime,
-			Integer numberAvailableSeats, BigDecimal price, Integer state, User user) {
+			Integer numberAvailableSeats, BigDecimal price, Integer state, User user, Car car) {
 		super();
 		this.departurePlace = departurePlace;
 		this.arrivalPlace = arrivalPlace;
@@ -50,6 +54,7 @@ public class Trip {
 		this.price = price;
 		this.state = state;
 		this.user = user;
+		this.car = car;
 	}
 
 
@@ -112,6 +117,14 @@ public class Trip {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Car getCar() {
+		return car;
+	}
+
+	public void setCar(Car car) {
+		this.car = car;
 	}
 
 	public Set<Reservation> getReservations() {

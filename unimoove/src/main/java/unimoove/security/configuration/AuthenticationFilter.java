@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
@@ -29,7 +28,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 	private Clock clock = DefaultClock.INSTANCE;
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private String secret;
 
@@ -52,7 +51,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 				if (idUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 					UserDetails userDetails = usersService.findUserById(idUser);
-					logger.debug("Se ha obtenido el usuario " + userDetails.getUsername());
+					log.debug("Se ha obtenido el usuario " + userDetails.getUsername());
 					if (isTokenNonExpired(jws)) {
 						UsernamePasswordAuthenticationToken usernamePAT = new UsernamePasswordAuthenticationToken(
 								userDetails, null, userDetails.getAuthorities());
@@ -60,7 +59,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 					}
 				}
 			} catch (JwtException ex) {
-				logger.error(ex.getMessage());
+				log.error(ex.getMessage());
 			}
 		}
 
