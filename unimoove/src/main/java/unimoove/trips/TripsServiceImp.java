@@ -32,22 +32,22 @@ import unimoove.utils.SecurityUtils;
 @Service
 public class TripsServiceImp implements TripsService {
 	private static final int STATUS_CANCELLED = 3;
-	
+
 	private TripsRepository tripsRepository;
 
 	private UsersRepository usersRepository;
-	
+
 	private CarsRepository carsRepository;
-	
+
 	private TripMapper tripMapper;
 
-
-	
 	@Autowired
-	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository, TripMapper tripMapper) {
+	public TripsServiceImp(TripsRepository tripsRepository, UsersRepository usersRepository,
+			CarsRepository carsRepository, TripMapper tripMapper) {
 		super();
 		this.tripsRepository = tripsRepository;
 		this.usersRepository = usersRepository;
+		this.carsRepository = carsRepository;
 		this.tripMapper = tripMapper;
 	}
 
@@ -56,9 +56,11 @@ public class TripsServiceImp implements TripsService {
 	public void addTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = getTrip(tripCreationRequest);
 		User user = getUser();
-//		Car car = carsRepository.findById(tripCreationRequest.getCar()).orElse(null);
-//		if(car != null)
-//			trip.setCar(car);
+		if(tripCreationRequest.getIdCar() != null) {
+			Car car = carsRepository.findById(tripCreationRequest.getIdCar()).orElse(null);
+			if (car != null)
+				trip.setCar(car);
+		}
 		trip.setUser(user);
 		user.getTrips().add(tripsRepository.save(trip));
 
@@ -66,7 +68,6 @@ public class TripsServiceImp implements TripsService {
 		usersRepository.save(user);
 
 	}
-
 
 	@Override
 	@Transactional
@@ -118,20 +119,20 @@ public class TripsServiceImp implements TripsService {
 
 		tripsRepository.save(trip);
 	}
-	
+
 	@Override
 	@Transactional
 	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, String idTrip) {
 		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
 		trip.setState(tripStatusChangeRequest.getNewStatus());
 		Set<Reservation> reservations = trip.getReservations();
-		
+
 		for (Reservation reservation : reservations) {
 			reservation.setStatus(STATUS_CANCELLED);
 		}
-		
+
 		tripsRepository.save(trip);
-		
+
 	}
 
 	@Override
@@ -158,9 +159,8 @@ public class TripsServiceImp implements TripsService {
 	@Override
 	@Transactional
 	public TripPaginatedResponse obtainUserTrips(String username, Integer page, Integer size) {
-		Page<Trip> matchedTrips = tripsRepository
-				.searchUserTrip(usersRepository
-						.findUserByUsernameWithTrips(username).getId(), PageRequest.of(page, size));
+		Page<Trip> matchedTrips = tripsRepository.searchUserTrip(
+				usersRepository.findUserByUsernameWithTrips(username).getId(), PageRequest.of(page, size));
 		List<TripResponse> tripResponses = matchedTrips.map(trip -> tripMapper.tripToTripResponse(trip)).stream()
 				.collect(Collectors.toList());
 
@@ -174,7 +174,7 @@ public class TripsServiceImp implements TripsService {
 
 		return tripPaginatedResponse;
 	}
-	
+
 	private Trip getTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = tripMapper.tripCreationRequestToTrip(tripCreationRequest);
 		return trip;
@@ -182,7 +182,7 @@ public class TripsServiceImp implements TripsService {
 
 	private User getUser() {
 		User user = usersRepository.findUserByUsername(SecurityUtils.currentUserUsername());
-		if(user == null)
+		if (user == null)
 			throw new EntityNotFoundException("Usuario no encontrado");
 		return user;
 	}

@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.IdClass;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -14,168 +16,199 @@ import javax.validation.constraints.*;
  */
 @Validated
 
-public class TripCreationRequest   {
-  @JsonProperty("departurePlace")
-  private String departurePlace = null;
+public class TripCreationRequest {
+	@JsonProperty("departurePlace")
+	private String departurePlace = null;
 
-  @JsonProperty("arrivalPlace")
-  private String arrivalPlace = null;
+	@JsonProperty("arrivalPlace")
+	private String arrivalPlace = null;
 
-  @JsonProperty("departureDateTime")
-  private OffsetDateTime departureDateTime = null;
+	@JsonProperty("departureDateTime")
+	private OffsetDateTime departureDateTime = null;
 
-  @JsonProperty("numberAvailableSeats")
-  private Integer numberAvailableSeats = null;
+	@JsonProperty("numberAvailableSeats")
+	private Integer numberAvailableSeats = null;
 
-  @JsonProperty("price")
-  private BigDecimal price = null;
+	@JsonProperty("price")
+	private BigDecimal price = null;
 
-  public TripCreationRequest departurePlace(String departurePlace) {
-    this.departurePlace = departurePlace;
-    return this;
-  }
+	@JsonProperty("idCar")
+	private Long idCar = null;
 
-  /**
-   * Get departurePlace
-   * @return departurePlace
-  **/
-  @ApiModelProperty(example = "CA", required = true, value = "")
-      @NotNull
+	public TripCreationRequest departurePlace(String departurePlace) {
+		this.departurePlace = departurePlace;
+		return this;
+	}
 
-    public String getDeparturePlace() {
-    return departurePlace;
-  }
+	/**
+	 * Get departurePlace
+	 * 
+	 * @return departurePlace
+	 **/
+	@ApiModelProperty(example = "CA", required = true, value = "")
+	@NotNull
 
-  public void setDeparturePlace(String departurePlace) {
-    this.departurePlace = departurePlace;
-  }
+	public String getDeparturePlace() {
+		return departurePlace;
+	}
 
-  public TripCreationRequest arrivalPlace(String arrivalPlace) {
-    this.arrivalPlace = arrivalPlace;
-    return this;
-  }
+	public void setDeparturePlace(String departurePlace) {
+		this.departurePlace = departurePlace;
+	}
 
-  /**
-   * Get arrivalPlace
-   * @return arrivalPlace
-  **/
-  @ApiModelProperty(example = "ESI", required = true, value = "")
-      @NotNull
+	public TripCreationRequest arrivalPlace(String arrivalPlace) {
+		this.arrivalPlace = arrivalPlace;
+		return this;
+	}
 
-    public String getArrivalPlace() {
-    return arrivalPlace;
-  }
+	/**
+	 * Get arrivalPlace
+	 * 
+	 * @return arrivalPlace
+	 **/
+	@ApiModelProperty(example = "ESI", required = true, value = "")
+	@NotNull
 
-  public void setArrivalPlace(String arrivalPlace) {
-    this.arrivalPlace = arrivalPlace;
-  }
+	public String getArrivalPlace() {
+		return arrivalPlace;
+	}
 
-  public TripCreationRequest departureDateTime(OffsetDateTime departureDateTime) {
-    this.departureDateTime = departureDateTime;
-    return this;
-  }
+	public void setArrivalPlace(String arrivalPlace) {
+		this.arrivalPlace = arrivalPlace;
+	}
 
-  /**
-   * Get departureDateTime
-   * @return departureDateTime
-  **/
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
-      @NotNull
+	public TripCreationRequest departureDateTime(OffsetDateTime departureDateTime) {
+		this.departureDateTime = departureDateTime;
+		return this;
+	}
 
-    @Valid
-    public OffsetDateTime getDepartureDateTime() {
-    return departureDateTime;
-  }
+	/**
+	 * Get departureDateTime
+	 * 
+	 * @return departureDateTime
+	 **/
+	@ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
+	@NotNull
 
-  public void setDepartureDateTime(OffsetDateTime departureDateTime) {
-    this.departureDateTime = departureDateTime;
-  }
+	@Valid
+	public OffsetDateTime getDepartureDateTime() {
+		return departureDateTime;
+	}
 
-  public TripCreationRequest numberAvailableSeats(Integer numberAvailableSeats) {
-    this.numberAvailableSeats = numberAvailableSeats;
-    return this;
-  }
+	public void setDepartureDateTime(OffsetDateTime departureDateTime) {
+		this.departureDateTime = departureDateTime;
+	}
 
-  /**
-   * Get numberAvailableSeats
-   * @return numberAvailableSeats
-  **/
-  @ApiModelProperty(example = "2", required = true, value = "")
-      @NotNull
+	public TripCreationRequest numberAvailableSeats(Integer numberAvailableSeats) {
+		this.numberAvailableSeats = numberAvailableSeats;
+		return this;
+	}
 
-    public Integer getNumberAvailableSeats() {
-    return numberAvailableSeats;
-  }
+	/**
+	 * Get numberAvailableSeats
+	 * 
+	 * @return numberAvailableSeats
+	 **/
+	@ApiModelProperty(example = "2", required = true, value = "")
+	@NotNull
 
-  public void setNumberAvailableSeats(Integer numberAvailableSeats) {
-    this.numberAvailableSeats = numberAvailableSeats;
-  }
+	public Integer getNumberAvailableSeats() {
+		return numberAvailableSeats;
+	}
 
-  public TripCreationRequest price(BigDecimal price) {
-    this.price = price;
-    return this;
-  }
+	public void setNumberAvailableSeats(Integer numberAvailableSeats) {
+		this.numberAvailableSeats = numberAvailableSeats;
+	}
 
-  /**
-   * Get price
-   * @return price
-  **/
-  @ApiModelProperty(example = "1.0", required = true, value = "")
-      @NotNull
+	public TripCreationRequest price(BigDecimal price) {
+		this.price = price;
+		return this;
+	}
 
-    @Valid
-    public BigDecimal getPrice() {
-    return price;
-  }
+	/**
+	 * Get price
+	 * 
+	 * @return price
+	 **/
+	@ApiModelProperty(example = "1.0", required = true, value = "")
+	@NotNull
 
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
+	@Valid
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public TripCreationRequest idCar(Long idCar) {
+		this.idCar = idCar;
+		return this;
+	}
+	/**
+	 * Get idCar
+	 * 
+	 * @return idCar
+	 **/
+	@ApiModelProperty(example = "2", required = false, value = "")
+
+	@Valid
+	public Long getIdCar() {
+		return idCar;
+	}
+
+	public void setIdCar(Long idCar) {
+		this.idCar = idCar;
+	}
+	
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		TripCreationRequest tripCreationRequest = (TripCreationRequest) o;
+		return Objects.equals(this.departurePlace, tripCreationRequest.departurePlace)
+				&& Objects.equals(this.arrivalPlace, tripCreationRequest.arrivalPlace)
+				&& Objects.equals(this.departureDateTime, tripCreationRequest.departureDateTime)
+				&& Objects.equals(this.numberAvailableSeats, tripCreationRequest.numberAvailableSeats)
+				&& Objects.equals(this.price, tripCreationRequest.price)
+				&& Objects.equals(this.idCar, tripCreationRequest.idCar);
+	}
 
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TripCreationRequest tripCreationRequest = (TripCreationRequest) o;
-    return Objects.equals(this.departurePlace, tripCreationRequest.departurePlace) &&
-        Objects.equals(this.arrivalPlace, tripCreationRequest.arrivalPlace) &&
-        Objects.equals(this.departureDateTime, tripCreationRequest.departureDateTime) &&
-        Objects.equals(this.numberAvailableSeats, tripCreationRequest.numberAvailableSeats) &&
-        Objects.equals(this.price, tripCreationRequest.price);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, price, idCar);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, price);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TripCreationRequest {\n");
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TripCreationRequest {\n");
-    
-    sb.append("    departurePlace: ").append(toIndentedString(departurePlace)).append("\n");
-    sb.append("    arrivalPlace: ").append(toIndentedString(arrivalPlace)).append("\n");
-    sb.append("    departureDateTime: ").append(toIndentedString(departureDateTime)).append("\n");
-    sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
-    sb.append("    price: ").append(toIndentedString(price)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+		sb.append("    departurePlace: ").append(toIndentedString(departurePlace)).append("\n");
+		sb.append("    arrivalPlace: ").append(toIndentedString(arrivalPlace)).append("\n");
+		sb.append("    departureDateTime: ").append(toIndentedString(departureDateTime)).append("\n");
+		sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
+		sb.append("    price: ").append(toIndentedString(price)).append("\n");
+		sb.append("    idCar: ").append(toIndentedString(idCar)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

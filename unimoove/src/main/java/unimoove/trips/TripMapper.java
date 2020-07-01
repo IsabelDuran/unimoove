@@ -11,8 +11,8 @@ public interface TripMapper {
 	
 	@Mapping(target = "state", ignore = true)
 	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "car", ignore = true)
 	@Mapping(target = "reservations", ignore = true)
+	@Mapping(target = "car", ignore = true)
 	public Trip tripCreationRequestToTrip(TripCreationRequest tripCreationRequest);
 	
 	public TripResponse tripToTripResponse(Trip trip);
