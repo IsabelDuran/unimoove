@@ -22,6 +22,8 @@ import unimoove.api.trips.TripPaginatedResponse;
 import unimoove.api.trips.TripResponse;
 import unimoove.api.trips.TripStatusChangeRequest;
 import unimoove.api.utils.PaginationInfo;
+import unimoove.cars.Car;
+import unimoove.cars.CarsRepository;
 import unimoove.reservations.Reservation;
 import unimoove.users.User;
 import unimoove.users.UsersRepository;
@@ -35,7 +37,10 @@ public class TripsServiceImp implements TripsService {
 
 	private UsersRepository usersRepository;
 	
+	private CarsRepository carsRepository;
+	
 	private TripMapper tripMapper;
+
 
 	
 	@Autowired
@@ -51,6 +56,9 @@ public class TripsServiceImp implements TripsService {
 	public void addTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = getTrip(tripCreationRequest);
 		User user = getUser();
+//		Car car = carsRepository.findById(tripCreationRequest.getCar()).orElse(null);
+//		if(car != null)
+//			trip.setCar(car);
 		trip.setUser(user);
 		user.getTrips().add(tripsRepository.save(trip));
 

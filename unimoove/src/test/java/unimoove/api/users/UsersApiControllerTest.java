@@ -482,7 +482,7 @@ public class UsersApiControllerTest {
 
 			usersRepository.save(user);
 			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0,
-					user);
+					user, null);
 			tripsRepository.save(trip);
 
 			mvc.perform(get("/users/isa/trips").param("page", "0").param("size", "25")).andExpect(status().isOk())
