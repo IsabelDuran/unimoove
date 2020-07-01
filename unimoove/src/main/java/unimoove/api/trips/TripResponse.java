@@ -3,6 +3,8 @@ package unimoove.api.trips;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import unimoove.api.users.CarTripResponse;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
@@ -14,218 +16,251 @@ import javax.validation.constraints.*;
  */
 @Validated
 
-public class TripResponse   {
-  @JsonProperty("id")
-  private Long id = null;
+public class TripResponse {
+	@JsonProperty("id")
+	private Long id = null;
 
-  @JsonProperty("departurePlace")
-  private String departurePlace = null;
+	@JsonProperty("departurePlace")
+	private String departurePlace = null;
 
-  @JsonProperty("arrivalPlace")
-  private String arrivalPlace = null;
+	@JsonProperty("arrivalPlace")
+	private String arrivalPlace = null;
 
-  @JsonProperty("departureDateTime")
-  private OffsetDateTime departureDateTime = null;
+	@JsonProperty("departureDateTime")
+	private OffsetDateTime departureDateTime = null;
 
-  @JsonProperty("numberAvailableSeats")
-  private Integer numberAvailableSeats = null;
+	@JsonProperty("numberAvailableSeats")
+	private Integer numberAvailableSeats = null;
 
-  @JsonProperty("state")
-  private Integer state = null;
+	@JsonProperty("state")
+	private Integer state = null;
 
-  @JsonProperty("price")
-  private BigDecimal price = null;
+	@JsonProperty("price")
+	private BigDecimal price = null;
 
-  public TripResponse id(Long id) {
-    this.id = id;
-    return this;
-  }
+	@JsonProperty("car")
+	private CarTripResponse car = null;
 
-  /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(example = "1", required = true, value = "")
-      @NotNull
+	public TripResponse id(Long id) {
+		this.id = id;
+		return this;
+	}
 
-    public Long getId() {
-    return id;
-  }
+	/**
+	 * Get id
+	 * 
+	 * @return id
+	 **/
+	@ApiModelProperty(example = "1", required = true, value = "")
+	@NotNull
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public TripResponse departurePlace(String departurePlace) {
-    this.departurePlace = departurePlace;
-    return this;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  /**
-   * Get departurePlace
-   * @return departurePlace
-  **/
-  @ApiModelProperty(example = "CA", required = true, value = "")
-      @NotNull
+	public TripResponse departurePlace(String departurePlace) {
+		this.departurePlace = departurePlace;
+		return this;
+	}
 
-    public String getDeparturePlace() {
-    return departurePlace;
-  }
+	/**
+	 * Get departurePlace
+	 * 
+	 * @return departurePlace
+	 **/
+	@ApiModelProperty(example = "CA", required = true, value = "")
+	@NotNull
 
-  public void setDeparturePlace(String departurePlace) {
-    this.departurePlace = departurePlace;
-  }
+	public String getDeparturePlace() {
+		return departurePlace;
+	}
 
-  public TripResponse arrivalPlace(String arrivalPlace) {
-    this.arrivalPlace = arrivalPlace;
-    return this;
-  }
+	public void setDeparturePlace(String departurePlace) {
+		this.departurePlace = departurePlace;
+	}
 
-  /**
-   * Get arrivalPlace
-   * @return arrivalPlace
-  **/
-  @ApiModelProperty(example = "ESI", required = true, value = "")
-      @NotNull
+	public TripResponse arrivalPlace(String arrivalPlace) {
+		this.arrivalPlace = arrivalPlace;
+		return this;
+	}
 
-    public String getArrivalPlace() {
-    return arrivalPlace;
-  }
+	/**
+	 * Get arrivalPlace
+	 * 
+	 * @return arrivalPlace
+	 **/
+	@ApiModelProperty(example = "ESI", required = true, value = "")
+	@NotNull
 
-  public void setArrivalPlace(String arrivalPlace) {
-    this.arrivalPlace = arrivalPlace;
-  }
+	public String getArrivalPlace() {
+		return arrivalPlace;
+	}
 
-  public TripResponse departureDateTime(OffsetDateTime departureDateTime) {
-    this.departureDateTime = departureDateTime;
-    return this;
-  }
+	public void setArrivalPlace(String arrivalPlace) {
+		this.arrivalPlace = arrivalPlace;
+	}
 
-  /**
-   * Get departureDateTime
-   * @return departureDateTime
-  **/
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
-      @NotNull
+	public TripResponse departureDateTime(OffsetDateTime departureDateTime) {
+		this.departureDateTime = departureDateTime;
+		return this;
+	}
 
-    @Valid
-    public OffsetDateTime getDepartureDateTime() {
-    return departureDateTime;
-  }
+	/**
+	 * Get departureDateTime
+	 * 
+	 * @return departureDateTime
+	 **/
+	@ApiModelProperty(example = "2017-07-21T17:32:28Z", required = true, value = "")
+	@NotNull
 
-  public void setDepartureDateTime(OffsetDateTime departureDateTime) {
-    this.departureDateTime = departureDateTime;
-  }
+	@Valid
+	public OffsetDateTime getDepartureDateTime() {
+		return departureDateTime;
+	}
 
-  public TripResponse numberAvailableSeats(Integer numberAvailableSeats) {
-    this.numberAvailableSeats = numberAvailableSeats;
-    return this;
-  }
+	public void setDepartureDateTime(OffsetDateTime departureDateTime) {
+		this.departureDateTime = departureDateTime;
+	}
 
-  /**
-   * Get numberAvailableSeats
-   * @return numberAvailableSeats
-  **/
-  @ApiModelProperty(example = "2", required = true, value = "")
-      @NotNull
+	public TripResponse numberAvailableSeats(Integer numberAvailableSeats) {
+		this.numberAvailableSeats = numberAvailableSeats;
+		return this;
+	}
 
-    public Integer getNumberAvailableSeats() {
-    return numberAvailableSeats;
-  }
+	/**
+	 * Get numberAvailableSeats
+	 * 
+	 * @return numberAvailableSeats
+	 **/
+	@ApiModelProperty(example = "2", required = true, value = "")
+	@NotNull
 
-  public void setNumberAvailableSeats(Integer numberAvailableSeats) {
-    this.numberAvailableSeats = numberAvailableSeats;
-  }
+	public Integer getNumberAvailableSeats() {
+		return numberAvailableSeats;
+	}
 
-  public TripResponse state(Integer state) {
-    this.state = state;
-    return this;
-  }
+	public void setNumberAvailableSeats(Integer numberAvailableSeats) {
+		this.numberAvailableSeats = numberAvailableSeats;
+	}
 
-  /**
-   * Get state
-   * @return state
-  **/
-  @ApiModelProperty(example = "0", required = true, value = "")
-      @NotNull
+	public TripResponse state(Integer state) {
+		this.state = state;
+		return this;
+	}
 
-    public Integer getState() {
-    return state;
-  }
+	/**
+	 * Get state
+	 * 
+	 * @return state
+	 **/
+	@ApiModelProperty(example = "0", required = true, value = "")
+	@NotNull
 
-  public void setState(Integer state) {
-    this.state = state;
-  }
+	public Integer getState() {
+		return state;
+	}
 
-  public TripResponse price(BigDecimal price) {
-    this.price = price;
-    return this;
-  }
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
-  /**
-   * Get price
-   * @return price
-  **/
-  @ApiModelProperty(example = "1.0", required = true, value = "")
-      @NotNull
+	public TripResponse price(BigDecimal price) {
+		this.price = price;
+		return this;
+	}
 
-    @Valid
-    public BigDecimal getPrice() {
-    return price;
-  }
+	/**
+	 * Get price
+	 * 
+	 * @return price
+	 **/
+	@ApiModelProperty(example = "1.0", required = true, value = "")
+	@NotNull
 
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
+	@Valid
+	public BigDecimal getPrice() {
+		return price;
+	}
 
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TripResponse tripResponse = (TripResponse) o;
-    return Objects.equals(this.id, tripResponse.id) &&
-        Objects.equals(this.departurePlace, tripResponse.departurePlace) &&
-        Objects.equals(this.arrivalPlace, tripResponse.arrivalPlace) &&
-        Objects.equals(this.departureDateTime, tripResponse.departureDateTime) &&
-        Objects.equals(this.numberAvailableSeats, tripResponse.numberAvailableSeats) &&
-        Objects.equals(this.state, tripResponse.state) &&
-        Objects.equals(this.price, tripResponse.price);
-  }
+	public TripResponse car(CarTripResponse car) {
+		this.car = car;
+		return this;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, state, price);
-  }
+	/**
+	 * Get car
+	 * 
+	 * @return car
+	 **/
+	@ApiModelProperty(example = "1.0", required = true, value = "")
+	@NotNull
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TripResponse {\n");
-    
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    departurePlace: ").append(toIndentedString(departurePlace)).append("\n");
-    sb.append("    arrivalPlace: ").append(toIndentedString(arrivalPlace)).append("\n");
-    sb.append("    departureDateTime: ").append(toIndentedString(departureDateTime)).append("\n");
-    sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
-    sb.append("    state: ").append(toIndentedString(state)).append("\n");
-    sb.append("    price: ").append(toIndentedString(price)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	@Valid
+	public CarTripResponse getCar() {
+		return car;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	public void setCar(CarTripResponse car) {
+		this.car = car;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		TripResponse tripResponse = (TripResponse) o;
+		return Objects.equals(this.id, tripResponse.id)
+				&& Objects.equals(this.departurePlace, tripResponse.departurePlace)
+				&& Objects.equals(this.arrivalPlace, tripResponse.arrivalPlace)
+				&& Objects.equals(this.departureDateTime, tripResponse.departureDateTime)
+				&& Objects.equals(this.numberAvailableSeats, tripResponse.numberAvailableSeats)
+				&& Objects.equals(this.state, tripResponse.state)
+				&& Objects.equals(this.car, tripResponse.car);
+		
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, state, price, car);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TripResponse {\n");
+
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    departurePlace: ").append(toIndentedString(departurePlace)).append("\n");
+		sb.append("    arrivalPlace: ").append(toIndentedString(arrivalPlace)).append("\n");
+		sb.append("    departureDateTime: ").append(toIndentedString(departureDateTime)).append("\n");
+		sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
+		sb.append("    state: ").append(toIndentedString(state)).append("\n");
+		sb.append("    price: ").append(toIndentedString(price)).append("\n");
+		sb.append("    car: ").append(toIndentedString(car)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
