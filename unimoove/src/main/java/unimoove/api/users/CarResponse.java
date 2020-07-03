@@ -10,137 +10,161 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 
-public class CarResponse   {
-  @JsonProperty("plate")
-  private String plate = null;
+public class CarResponse {
+	@JsonProperty("id")
+	private Long id = null;
 
-  @JsonProperty("brand")
-  private String brand = null;
+	@JsonProperty("plate")
+	private String plate = null;
 
-  @JsonProperty("model")
-  private String model = null;
+	@JsonProperty("brand")
+	private String brand = null;
 
-  @JsonProperty("seats")
-  private Integer seats = null;
+	@JsonProperty("model")
+	private String model = null;
 
-  public CarResponse plate(String plate) {
-    this.plate = plate;
-    return this;
-  }
+	@JsonProperty("seats")
+	private Integer seats = null;
+	
+	public CarResponse id(Long id) {
+		this.id = id;
+		return this;
+	}
+	/**
+	 * Get id
+	 * 
+	 * @return id
+	 **/
+	@ApiModelProperty(example = "2", value = "")
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public CarResponse plate(String plate) {
+		this.plate = plate;
+		return this;
+	}
+	
+	/**
+	 * Get plate
+	 * 
+	 * @return plate
+	 **/
+	@ApiModelProperty(example = "9268 BAR", value = "")
 
-  /**
-   * Get plate
-   * @return plate
-  **/
-  @ApiModelProperty(example = "9268 BAR", value = "")
-  
-    public String getPlate() {
-    return plate;
-  }
+	public String getPlate() {
+		return plate;
+	}
 
-  public void setPlate(String plate) {
-    this.plate = plate;
-  }
+	public void setPlate(String plate) {
+		this.plate = plate;
+	}
 
-  public CarResponse brand(String brand) {
-    this.brand = brand;
-    return this;
-  }
+	public CarResponse brand(String brand) {
+		this.brand = brand;
+		return this;
+	}
 
-  /**
-   * Get brand
-   * @return brand
-  **/
-  @ApiModelProperty(example = "Fiat", value = "")
-  
-    public String getBrand() {
-    return brand;
-  }
+	/**
+	 * Get brand
+	 * 
+	 * @return brand
+	 **/
+	@ApiModelProperty(example = "Fiat", value = "")
 
-  public void setBrand(String brand) {
-    this.brand = brand;
-  }
+	public String getBrand() {
+		return brand;
+	}
 
-  public CarResponse model(String model) {
-    this.model = model;
-    return this;
-  }
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
 
-  /**
-   * Get model
-   * @return model
-  **/
-  @ApiModelProperty(example = "Marea Weekend", value = "")
-  
-    public String getModel() {
-    return model;
-  }
+	public CarResponse model(String model) {
+		this.model = model;
+		return this;
+	}
 
-  public void setModel(String model) {
-    this.model = model;
-  }
+	/**
+	 * Get model
+	 * 
+	 * @return model
+	 **/
+	@ApiModelProperty(example = "Marea Weekend", value = "")
 
-  public CarResponse seats(Integer seats) {
-    this.seats = seats;
-    return this;
-  }
+	public String getModel() {
+		return model;
+	}
 
-  /**
-   * Get seats
-   * @return seats
-  **/
-  @ApiModelProperty(example = "5", value = "")
-  
-    public Integer getSeats() {
-    return seats;
-  }
+	public void setModel(String model) {
+		this.model = model;
+	}
 
-  public void setSeats(Integer seats) {
-    this.seats = seats;
-  }
+	public CarResponse seats(Integer seats) {
+		this.seats = seats;
+		return this;
+	}
 
+	/**
+	 * Get seats
+	 * 
+	 * @return seats
+	 **/
+	@ApiModelProperty(example = "5", value = "")
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    CarResponse carResponse = (CarResponse) o;
-    return Objects.equals(this.plate, carResponse.plate) &&
-        Objects.equals(this.brand, carResponse.brand) &&
-        Objects.equals(this.model, carResponse.model) &&
-        Objects.equals(this.seats, carResponse.seats);
-  }
+	public Integer getSeats() {
+		return seats;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(plate, brand, model, seats);
-  }
+	public void setSeats(Integer seats) {
+		this.seats = seats;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class CarResponse {\n");
-    
-    sb.append("    plate: ").append(toIndentedString(plate)).append("\n");
-    sb.append("    brand: ").append(toIndentedString(brand)).append("\n");
-    sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    seats: ").append(toIndentedString(seats)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		CarResponse carResponse = (CarResponse) o;
+		return Objects.equals(this.plate, carResponse.plate) && Objects.equals(this.brand, carResponse.brand)
+				&& Objects.equals(this.model, carResponse.model) && Objects.equals(this.seats, carResponse.seats) 
+				&& Objects.equals(this.id, carResponse.id);
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, plate, brand, model, seats);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class CarResponse {\n");
+
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    plate: ").append(toIndentedString(plate)).append("\n");
+		sb.append("    brand: ").append(toIndentedString(brand)).append("\n");
+		sb.append("    model: ").append(toIndentedString(model)).append("\n");
+		sb.append("    seats: ").append(toIndentedString(seats)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
