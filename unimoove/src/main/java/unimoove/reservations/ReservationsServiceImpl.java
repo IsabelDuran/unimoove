@@ -51,46 +51,53 @@ public class ReservationsServiceImpl implements ReservationsService {
 	@Transactional
 	public void addReservation(ReservationCreationRequest reservationCreationRequest) throws FullTripException {
 		Trip trip = tripsRepository.findById(reservationCreationRequest.getIdTrip()).orElse(null);
-		if (trip.getState() == 0) {
-			User user = getUser();
-			Reservation reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
-			reservation.setUser(user);
-			user.getReservations().add(reservation);
-			trip.getReservations().add(reservation);
-			trip.decreaseAvailableSeats();
-			if(trip.getNumberAvailableSeats() == 0) {
-				trip.setState(STATUS_FULL);
+		if(trip != null) {
+			if (trip.getState() == 0) {
+				User user = getUser();
+				Reservation reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
+				reservation.setUser(user);
+				user.getReservations().add(reservation);
+				trip.getReservations().add(reservation);
+				trip.decreaseAvailableSeats();
+				if(trip.getNumberAvailableSeats() == 0) {
+					trip.setState(STATUS_FULL);
+				}
+				
+				reservationsRepository.save(reservation);
+				tripsRepository.save(trip);
+				usersRepository.save(user);
+			} else {
+				throw new FullTripException("The trip is already full");
 			}
-
-			reservationsRepository.save(reservation);
-			tripsRepository.save(trip);
-			usersRepository.save(user);
-		} else {
-			throw new FullTripException("The trip is already full");
+			
 		}
 
 	}
 
 	@Override
 	@Transactional
-	public void deleteReservation(String idReservation) {
-		Reservation reservation = reservationsRepository.findById(Long.parseLong(idReservation)).get();
-		Trip trip = tripsRepository.findById(reservation.getTrip().getId()).orElse(null);
-		User user = getUser();
-
-		user.getReservations().remove(reservation);
-		trip.getReservations().remove(reservation);
-
-		reservationsRepository.delete(reservation);
-		tripsRepository.save(trip);
-		usersRepository.save(user);
+	public void deleteReservation(Long idReservation) {
+		Reservation reservation = reservationsRepository.findById(idReservation).orElse(null);
+		if(reservation != null) {
+			Trip trip = tripsRepository.findById(reservation.getTrip().getId()).orElse(null);
+			User user = getUser();
+			
+			if(trip != null) {			
+				user.getReservations().remove(reservation);
+				trip.getReservations().remove(reservation);
+				
+				reservationsRepository.delete(reservation);
+				tripsRepository.save(trip);
+				usersRepository.save(user);
+			}
+		}
 	}
 
 	@Override
 	@Transactional
-	public ReservationPaginatedResponse getTripReservations(String idTrip, Integer page, Integer size) {
+	public ReservationPaginatedResponse getTripReservations(Long idTrip, Integer page, Integer size) {
 		Page<Reservation> matchedReservations = reservationsRepository
-				.searchReservationsByIdTrip(Long.parseLong(idTrip), PageRequest.of(page, size));
+				.searchReservationsByIdTrip(idTrip, PageRequest.of(page, size));
 		List<ReservationResponse> reservationResponses = matchedReservations
 				.map(reservation -> reservationMapper.reservationToReservationResponse(reservation)).stream()
 				.collect(Collectors.toList());
@@ -130,12 +137,13 @@ public class ReservationsServiceImpl implements ReservationsService {
 	@Override
 	@Transactional
 	public void modifyReservationState(ReservationStateChangeRequest reservationStateChangeRequest,
-			String idReservation) {
-		Reservation reservation = reservationsRepository.findById(Long.parseLong(idReservation)).get();
-		reservation.setStatus(reservationStateChangeRequest.getnewState());
-		
-		reservationsRepository.save(reservation);
-		
+			Long idReservation) {
+		Reservation reservation = reservationsRepository.findById(idReservation).orElse(null);
+		if(reservation != null) {
+			reservation.setStatus(reservationStateChangeRequest.getnewState());
+			
+			reservationsRepository.save(reservation);			
+		}
 	}
 
 	private User getUser() {

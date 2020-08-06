@@ -94,6 +94,39 @@ public class ReservationsApiControllerTest {
 	
 	@Test
 	@WithMockUser("isa")
+	public void testModifyReservationStatus() throws Exception {
+		Trip trip = null;
+		Reservation reservation = null;
+		try {
+			User user = createUser();
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			tripsRepository.save(trip).getId();
+			reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
+			Long idReservation = reservationsRepository.save(reservation).getId();
+			mvc.perform(put("/reservations/" + idReservation + "/state").contentType(MediaType.APPLICATION_JSON)
+					.content("{\"newState\": 1}")).andExpect(status().isOk());
+			
+			Collection<Reservation> reservations = (Collection<Reservation>) reservationsRepository.findAll();
+			reservation = reservations.iterator().next();
+			
+			assertThat(reservation.getStatus(), equalTo(1));
+			
+		} finally {
+			tripsRepository.save(trip);
+			User user = usersRepository.findUserByUsernameWithTrips("isa");
+			user.getTrips().clear();
+			usersRepository.save(user);
+			user = usersRepository.findUserByUsernameWithReservations("isa");
+			user.getReservations().clear();
+			usersRepository.save(user);
+			deleteReservation(reservation);
+			deleteTrip(trip);
+			deleteUser("isa");
+		}
+	}
+	
+	@Test
+	@WithMockUser("isa")
 	public void testDeleteReservation() throws Exception {
 		Trip trip = null;
 		Reservation reservation = null;

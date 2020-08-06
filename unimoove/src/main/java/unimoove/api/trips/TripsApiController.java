@@ -45,40 +45,40 @@ public class TripsApiController implements TripsApi {
 	}
 
 	public ResponseEntity<Void> deleteTrip(
-			@ApiParam(value = "By passing in the appropriate trip ID, you can delete the trip.", required = true) @PathVariable("idTrip") String idTrip) {
+			@ApiParam(value = "By passing in the appropriate trip ID, you can delete the trip.", required = true) @PathVariable("idTrip") Long idTrip) {
 		tripsService.deleteTrip(idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyTripArrivalPlace(
-			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") Long idTrip,
 			@ApiParam(value = "The trip's new arrival place") @Valid @RequestBody TripArrivalPlaceChangeRequest body) {
 		tripsService.modifyTripArrivalPlace(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyTripDepartureDateTime(
-			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") Long idTrip,
 			@ApiParam(value = "The trip's new departure date and time") @Valid @RequestBody TripDepartureDateTimeChangeRequest body) {
 		tripsService.modifyTripDepartureDateTime(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyTripDeparturePlace(
-			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") Long idTrip,
 			@ApiParam(value = "The trip's new departure place") @Valid @RequestBody TripDeparturePlaceChangeRequest body) {
 		tripsService.modifyTripDeparturePlace(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> modifyTripNumberAvailableSeats(
-			@ApiParam(value = "", required = true) @PathVariable("idTrip") String idTrip,
+			@ApiParam(value = "", required = true) @PathVariable("idTrip") Long idTrip,
 			@ApiParam(value = "The trip's new number of available seats") @Valid @RequestBody TripNumberAvailableSeatsChangeRequest body) {
 		tripsService.modifyTripNumberAvailableSeats(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	public ResponseEntity<Void> modifyTripStatus(String idTrip, @Valid TripStatusChangeRequest body) {
+	public ResponseEntity<Void> modifyTripStatus(Long idTrip, @Valid TripStatusChangeRequest body) {
 		tripsService.modifyTripStatus(body, idTrip);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -94,7 +94,7 @@ public class TripsApiController implements TripsApi {
 	}
 
 	
-	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(String idTrip, @Valid Integer page,
+	public ResponseEntity<ReservationPaginatedResponse> getTripReservations(Long idTrip, @Valid Integer page,
 			@Valid Integer size) {
 		return new ResponseEntity<ReservationPaginatedResponse>(reservationsService.getTripReservations(idTrip, page, size), HttpStatus.OK);
 	}

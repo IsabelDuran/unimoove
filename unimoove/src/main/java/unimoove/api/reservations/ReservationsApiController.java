@@ -36,13 +36,13 @@ public class ReservationsApiController implements ReservationsApi {
 
 
 	public ResponseEntity<Void> deleteReservation(
-			@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.", required = true) @PathVariable("idReservation") String idReservation) {
+			@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.", required = true) @PathVariable("idReservation") Long idReservation) {
 		reservationsService.deleteReservation(idReservation);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Void> modifyReservationStatus(String idReservation, @Valid ReservationStateChangeRequest body) {
+	public ResponseEntity<Void> modifyReservationStatus(Long idReservation, @Valid ReservationStateChangeRequest body) {
 		reservationsService.modifyReservationState(body, idReservation);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

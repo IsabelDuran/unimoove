@@ -14,12 +14,12 @@ import unimoove.api.trips.TripStatusChangeRequest;
 @Service
 public interface TripsService {
 	public void addTrip(TripCreationRequest tripCreationRequest);
-	public void deleteTrip(String idTrip);
-	public void modifyTripArrivalPlace(TripArrivalPlaceChangeRequest tripArrivalPlaceChangeRequest, String idTrip);
-	public void modifyTripDepartureDateTime(TripDepartureDateTimeChangeRequest tripDepartureDateTimeChangeRequest, String idTrip);
-	public void modifyTripDeparturePlace(TripDeparturePlaceChangeRequest tripDeparturePlaceChangeRequest, String idTrip);
-	public void modifyTripNumberAvailableSeats(TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, String idTrip);
-	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, String idTrip);
+	public void deleteTrip(Long idTrip);
+	public void modifyTripArrivalPlace(TripArrivalPlaceChangeRequest tripArrivalPlaceChangeRequest, Long idTrip);
+	public void modifyTripDepartureDateTime(TripDepartureDateTimeChangeRequest tripDepartureDateTimeChangeRequest, Long idTrip);
+	public void modifyTripDeparturePlace(TripDeparturePlaceChangeRequest tripDeparturePlaceChangeRequest, Long idTrip);
+	public void modifyTripNumberAvailableSeats(TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, Long idTrip);
+	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, Long idTrip);
 	public TripPaginatedResponse searchTrips(String departurePlace, String arrivalPlace, String departureDateTime, Integer page, Integer size);
 	public TripPaginatedResponse obtainUserTrips(String username, Integer page, Integer size);
 }

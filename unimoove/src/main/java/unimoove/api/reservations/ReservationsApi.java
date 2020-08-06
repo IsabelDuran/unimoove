@@ -50,7 +50,7 @@ public interface ReservationsApi {
         @ApiResponse(code = 401, message = "The requested page needs a username and a password") })
     @RequestMapping(value = "/reservations/{idReservation}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteReservation(@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.",required=true) @PathVariable("idReservation") String idReservation
+    ResponseEntity<Void> deleteReservation(@ApiParam(value = "By passing in the appropriate reservation ID, you can delete the reservation.",required=true) @PathVariable("idReservation") Long idReservation
 );
     
     @ApiOperation(value = "Modifies the reservation's state", nickname = "modifyReservationState", notes = "The reservation ID for the reservation you want to modify", authorizations = {
@@ -61,7 +61,7 @@ public interface ReservationsApi {
 	@RequestMapping(value = "/reservations/{idReservation}/state", consumes = {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<Void> modifyReservationStatus(
-			@ApiParam(value = "", required = true) @PathVariable("idReservation") String idReservation,
+			@ApiParam(value = "", required = true) @PathVariable("idReservation") Long idReservation,
 			@ApiParam(value = "The reservation's new status") @Valid @RequestBody ReservationStateChangeRequest body);
 
 }

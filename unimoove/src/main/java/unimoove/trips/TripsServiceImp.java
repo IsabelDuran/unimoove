@@ -56,7 +56,7 @@ public class TripsServiceImp implements TripsService {
 	public void addTrip(TripCreationRequest tripCreationRequest) {
 		Trip trip = getTrip(tripCreationRequest);
 		User user = getUser();
-		if(tripCreationRequest.getIdCar() != null) {
+		if (tripCreationRequest.getIdCar() != null) {
 			Car car = carsRepository.findById(tripCreationRequest.getIdCar()).orElse(null);
 			if (car != null)
 				trip.setCar(car);
@@ -71,67 +71,83 @@ public class TripsServiceImp implements TripsService {
 
 	@Override
 	@Transactional
-	public void deleteTrip(String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		User user = getUser();
-		user.getTrips().remove(trip);
+	public void deleteTrip(Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
+			User user = getUser();
+			user.getTrips().remove(trip);
 
-		tripsRepository.delete(trip);
-		usersRepository.save(user);
+			tripsRepository.delete(trip);
+			usersRepository.save(user);
+		}
 
 	}
 
 	@Override
 	@Transactional
-	public void modifyTripArrivalPlace(TripArrivalPlaceChangeRequest tripArrivalPlaceChangeRequest, String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		trip.setArrivalPlace(tripArrivalPlaceChangeRequest.getNewPlace());
+	public void modifyTripArrivalPlace(TripArrivalPlaceChangeRequest tripArrivalPlaceChangeRequest, Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
+			trip.setArrivalPlace(tripArrivalPlaceChangeRequest.getNewPlace());
 
-		tripsRepository.save(trip);
+			tripsRepository.save(trip);
+
+		}
 	}
 
 	@Override
 	@Transactional
 	public void modifyTripDepartureDateTime(TripDepartureDateTimeChangeRequest tripDepartureDateTimeChangeRequest,
-			String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		trip.setDepartureDateTime(tripDepartureDateTimeChangeRequest.getNewDepartureDateTime());
+			Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
 
-		tripsRepository.save(trip);
+			trip.setDepartureDateTime(tripDepartureDateTimeChangeRequest.getNewDepartureDateTime());
+
+			tripsRepository.save(trip);
+		}
 	}
 
 	@Override
 	@Transactional
-	public void modifyTripDeparturePlace(TripDeparturePlaceChangeRequest tripDeparturePlaceChangeRequest,
-			String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		trip.setDeparturePlace(tripDeparturePlaceChangeRequest.getNewPlace());
+	public void modifyTripDeparturePlace(TripDeparturePlaceChangeRequest tripDeparturePlaceChangeRequest, Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
+			trip.setDeparturePlace(tripDeparturePlaceChangeRequest.getNewPlace());
 
-		tripsRepository.save(trip);
+			tripsRepository.save(trip);
+
+		}
 	}
 
 	@Override
 	@Transactional
 	public void modifyTripNumberAvailableSeats(
-			TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		trip.setNumberAvailableSeats(tripNumberAvailableSeatsChangeRequest.getNewNumberAvailableSeats());
+			TripNumberAvailableSeatsChangeRequest tripNumberAvailableSeatsChangeRequest, Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
+			trip.setNumberAvailableSeats(tripNumberAvailableSeatsChangeRequest.getNewNumberAvailableSeats());
 
-		tripsRepository.save(trip);
+			tripsRepository.save(trip);
+		}
+
 	}
 
 	@Override
 	@Transactional
-	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, String idTrip) {
-		Trip trip = tripsRepository.findById(Long.parseLong(idTrip)).get();
-		trip.setState(tripStatusChangeRequest.getNewStatus());
-		Set<Reservation> reservations = trip.getReservations();
+	public void modifyTripStatus(TripStatusChangeRequest tripStatusChangeRequest, Long idTrip) {
+		Trip trip = tripsRepository.findById(idTrip).orElse(null);
+		if (trip != null) {
+			trip.setState(tripStatusChangeRequest.getNewStatus());
+			Set<Reservation> reservations = trip.getReservations();
 
-		for (Reservation reservation : reservations) {
-			reservation.setStatus(STATUS_CANCELLED);
+			for (Reservation reservation : reservations) {
+				reservation.setStatus(STATUS_CANCELLED);
+			}
+
+			tripsRepository.save(trip);
+
 		}
-
-		tripsRepository.save(trip);
 
 	}
 

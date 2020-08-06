@@ -207,6 +207,32 @@ public class TripsApiControllerTest {
 	
 	@Test
 	@WithMockUser("isa")
+	public void testModifyStatus() throws Exception {
+		Trip trip = null;
+		try {
+			User user = createUser();
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			Long idTrip = tripsRepository.save(trip).getId();
+			
+			mvc.perform(put("/trips/" + idTrip + "/status")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"newStatus\": 1}")).andExpect(status().isOk());
+			
+			Collection<Trip> trips = (Collection<Trip>) tripsRepository.findAll();
+			trip = trips.iterator().next();
+			
+			assertThat(trip.getState(), equalTo(1));
+		} finally {
+			User user = usersRepository.findUserByUsernameWithTrips("isa");
+			user.getTrips().clear();
+			usersRepository.save(user);
+			deleteTrip(trip);
+			deleteUser("isa");
+		}
+	}
+	
+	@Test
+	@WithMockUser("isa")
 	public void testSearchTrips() throws Exception {
 		Trip trip = null;
 		try {
