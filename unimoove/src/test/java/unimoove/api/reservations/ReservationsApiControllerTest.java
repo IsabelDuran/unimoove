@@ -64,7 +64,7 @@ public class ReservationsApiControllerTest {
 		Reservation reservation = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			
 			mvc.perform(post("/reservations")
@@ -99,7 +99,7 @@ public class ReservationsApiControllerTest {
 		Reservation reservation = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			tripsRepository.save(trip).getId();
 			reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
 			Long idReservation = reservationsRepository.save(reservation).getId();
@@ -132,7 +132,7 @@ public class ReservationsApiControllerTest {
 		Reservation reservation = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			tripsRepository.save(trip).getId();
 			reservation = new Reservation(OffsetDateTime.now(), STATUS_PENDING, trip);
 			Long idReservation = reservationsRepository.save(reservation).getId();

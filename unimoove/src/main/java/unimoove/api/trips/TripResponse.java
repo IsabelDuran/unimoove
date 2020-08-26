@@ -37,6 +37,9 @@ public class TripResponse {
 
 	@JsonProperty("price")
 	private BigDecimal price = null;
+	
+	@JsonProperty("phone")
+	private String phone = null;
 
 	@JsonProperty("car")
 	private CarTripResponse car = null;
@@ -190,6 +193,28 @@ public class TripResponse {
 		this.price = price;
 	}
 
+	public TripResponse phone(String phone) {
+		this.phone = phone;
+		return this;
+	}
+	
+	/**
+	 * Get phone
+	 * 
+	 * @return phone
+	 **/
+	@ApiModelProperty(example = "688786532", required = true, value = "")
+	@NotNull
+	
+	@Valid
+	public String getPhone() {
+		return phone;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public TripResponse car(CarTripResponse car) {
 		this.car = car;
 		return this;
@@ -227,13 +252,14 @@ public class TripResponse {
 				&& Objects.equals(this.departureDateTime, tripResponse.departureDateTime)
 				&& Objects.equals(this.numberAvailableSeats, tripResponse.numberAvailableSeats)
 				&& Objects.equals(this.state, tripResponse.state)
+				&& Objects.equals(this.phone, tripResponse.state)
 				&& Objects.equals(this.car, tripResponse.car);
 		
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, state, price, car);
+		return Objects.hash(id, departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, state, price, phone, car);
 	}
 
 	@Override
@@ -248,6 +274,7 @@ public class TripResponse {
 		sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
 		sb.append("    state: ").append(toIndentedString(state)).append("\n");
 		sb.append("    price: ").append(toIndentedString(price)).append("\n");
+		sb.append("    phone: ").append(toIndentedString(price)).append("\n");
 		sb.append("    car: ").append(toIndentedString(car)).append("\n");
 		sb.append("}");
 		return sb.toString();

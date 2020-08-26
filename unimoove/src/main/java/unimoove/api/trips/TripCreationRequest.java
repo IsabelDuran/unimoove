@@ -31,9 +31,13 @@ public class TripCreationRequest {
 
 	@JsonProperty("price")
 	private BigDecimal price = null;
+	
+	@JsonProperty("phone")
+	private String phone = null;
 
 	@JsonProperty("idCar")
 	private Long idCar = null;
+	
 
 	public TripCreationRequest departurePlace(String departurePlace) {
 		this.departurePlace = departurePlace;
@@ -142,6 +146,28 @@ public class TripCreationRequest {
 		this.price = price;
 	}
 
+	public TripCreationRequest phone(String phone) {
+		this.phone = phone;
+		return this;
+	}
+	
+	/**
+	 * Get phone
+	 * 
+	 * @return phone
+	 **/
+	@ApiModelProperty(example = "655897415", required = true, value = "")
+	@NotNull
+	
+	@Valid
+	public String getPhone() {
+		return phone;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public TripCreationRequest idCar(Long idCar) {
 		this.idCar = idCar;
 		return this;
@@ -177,13 +203,14 @@ public class TripCreationRequest {
 				&& Objects.equals(this.departureDateTime, tripCreationRequest.departureDateTime)
 				&& Objects.equals(this.numberAvailableSeats, tripCreationRequest.numberAvailableSeats)
 				&& Objects.equals(this.price, tripCreationRequest.price)
+				&& Objects.equals(this.phone, tripCreationRequest.phone)
 				&& Objects.equals(this.idCar, tripCreationRequest.idCar);
 	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, price, idCar);
+		return Objects.hash(departurePlace, arrivalPlace, departureDateTime, numberAvailableSeats, price, phone, idCar);
 	}
 
 	@Override
@@ -196,6 +223,7 @@ public class TripCreationRequest {
 		sb.append("    departureDateTime: ").append(toIndentedString(departureDateTime)).append("\n");
 		sb.append("    numberAvailableSeats: ").append(toIndentedString(numberAvailableSeats)).append("\n");
 		sb.append("    price: ").append(toIndentedString(price)).append("\n");
+		sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
 		sb.append("    idCar: ").append(toIndentedString(idCar)).append("\n");
 		sb.append("}");
 		return sb.toString();

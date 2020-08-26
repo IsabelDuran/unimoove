@@ -481,7 +481,7 @@ public class UsersApiControllerTest {
 					LocalDate.parse("16/08/2000", formatter), GENDER_FEMALE, ROLE_USER);
 
 			usersRepository.save(user);
-			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0,
+			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), "655257848", 0,
 					user, null);
 			tripsRepository.save(trip);
 

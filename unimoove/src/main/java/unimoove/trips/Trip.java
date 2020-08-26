@@ -27,6 +27,7 @@ public class Trip {
 	private OffsetDateTime departureDateTime;
 	private Integer numberAvailableSeats;
 	private BigDecimal price;
+	private String phone;
 	/*
 	 * 0 for available, 1 for full, 2 for cancelled, 3 for past
 	 * */
@@ -43,19 +44,20 @@ public class Trip {
 
 	public Trip() {
 	}
-
 	public Trip(String departurePlace, String arrivalPlace, OffsetDateTime departureDateTime,
-			Integer numberAvailableSeats, BigDecimal price, Integer state, User user, Car car) {
-		super();
+			Integer numberAvailableSeats, BigDecimal price, String phone, Integer state, User user, Car car) {
 		this.departurePlace = departurePlace;
 		this.arrivalPlace = arrivalPlace;
 		this.departureDateTime = departureDateTime;
 		this.numberAvailableSeats = numberAvailableSeats;
 		this.price = price;
+		this.phone = phone;
 		this.state = state;
 		this.user = user;
 		this.car = car;
 	}
+
+
 
 
 
@@ -138,6 +140,16 @@ public class Trip {
 	public void decreaseAvailableSeats() {
 		this.numberAvailableSeats = this.numberAvailableSeats - 1;
 	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	
 	
 	
 }

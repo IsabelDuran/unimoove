@@ -51,7 +51,7 @@ public class UsersServiceImpl implements UsersService {
 		try {
 			userRepository.save(newUser);
 		} catch (DataIntegrityViolationException exception) {
-			throw new UniqueUsernameException("Username already exists");
+			throw new UniqueUsernameException("Username or email already exists");
 		}
 
 	}

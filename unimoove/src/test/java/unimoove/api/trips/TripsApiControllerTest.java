@@ -85,7 +85,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			mvc.perform(delete("/trips/" + idTrip)).andExpect(status().isOk());
 
@@ -107,7 +107,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 
 			mvc.perform(put("/trips/" + idTrip + "/arrivalPlace").contentType(MediaType.APPLICATION_JSON)
@@ -133,7 +133,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			
 			mvc.perform(put("/trips/" + idTrip + "/departureDateTime").contentType(MediaType.APPLICATION_JSON)
@@ -159,7 +159,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			
 			mvc.perform(put("/trips/" + idTrip + "/departurePlace")
@@ -185,7 +185,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			
 			mvc.perform(put("/trips/" + idTrip + "/numberAvailableSeats")
@@ -211,7 +211,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.now(), 1, new BigDecimal(2), "655257848", 0, user, null);
 			Long idTrip = tripsRepository.save(trip).getId();
 			
 			mvc.perform(put("/trips/" + idTrip + "/status")
@@ -237,7 +237,7 @@ public class TripsApiControllerTest {
 		Trip trip = null;
 		try {
 			User user = createUser();
-			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), 0, user, null);
+			trip = new Trip("CA", "ESI", OffsetDateTime.parse("2017-07-21T19:32:28+02:00"), 1, new BigDecimal(2), "655257848", 0, user, null);
 			tripsRepository.save(trip);
 			
 			mvc.perform(get("/trips").param("arrivalPlace", "ESI")
